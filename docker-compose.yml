@@ -1,11 +1,11 @@
 services:
   postgres:
     image: postgres:17.6-alpine
-    container_name: effect-crud-db
+    container_name: effect-dvd-rental-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: effect_crud
+      POSTGRES_DB: effect-dvd-rental
     ports:
       - "5432:5432"
     volumes:
@@ -13,12 +13,12 @@ services:
 
   jaeger:
     image: jaegertracing/all-in-one:1.76.0
-    container_name: effect-crud-jaeger
+    container_name: effect-dvd-rental-jaeger
     environment:
       COLLECTOR_OTLP_ENABLED: "true"
     ports:
-      - "16686:16686"  # Jaeger UI
-      - "4318:4318"    # OTLP HTTP receiver
+      - "16686:16686" # Jaeger UI
+      - "4318:4318" # OTLP HTTP receiver
 
 volumes:
   postgres_data:
