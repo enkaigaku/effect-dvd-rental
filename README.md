@@ -18,8 +18,9 @@ A complete DVD rental backend service built with **Effect-ts**, **PostgreSQL (Pa
 | Layer | Technology |
 |-------|------------|
 | Runtime | Bun |
-| Framework | Effect-ts, @effect/platform |
-| Database | PostgreSQL (Pagila), @effect/sql |
+| Language | TypeScript 7 |
+| Framework | Effect-ts 4 (`effect/http-api`) |
+| Database | PostgreSQL (Pagila), `effect/sql` + @effect/sql-pg |
 | Auth | JWT (jose), bcrypt |
 | Docs | OpenAPI 3.1, Swagger UI |
 | Tracing | OpenTelemetry, Jaeger |
@@ -76,6 +77,7 @@ bun run dev
 |--------|-------------|
 | `bun run dev` | Start development server |
 | `bun run check` | TypeScript type checking |
+| `bun run build` | Bundle to `dist/` |
 | `bun run test` | Run tests |
 | `bun run migrate` | Run database migrations |
 | `bun run db:up` | Start Docker containers |

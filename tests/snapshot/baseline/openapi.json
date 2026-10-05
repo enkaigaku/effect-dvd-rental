@@ -21,9 +21,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "status"
-                  ],
                   "properties": {
                     "status": {
                       "type": "string",
@@ -32,17 +29,10 @@
                       ]
                     }
                   },
+                  "required": [
+                    "status"
+                  ],
                   "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -66,9 +56,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "status"
-                  ],
                   "properties": {
                     "status": {
                       "type": "string",
@@ -77,17 +64,10 @@
                       ]
                     }
                   },
+                  "required": [
+                    "status"
+                  ],
                   "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -107,7 +87,14 @@
             "name": "search",
             "in": "query",
             "schema": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "required": false
           },
@@ -115,7 +102,14 @@
             "name": "categoryId",
             "in": "query",
             "schema": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "required": false
           },
@@ -123,7 +117,14 @@
             "name": "rating",
             "in": "query",
             "schema": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "required": false
           },
@@ -131,7 +132,14 @@
             "name": "page",
             "in": "query",
             "schema": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "required": false
           },
@@ -139,7 +147,14 @@
             "name": "limit",
             "in": "query",
             "schema": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "required": false
           }
@@ -151,17 +166,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedFilms"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/PaginatedFilmsEncoded"
                 }
               }
             }
@@ -171,7 +176,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatabaseQueryError"
+                  "$ref": "#/components/schemas/DatabaseQueryErrorEncoded"
                 }
               }
             }
@@ -192,7 +197,7 @@
             "name": "filmId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -204,17 +209,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FilmDetail"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/FilmDetailEncoded"
                 }
               }
             }
@@ -224,7 +219,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FilmNotFoundError"
+                  "$ref": "#/components/schemas/FilmNotFoundErrorEncoded"
                 }
               }
             }
@@ -234,7 +229,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatabaseQueryError"
+                  "$ref": "#/components/schemas/DatabaseQueryErrorEncoded"
                 }
               }
             }
@@ -255,7 +250,7 @@
             "name": "filmId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -269,18 +264,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ActorWithName"
+                    "$ref": "#/components/schemas/ActorWithNameEncoded"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -290,7 +275,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FilmNotFoundError"
+                  "$ref": "#/components/schemas/FilmNotFoundErrorEncoded"
                 }
               }
             }
@@ -300,7 +285,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatabaseQueryError"
+                  "$ref": "#/components/schemas/DatabaseQueryErrorEncoded"
                 }
               }
             }
@@ -326,18 +311,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Category"
+                    "$ref": "#/components/schemas/CategoryEncoded"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -347,7 +322,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DatabaseQueryError"
+                  "$ref": "#/components/schemas/DatabaseQueryErrorEncoded"
                 }
               }
             }
@@ -373,18 +348,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoreWithAddress"
+                    "$ref": "#/components/schemas/StoreWithAddressEncoded"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -394,7 +359,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InventoryError"
+                  "$ref": "#/components/schemas/InventoryErrorEncoded"
                 }
               }
             }
@@ -415,7 +380,7 @@
             "name": "storeId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -427,17 +392,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoreWithAddress"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/StoreWithAddressEncoded"
                 }
               }
             }
@@ -447,7 +402,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoreNotFoundError"
+                  "$ref": "#/components/schemas/StoreNotFoundErrorEncoded"
                 }
               }
             }
@@ -457,7 +412,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InventoryError"
+                  "$ref": "#/components/schemas/InventoryErrorEncoded"
                 }
               }
             }
@@ -478,7 +433,7 @@
             "name": "filmId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -492,18 +447,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/FilmAvailability"
+                    "$ref": "#/components/schemas/FilmAvailabilityEncoded"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -513,7 +458,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InventoryError"
+                  "$ref": "#/components/schemas/InventoryErrorEncoded"
                 }
               }
             }
@@ -534,7 +479,7 @@
             "name": "storeId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           },
@@ -542,7 +487,7 @@
             "name": "filmId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -554,17 +499,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FilmAvailability"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/FilmAvailabilityEncoded"
                 }
               }
             }
@@ -574,7 +509,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoreNotFoundError"
+                  "$ref": "#/components/schemas/StoreNotFoundErrorEncoded"
                 }
               }
             }
@@ -584,7 +519,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InventoryError"
+                  "$ref": "#/components/schemas/InventoryErrorEncoded"
                 }
               }
             }
@@ -608,17 +543,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalCreated"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/RentalCreatedEncoded"
                 }
               }
             }
@@ -628,7 +553,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerNotFoundError"
+                  "$ref": "#/components/schemas/CustomerNotFoundErrorEncoded"
                 }
               }
             }
@@ -638,7 +563,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NoInventoryError"
+                  "$ref": "#/components/schemas/NoInventoryErrorEncoded"
                 }
               }
             }
@@ -648,7 +573,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalError"
+                  "$ref": "#/components/schemas/RentalErrorEncoded"
                 }
               }
             }
@@ -660,27 +585,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "filmId",
-                  "customerId",
-                  "storeId"
-                ],
-                "properties": {
-                  "filmId": {
-                    "type": "number"
-                  },
-                  "customerId": {
-                    "type": "number"
-                  },
-                  "storeId": {
-                    "type": "number"
-                  },
-                  "staffId": {
-                    "type": "number"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/components/schemas/CreateRentalInputEncoded"
               }
             }
           },
@@ -699,7 +604,7 @@
             "name": "rentalId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -711,17 +616,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalReturned"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/RentalReturnedEncoded"
                 }
               }
             }
@@ -731,7 +626,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalNotFoundError"
+                  "$ref": "#/components/schemas/RentalNotFoundErrorEncoded"
                 }
               }
             }
@@ -741,7 +636,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalError"
+                  "$ref": "#/components/schemas/RentalErrorEncoded"
                 }
               }
             }
@@ -762,7 +657,7 @@
             "name": "rentalId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -774,17 +669,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalDetail"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/RentalDetailEncoded"
                 }
               }
             }
@@ -794,7 +679,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalNotFoundError"
+                  "$ref": "#/components/schemas/RentalNotFoundErrorEncoded"
                 }
               }
             }
@@ -804,7 +689,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalError"
+                  "$ref": "#/components/schemas/RentalErrorEncoded"
                 }
               }
             }
@@ -825,7 +710,7 @@
             "name": "customerId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -839,18 +724,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RentalDetail"
+                    "$ref": "#/components/schemas/RentalDetailEncoded"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -860,7 +735,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerNotFoundError"
+                  "$ref": "#/components/schemas/CustomerNotFoundErrorEncoded"
                 }
               }
             }
@@ -870,7 +745,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalError"
+                  "$ref": "#/components/schemas/RentalErrorEncoded"
                 }
               }
             }
@@ -891,7 +766,7 @@
             "name": "customerId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -903,17 +778,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/CustomerInfoEncoded"
                 }
               }
             }
@@ -923,7 +788,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerNotFoundError"
+                  "$ref": "#/components/schemas/CustomerNotFoundErrorEncoded"
                 }
               }
             }
@@ -933,7 +798,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RentalError"
+                  "$ref": "#/components/schemas/RentalErrorEncoded"
                 }
               }
             }
@@ -957,24 +822,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentCreated"
+                  "$ref": "#/components/schemas/PaymentCreatedEncoded"
                 }
               }
             }
           },
           "400": {
-            "description": "The request did not match the expected schema",
+            "description": "InvalidPaymentError",
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/HttpApiDecodeError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/InvalidPaymentError"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/InvalidPaymentErrorEncoded"
                 }
               }
             }
@@ -984,7 +842,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentError"
+                  "$ref": "#/components/schemas/PaymentErrorEncoded"
                 }
               }
             }
@@ -996,27 +854,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "customerId",
-                  "rentalId",
-                  "amount"
-                ],
-                "properties": {
-                  "customerId": {
-                    "type": "number"
-                  },
-                  "rentalId": {
-                    "type": "number"
-                  },
-                  "amount": {
-                    "type": "number"
-                  },
-                  "staffId": {
-                    "type": "number"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/components/schemas/CreatePaymentInputEncoded"
               }
             }
           },
@@ -1035,7 +873,7 @@
             "name": "paymentId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -1047,17 +885,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentDetail"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/PaymentDetailEncoded"
                 }
               }
             }
@@ -1067,7 +895,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentNotFoundError"
+                  "$ref": "#/components/schemas/PaymentNotFoundErrorEncoded"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "PaymentError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentErrorEncoded"
                 }
               }
             }
@@ -1088,7 +926,7 @@
             "name": "customerId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -1102,18 +940,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PaymentDetail"
+                    "$ref": "#/components/schemas/PaymentDetailEncoded"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -1123,7 +951,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentError"
+                  "$ref": "#/components/schemas/PaymentErrorEncoded"
                 }
               }
             }
@@ -1144,7 +972,7 @@
             "name": "customerId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -1156,17 +984,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerBalance"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/CustomerBalanceEncoded"
                 }
               }
             }
@@ -1176,7 +994,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentError"
+                  "$ref": "#/components/schemas/PaymentErrorEncoded"
                 }
               }
             }
@@ -1200,17 +1018,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerAuthResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/CustomerAuthResponseEncoded"
                 }
               }
             }
@@ -1220,7 +1028,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerAuthError"
+                  "$ref": "#/components/schemas/CustomerAuthErrorEncoded"
                 }
               }
             }
@@ -1232,7 +1040,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CustomerLoginInput"
+                "$ref": "#/components/schemas/CustomerLoginInputEncoded"
               }
             }
           },
@@ -1254,17 +1062,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerAuthResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/CustomerAuthResponseEncoded"
                 }
               }
             }
@@ -1274,7 +1072,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerAuthError"
+                  "$ref": "#/components/schemas/CustomerAuthErrorEncoded"
                 }
               }
             }
@@ -1284,7 +1082,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerEmailExistsError"
+                  "$ref": "#/components/schemas/CustomerEmailExistsErrorEncoded"
                 }
               }
             }
@@ -1296,31 +1094,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password",
-                  "firstName",
-                  "lastName"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "firstName": {
-                    "type": "string"
-                  },
-                  "lastName": {
-                    "type": "string"
-                  },
-                  "storeId": {
-                    "type": "number"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/components/schemas/CustomerRegisterInputEncoded"
               }
             }
           },
@@ -1339,7 +1113,7 @@
             "name": "customerId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -1351,17 +1125,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerProfileResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/CustomerProfileResponseEncoded"
                 }
               }
             }
@@ -1371,7 +1135,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerAuthError"
+                  "$ref": "#/components/schemas/CustomerAuthErrorEncoded"
                 }
               }
             }
@@ -1392,7 +1156,7 @@
             "name": "customerId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -1405,25 +1169,15 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "success"
-                  ],
                   "properties": {
                     "success": {
                       "type": "boolean"
                     }
                   },
+                  "required": [
+                    "success"
+                  ],
                   "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -1433,7 +1187,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomerAuthError"
+                  "$ref": "#/components/schemas/CustomerAuthErrorEncoded"
                 }
               }
             }
@@ -1445,7 +1199,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePasswordInput"
+                "$ref": "#/components/schemas/UpdatePasswordInputEncoded"
               }
             }
           },
@@ -1467,17 +1221,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StaffAuthResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/StaffAuthResponseEncoded"
                 }
               }
             }
@@ -1487,7 +1231,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StaffAuthError"
+                  "$ref": "#/components/schemas/StaffAuthErrorEncoded"
                 }
               }
             }
@@ -1499,7 +1243,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StaffLoginInput"
+                "$ref": "#/components/schemas/StaffLoginInputEncoded"
               }
             }
           },
@@ -1518,7 +1262,7 @@
             "name": "staffId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -1530,17 +1274,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StaffProfileResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                  "$ref": "#/components/schemas/StaffProfileResponseEncoded"
                 }
               }
             }
@@ -1550,7 +1284,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StaffAuthError"
+                  "$ref": "#/components/schemas/StaffAuthErrorEncoded"
                 }
               }
             }
@@ -1571,7 +1305,7 @@
             "name": "staffId",
             "in": "path",
             "schema": {
-              "$ref": "#/components/schemas/NumberFromString"
+              "type": "string"
             },
             "required": true
           }
@@ -1584,25 +1318,15 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "success"
-                  ],
                   "properties": {
                     "success": {
                       "type": "boolean"
                     }
                   },
+                  "required": [
+                    "success"
+                  ],
                   "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -1612,7 +1336,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StaffAuthError"
+                  "$ref": "#/components/schemas/StaffAuthErrorEncoded"
                 }
               }
             }
@@ -1624,7 +1348,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StaffUpdatePasswordInput"
+                "$ref": "#/components/schemas/StaffUpdatePasswordInputEncoded"
               }
             }
           },
@@ -1648,18 +1372,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StaffProfileResponse"
+                    "$ref": "#/components/schemas/StaffProfileResponseEncoded"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request did not match the expected schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpApiDecodeError"
                 }
               }
             }
@@ -1669,7 +1383,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StaffAuthError"
+                  "$ref": "#/components/schemas/StaffAuthErrorEncoded"
                 }
               }
             }
@@ -1682,297 +1396,47 @@
   },
   "components": {
     "schemas": {
-      "HttpApiDecodeError": {
+      "StaffAuthErrorEncoded": {
         "type": "object",
-        "required": [
-          "issues",
-          "message",
-          "_tag"
-        ],
         "properties": {
-          "issues": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Issue"
-            }
-          },
-          "message": {
-            "type": "string"
-          },
           "_tag": {
             "type": "string",
             "enum": [
-              "HttpApiDecodeError"
+              "StaffAuthError"
             ]
+          },
+          "message": {
+            "type": "string"
           }
         },
-        "additionalProperties": false,
-        "description": "The request did not match the expected schema"
-      },
-      "Issue": {
-        "type": "object",
         "required": [
           "_tag",
-          "path",
           "message"
         ],
-        "properties": {
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "Pointer",
-              "Unexpected",
-              "Missing",
-              "Composite",
-              "Refinement",
-              "Transformation",
-              "Type",
-              "Forbidden"
-            ],
-            "description": "The tag identifying the type of parse issue"
-          },
-          "path": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PropertyKey"
-            },
-            "description": "The path to the property where the issue occurred"
-          },
-          "message": {
-            "type": "string",
-            "description": "A descriptive message explaining the issue"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Represents an error encountered while parsing a value to match the schema"
-      },
-      "PropertyKey": {
-        "anyOf": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "number"
-          },
-          {
-            "type": "object",
-            "required": [
-              "_tag",
-              "key"
-            ],
-            "properties": {
-              "_tag": {
-                "type": "string",
-                "enum": [
-                  "symbol"
-                ]
-              },
-              "key": {
-                "type": "string"
-              }
-            },
-            "additionalProperties": false,
-            "description": "an object to be decoded into a globally shared symbol"
-          }
-        ]
-      },
-      "PaginatedFilms": {
-        "type": "object",
-        "required": [
-          "data",
-          "total",
-          "page",
-          "limit",
-          "totalPages"
-        ],
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Film"
-            }
-          },
-          "total": {
-            "type": "number"
-          },
-          "page": {
-            "type": "number"
-          },
-          "limit": {
-            "type": "number"
-          },
-          "totalPages": {
-            "type": "number"
-          }
-        },
         "additionalProperties": false
       },
-      "Film": {
+      "StaffProfileResponseEncoded": {
         "type": "object",
-        "required": [
-          "filmId",
-          "title",
-          "description",
-          "releaseYear",
-          "languageId",
-          "originalLanguageId",
-          "rentalDuration",
-          "rentalRate",
-          "length",
-          "replacementCost",
-          "rating",
-          "specialFeatures",
-          "lastUpdate"
-        ],
         "properties": {
-          "filmId": {
-            "type": "number"
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "releaseYear": {
+          "staffId": {
             "anyOf": [
               {
                 "type": "number"
               },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "languageId": {
-            "type": "number"
-          },
-          "originalLanguageId": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "rentalDuration": {
-            "type": "number"
-          },
-          "rentalRate": {
-            "type": "number"
-          },
-          "length": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "replacementCost": {
-            "type": "number"
-          },
-          "rating": {
-            "anyOf": [
               {
                 "type": "string",
                 "enum": [
-                  "G",
-                  "PG",
-                  "PG-13",
-                  "R",
-                  "NC-17"
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
                 ]
-              },
-              {
-                "type": "null"
               }
             ]
           },
-          "specialFeatures": {
-            "anyOf": [
-              {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "lastUpdate": {
-            "$ref": "#/components/schemas/Date"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Date": {
-        "type": "string",
-        "description": "a string to be decoded into a Date"
-      },
-      "DatabaseQueryError": {
-        "type": "object",
-        "required": [
-          "message",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
+          "username": {
             "type": "string"
           },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "DatabaseQueryError"
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "NumberFromString": {
-        "type": "string",
-        "description": "a string to be decoded into a number"
-      },
-      "FilmDetail": {
-        "type": "object",
-        "required": [
-          "filmId",
-          "title",
-          "description",
-          "releaseYear",
-          "languageId",
-          "originalLanguageId",
-          "rentalDuration",
-          "rentalRate",
-          "length",
-          "replacementCost",
-          "rating",
-          "specialFeatures",
-          "lastUpdate",
-          "languageName",
-          "categoryName"
-        ],
-        "properties": {
-          "filmId": {
-            "type": "number"
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
+          "email": {
             "anyOf": [
               {
                 "type": "string"
@@ -1981,132 +1445,6 @@
                 "type": "null"
               }
             ]
-          },
-          "releaseYear": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "languageId": {
-            "type": "number"
-          },
-          "originalLanguageId": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "rentalDuration": {
-            "type": "number"
-          },
-          "rentalRate": {
-            "type": "number"
-          },
-          "length": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "replacementCost": {
-            "type": "number"
-          },
-          "rating": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "G",
-                  "PG",
-                  "PG-13",
-                  "R",
-                  "NC-17"
-                ]
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "specialFeatures": {
-            "anyOf": [
-              {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "lastUpdate": {
-            "$ref": "#/components/schemas/Date"
-          },
-          "languageName": {
-            "type": "string"
-          },
-          "categoryName": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "FilmNotFoundError": {
-        "type": "object",
-        "required": [
-          "message",
-          "filmId",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "filmId": {
-            "type": "number"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "FilmNotFoundError"
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "ActorWithName": {
-        "type": "object",
-        "required": [
-          "actorId",
-          "firstName",
-          "lastName",
-          "fullName"
-        ],
-        "properties": {
-          "actorId": {
-            "type": "number"
           },
           "firstName": {
             "type": "string"
@@ -2114,55 +1452,771 @@
           "lastName": {
             "type": "string"
           },
+          "storeId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "staffId",
+          "username",
+          "email",
+          "firstName",
+          "lastName",
+          "storeId",
+          "isActive"
+        ],
+        "additionalProperties": false
+      },
+      "StaffUpdatePasswordInputEncoded": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "currentPassword",
+          "newPassword"
+        ],
+        "additionalProperties": false
+      },
+      "StaffAuthResponseEncoded": {
+        "type": "object",
+        "properties": {
+          "staffId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "storeId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "staffId",
+          "username",
+          "firstName",
+          "lastName",
+          "storeId",
+          "token"
+        ],
+        "additionalProperties": false
+      },
+      "StaffLoginInputEncoded": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerAuthErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "CustomerAuthError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_tag",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "UpdatePasswordInputEncoded": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "currentPassword",
+          "newPassword"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerProfileResponseEncoded": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "storeId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "customerId",
+          "email",
+          "firstName",
+          "lastName",
+          "storeId",
+          "isActive"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerEmailExistsErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "CustomerEmailExistsError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_tag",
+          "message",
+          "email"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerAuthResponseEncoded": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "customerId",
+          "email",
+          "firstName",
+          "lastName",
+          "token"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerRegisterInputEncoded": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "storeId": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "firstName",
+          "lastName"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerLoginInputEncoded": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "PaymentErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "PaymentError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_tag",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerBalanceEncoded": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "balance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "customerId",
+          "customerName",
+          "balance"
+        ],
+        "additionalProperties": false
+      },
+      "PaymentDetailEncoded": {
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "rentalId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "filmTitle": {
+            "type": "string"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "paymentDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentId",
+          "customerId",
+          "customerName",
+          "rentalId",
+          "filmTitle",
+          "amount",
+          "paymentDate"
+        ],
+        "additionalProperties": false
+      },
+      "PaymentNotFoundErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "PaymentNotFoundError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "paymentId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "_tag",
+          "message",
+          "paymentId"
+        ],
+        "additionalProperties": false
+      },
+      "InvalidPaymentErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "InvalidPaymentError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_tag",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "PaymentCreatedEncoded": {
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "rentalId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "paymentDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentId",
+          "customerId",
+          "rentalId",
+          "amount",
+          "paymentDate"
+        ],
+        "additionalProperties": false
+      },
+      "CreatePaymentInputEncoded": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "rentalId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "staffId": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "customerId",
+          "rentalId",
+          "amount"
+        ],
+        "additionalProperties": false
+      },
+      "RentalErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "RentalError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_tag",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerNotFoundErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "CustomerNotFoundError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "_tag",
+          "message",
+          "customerId"
+        ],
+        "additionalProperties": false
+      },
+      "CustomerInfoEncoded": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
           "fullName": {
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Category": {
-        "type": "object",
-        "required": [
-          "categoryId",
-          "name",
-          "lastUpdate"
-        ],
-        "properties": {
-          "categoryId": {
-            "type": "number"
           },
-          "name": {
-            "type": "string"
-          },
-          "lastUpdate": {
-            "$ref": "#/components/schemas/Date"
-          }
-        },
-        "additionalProperties": false
-      },
-      "StoreWithAddress": {
-        "type": "object",
-        "required": [
-          "storeId",
-          "address",
-          "city",
-          "country",
-          "managerName"
-        ],
-        "properties": {
-          "storeId": {
-            "type": "number"
-          },
-          "address": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "managerName": {
+          "email": {
             "anyOf": [
               {
                 "type": "string"
@@ -2171,251 +2225,60 @@
                 "type": "null"
               }
             ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "InventoryError": {
-        "type": "object",
-        "required": [
-          "message",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "InventoryError"
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "StoreNotFoundError": {
-        "type": "object",
-        "required": [
-          "message",
-          "storeId",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
           },
           "storeId": {
-            "type": "number"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "StoreNotFoundError"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
             ]
+          },
+          "isActive": {
+            "type": "boolean"
           }
         },
-        "additionalProperties": false
-      },
-      "FilmAvailability": {
-        "type": "object",
         "required": [
-          "filmId",
-          "filmTitle",
-          "storeId",
-          "totalCopies",
-          "availableCopies"
-        ],
-        "properties": {
-          "filmId": {
-            "type": "number"
-          },
-          "filmTitle": {
-            "type": "string"
-          },
-          "storeId": {
-            "type": "number"
-          },
-          "totalCopies": {
-            "type": "number"
-          },
-          "availableCopies": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false
-      },
-      "RentalCreated": {
-        "type": "object",
-        "required": [
-          "rentalId",
-          "rentalDate",
-          "inventoryId",
-          "filmTitle",
           "customerId",
-          "dueDate"
+          "fullName",
+          "email",
+          "storeId",
+          "isActive"
         ],
+        "additionalProperties": false
+      },
+      "RentalDetailEncoded": {
+        "type": "object",
         "properties": {
           "rentalId": {
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
           },
           "rentalDate": {
-            "$ref": "#/components/schemas/Date"
-          },
-          "inventoryId": {
-            "type": "number"
-          },
-          "filmTitle": {
             "type": "string"
-          },
-          "customerId": {
-            "type": "number"
-          },
-          "dueDate": {
-            "$ref": "#/components/schemas/Date"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CustomerNotFoundError": {
-        "type": "object",
-        "required": [
-          "message",
-          "customerId",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "customerId": {
-            "type": "number"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "CustomerNotFoundError"
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "NoInventoryError": {
-        "type": "object",
-        "required": [
-          "message",
-          "filmId",
-          "storeId",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "filmId": {
-            "type": "number"
-          },
-          "storeId": {
-            "type": "number"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "NoInventoryError"
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "RentalError": {
-        "type": "object",
-        "required": [
-          "message",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "RentalError"
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "RentalReturned": {
-        "type": "object",
-        "required": [
-          "rentalId",
-          "returnDate",
-          "rentalDays",
-          "lateFee"
-        ],
-        "properties": {
-          "rentalId": {
-            "type": "number"
-          },
-          "returnDate": {
-            "$ref": "#/components/schemas/Date"
-          },
-          "rentalDays": {
-            "type": "number"
-          },
-          "lateFee": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false
-      },
-      "RentalNotFoundError": {
-        "type": "object",
-        "required": [
-          "message",
-          "rentalId",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "rentalId": {
-            "type": "number"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "RentalNotFoundError"
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "RentalDetail": {
-        "type": "object",
-        "required": [
-          "rentalId",
-          "rentalDate",
-          "returnDate",
-          "filmTitle",
-          "customerName",
-          "customerEmail",
-          "storeName",
-          "isReturned"
-        ],
-        "properties": {
-          "rentalId": {
-            "type": "number"
-          },
-          "rentalDate": {
-            "$ref": "#/components/schemas/Date"
           },
           "returnDate": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Date"
+                "type": "string"
               },
               {
                 "type": "null"
@@ -2445,414 +2308,588 @@
             "type": "boolean"
           }
         },
+        "required": [
+          "rentalId",
+          "rentalDate",
+          "returnDate",
+          "filmTitle",
+          "customerName",
+          "customerEmail",
+          "storeName",
+          "isReturned"
+        ],
         "additionalProperties": false
       },
-      "CustomerInfo": {
+      "RentalNotFoundErrorEncoded": {
         "type": "object",
-        "required": [
-          "customerId",
-          "fullName",
-          "email",
-          "storeId",
-          "isActive"
-        ],
         "properties": {
-          "customerId": {
-            "type": "number"
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "RentalNotFoundError"
+            ]
           },
-          "fullName": {
+          "message": {
             "type": "string"
           },
-          "email": {
+          "rentalId": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "number"
               },
               {
-                "type": "null"
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "_tag",
+          "message",
+          "rentalId"
+        ],
+        "additionalProperties": false
+      },
+      "RentalReturnedEncoded": {
+        "type": "object",
+        "properties": {
+          "rentalId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "returnDate": {
+            "type": "string"
+          },
+          "rentalDays": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "lateFee": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "rentalId",
+          "returnDate",
+          "rentalDays",
+          "lateFee"
+        ],
+        "additionalProperties": false
+      },
+      "NoInventoryErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "NoInventoryError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "filmId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
               }
             ]
           },
           "storeId": {
-            "type": "number"
-          },
-          "isActive": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "PaymentCreated": {
-        "type": "object",
-        "required": [
-          "paymentId",
-          "customerId",
-          "rentalId",
-          "amount",
-          "paymentDate"
-        ],
-        "properties": {
-          "paymentId": {
-            "type": "number"
-          },
-          "customerId": {
-            "type": "number"
-          },
-          "rentalId": {
-            "type": "number"
-          },
-          "amount": {
-            "type": "number"
-          },
-          "paymentDate": {
-            "$ref": "#/components/schemas/Date"
-          }
-        },
-        "additionalProperties": false
-      },
-      "InvalidPaymentError": {
-        "type": "object",
-        "required": [
-          "message",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "InvalidPaymentError"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
             ]
           }
         },
-        "additionalProperties": false
-      },
-      "PaymentError": {
-        "type": "object",
         "required": [
+          "_tag",
           "message",
-          "_tag"
+          "filmId",
+          "storeId"
         ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "PaymentError"
-            ]
-          }
-        },
         "additionalProperties": false
       },
-      "PaymentDetail": {
+      "RentalCreatedEncoded": {
         "type": "object",
-        "required": [
-          "paymentId",
-          "customerId",
-          "customerName",
-          "rentalId",
-          "filmTitle",
-          "amount",
-          "paymentDate"
-        ],
         "properties": {
-          "paymentId": {
-            "type": "number"
+          "rentalId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
           },
-          "customerId": {
-            "type": "number"
-          },
-          "customerName": {
+          "rentalDate": {
             "type": "string"
           },
-          "rentalId": {
-            "type": "number"
+          "inventoryId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
           },
           "filmTitle": {
             "type": "string"
           },
-          "amount": {
-            "type": "number"
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
           },
-          "paymentDate": {
-            "$ref": "#/components/schemas/Date"
+          "dueDate": {
+            "type": "string"
           }
         },
+        "required": [
+          "rentalId",
+          "rentalDate",
+          "inventoryId",
+          "filmTitle",
+          "customerId",
+          "dueDate"
+        ],
         "additionalProperties": false
       },
-      "PaymentNotFoundError": {
+      "CreateRentalInputEncoded": {
         "type": "object",
-        "required": [
-          "message",
-          "paymentId",
-          "_tag"
-        ],
         "properties": {
-          "message": {
-            "type": "string"
+          "filmId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
           },
-          "paymentId": {
-            "type": "number"
+          "customerId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
           },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "PaymentNotFoundError"
+          "storeId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "staffId": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
             ]
           }
         },
-        "additionalProperties": false
-      },
-      "CustomerBalance": {
-        "type": "object",
         "required": [
+          "filmId",
           "customerId",
-          "customerName",
-          "balance"
+          "storeId"
         ],
-        "properties": {
-          "customerId": {
-            "type": "number"
-          },
-          "customerName": {
-            "type": "string"
-          },
-          "balance": {
-            "type": "number"
-          }
-        },
         "additionalProperties": false
       },
-      "CustomerLoginInput": {
+      "InventoryErrorEncoded": {
         "type": "object",
-        "required": [
-          "email",
-          "password"
-        ],
         "properties": {
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CustomerAuthResponse": {
-        "type": "object",
-        "required": [
-          "customerId",
-          "email",
-          "firstName",
-          "lastName",
-          "token"
-        ],
-        "properties": {
-          "customerId": {
-            "type": "number"
-          },
-          "email": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "token": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CustomerAuthError": {
-        "type": "object",
-        "required": [
-          "message",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
           "_tag": {
             "type": "string",
             "enum": [
-              "CustomerAuthError"
+              "InventoryError"
             ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "CustomerEmailExistsError": {
-        "type": "object",
-        "required": [
-          "message",
-          "email",
-          "_tag"
-        ],
-        "properties": {
+          },
           "message": {
             "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
+          }
+        },
+        "required": [
+          "_tag",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "StoreNotFoundErrorEncoded": {
+        "type": "object",
+        "properties": {
           "_tag": {
             "type": "string",
             "enum": [
-              "CustomerEmailExistsError"
+              "StoreNotFoundError"
             ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "CustomerProfileResponse": {
-        "type": "object",
-        "required": [
-          "customerId",
-          "email",
-          "firstName",
-          "lastName",
-          "storeId",
-          "isActive"
-        ],
-        "properties": {
-          "customerId": {
-            "type": "number"
           },
-          "email": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
+          "message": {
             "type": "string"
           },
           "storeId": {
-            "type": "number"
-          },
-          "isActive": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdatePasswordInput": {
-        "type": "object",
-        "required": [
-          "currentPassword",
-          "newPassword"
-        ],
-        "properties": {
-          "currentPassword": {
-            "type": "string"
-          },
-          "newPassword": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "StaffLoginInput": {
-        "type": "object",
-        "required": [
-          "username",
-          "password"
-        ],
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "StaffAuthResponse": {
-        "type": "object",
-        "required": [
-          "staffId",
-          "username",
-          "firstName",
-          "lastName",
-          "storeId",
-          "token"
-        ],
-        "properties": {
-          "staffId": {
-            "type": "number"
-          },
-          "username": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "storeId": {
-            "type": "number"
-          },
-          "token": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "StaffAuthError": {
-        "type": "object",
-        "required": [
-          "message",
-          "_tag"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "StaffAuthError"
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
             ]
           }
         },
+        "required": [
+          "_tag",
+          "message",
+          "storeId"
+        ],
         "additionalProperties": false
       },
-      "StaffProfileResponse": {
+      "FilmAvailabilityEncoded": {
         "type": "object",
-        "required": [
-          "staffId",
-          "username",
-          "email",
-          "firstName",
-          "lastName",
-          "storeId",
-          "isActive"
-        ],
         "properties": {
-          "staffId": {
-            "type": "number"
+          "filmId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
           },
-          "username": {
+          "filmTitle": {
             "type": "string"
           },
-          "email": {
+          "storeId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "totalCopies": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "availableCopies": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "filmId",
+          "filmTitle",
+          "storeId",
+          "totalCopies",
+          "availableCopies"
+        ],
+        "additionalProperties": false
+      },
+      "StoreWithAddressEncoded": {
+        "type": "object",
+        "properties": {
+          "storeId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "managerName": {
             "anyOf": [
               {
                 "type": "string"
               },
               {
                 "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "storeId",
+          "address",
+          "city",
+          "country",
+          "managerName"
+        ],
+        "additionalProperties": false
+      },
+      "DatabaseQueryErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "DatabaseQueryError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_tag",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "CategoryEncoded": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "lastUpdate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "categoryId",
+          "name",
+          "lastUpdate"
+        ],
+        "additionalProperties": false
+      },
+      "FilmNotFoundErrorEncoded": {
+        "type": "object",
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "FilmNotFoundError"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "filmId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "_tag",
+          "message",
+          "filmId"
+        ],
+        "additionalProperties": false
+      },
+      "ActorWithNameEncoded": {
+        "type": "object",
+        "properties": {
+          "actorId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
               }
             ]
           },
@@ -2862,29 +2899,526 @@
           "lastName": {
             "type": "string"
           },
-          "storeId": {
-            "type": "number"
-          },
-          "isActive": {
-            "type": "boolean"
+          "fullName": {
+            "type": "string"
           }
         },
+        "required": [
+          "actorId",
+          "firstName",
+          "lastName",
+          "fullName"
+        ],
         "additionalProperties": false
       },
-      "StaffUpdatePasswordInput": {
+      "FilmDetailEncoded": {
         "type": "object",
-        "required": [
-          "currentPassword",
-          "newPassword"
-        ],
         "properties": {
-          "currentPassword": {
+          "filmId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "title": {
             "type": "string"
           },
-          "newPassword": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "releaseYear": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "languageId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "originalLanguageId": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rentalDuration": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "rentalRate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "length": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "replacementCost": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "G",
+                  "PG",
+                  "PG-13",
+                  "R",
+                  "NC-17"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "specialFeatures": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastUpdate": {
+            "type": "string"
+          },
+          "languageName": {
+            "type": "string"
+          },
+          "categoryName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "filmId",
+          "title",
+          "description",
+          "releaseYear",
+          "languageId",
+          "originalLanguageId",
+          "rentalDuration",
+          "rentalRate",
+          "length",
+          "replacementCost",
+          "rating",
+          "specialFeatures",
+          "lastUpdate",
+          "languageName",
+          "categoryName"
+        ],
+        "additionalProperties": false
+      },
+      "PaginatedFilmsEncoded": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilmEncoded"
+            }
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "totalPages": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "data",
+          "total",
+          "page",
+          "limit",
+          "totalPages"
+        ],
+        "additionalProperties": false
+      },
+      "FilmEncoded": {
+        "type": "object",
+        "properties": {
+          "filmId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "releaseYear": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "languageId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "originalLanguageId": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rentalDuration": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "rentalRate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "length": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "replacementCost": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "G",
+                  "PG",
+                  "PG-13",
+                  "R",
+                  "NC-17"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "specialFeatures": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastUpdate": {
             "type": "string"
           }
         },
+        "required": [
+          "filmId",
+          "title",
+          "description",
+          "releaseYear",
+          "languageId",
+          "originalLanguageId",
+          "rentalDuration",
+          "rentalRate",
+          "length",
+          "replacementCost",
+          "rating",
+          "specialFeatures",
+          "lastUpdate"
+        ],
         "additionalProperties": false
       }
     },

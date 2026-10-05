@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-这是一个使用 Effect-ts 构建的 DVD 租赁 API 应用，采用分层架构，使用 Pagila 示例数据库 (PostgreSQL)，支持顾客和员工的 JWT 认证，集成 OpenTelemetry 分布式追踪。运行时为 Bun。
+这是一个使用 Effect-ts 4 构建的 DVD 租赁 API 应用，采用分层架构，使用 Pagila 示例数据库 (PostgreSQL)，支持顾客和员工的 JWT 认证，集成 OpenTelemetry 分布式追踪。运行时为 Bun。
 
 **核心功能**：
 - Film 查询（分页、搜索、演员信息）
@@ -30,13 +30,13 @@ bun check
 bun test
 
 # 运行单个测试文件
-bun test src/service/FilmService.test.ts
+bun test tests/service/RentalService.test.ts
 
 # 运行测试并查看覆盖率
 bun test --coverage
 
-# 构建生产版本
-bun build
+# 构建生产版本 (注意: `bun build` 是 Bun 内置打包命令，需用 `bun run build`)
+bun run build
 
 # 启动数据库和 Jaeger (需要 Docker)
 bun db:up
@@ -53,7 +53,13 @@ bun start
 # Docker 构建和运行
 bun docker:build
 bun docker:run
+
+# API 快照 (需先 `bun migrate` 一个全新的库，并以高限流值启动服务)
+RATE_LIMIT_MAX_REQUESTS=10000 bun src/main.ts
+bun tests/snapshot/api-snapshot.ts snapshot-out
 ```
+
+`tests/api/` 下的测试会请求 `localhost:8080`，运行 `bun test` 前需先启动服务。
 
 ## 架构
 
@@ -80,7 +86,7 @@ src/
 │   ├── CustomerAuthHandler.ts
 │   ├── StaffAuthHandler.ts
 │   └── index.ts
-├── service/          # 业务逻辑层 (Effect.Service)
+├── service/          # 业务逻辑层 (Context.Service)
 │   ├── FilmService.ts
 │   ├── InventoryService.ts
 │   ├── RentalService.ts
@@ -94,7 +100,7 @@ src/
 │   └── PaymentRepository.ts
 ├── schema/           # 数据模型 (Schema.Class)
 │   ├── Common.ts
-│   ├── Auth.ts
+│   ├── Ids.ts        # Branded ID 类型
 │   ├── Film.ts
 │   ├── Category.ts
 │   ├── Actor.ts
@@ -104,7 +110,7 @@ src/
 │   ├── Customer.ts
 │   └── Payment.ts
 ├── middleware/       # 中间件
-│   └── auth.ts       # JWT 验证 (customerAuth, staffAuth)
+│   └── auth.ts       # JWT 验证 (requireAuth, requireCustomer, requireStaff, withAuth)
 ├── config/           # 配置层 (各种 Live Layer)
 │   ├── Database.ts   # DatabaseLive (PgClient)
 │   ├── Server.ts     # ServerLive (BunHttpServer)
@@ -114,7 +120,8 @@ src/
 │   ├── RateLimiter.ts# RateLimiterLive
 │   └── Services.ts   # ServicesLive (组合所有服务)
 └── scripts/          # 脚本
-    └── migrate.ts    # 数据库迁移脚本
+    ├── migrate.ts    # 数据库迁移脚本
+    └── splitSqlStatements.ts # 将迁移文件拆分为单条语句
 
 migrations/           # SQL 迁移文件 (根目录)
 ├── 001_initial_schema.sql
@@ -127,178 +134,165 @@ migrations/           # SQL 迁移文件 (根目录)
 ### Layer 依赖图
 
 ```
-HttpLive (main.ts)
-├── CorsLive
-├── RateLimiterLive
-├── DocsLive (Swagger UI at /docs)
-├── ApiLive
-│   ├── HealthHandler
-│   ├── FilmHandler
-│   ├── InventoryHandler
-│   ├── RentalHandler
-│   ├── PaymentHandler
-│   ├── CustomerAuthHandler
-│   └── StaffAuthHandler
-├── ServicesLive
-│   ├── FilmService.Default
-│   │   └── FilmRepository.Default → DatabaseLive
-│   ├── InventoryService.Default
-│   │   └── InventoryRepository.Default → DatabaseLive
-│   ├── RentalService.Default
-│   │   ├── RentalRepository.Default → DatabaseLive
-│   │   └── InventoryRepository.Default → DatabaseLive
-│   ├── PaymentService.Default
-│   │   └── PaymentRepository.Default → DatabaseLive
-│   ├── CustomerAuthService.Default → DatabaseLive
-│   └── StaffAuthService.Default → DatabaseLive
-├── ServerLive (BunHttpServer)
-├── TracingLive (OpenTelemetry + Jaeger)
-└── LoggerLive
+app (main.ts)
+├── LoggerLive / TracingLive (最外层提供，启动日志、服务器和所有请求共用)
+└── HttpLive = HttpRouter.serve(...)
+    ├── ApiLive = HttpApiBuilder.layer(Api)
+    │   ├── HealthHandler
+    │   ├── FilmHandler
+    │   ├── InventoryHandler
+    │   ├── RentalHandler
+    │   ├── PaymentHandler
+    │   ├── CustomerAuthHandler
+    │   └── StaffAuthHandler
+    ├── DocsLive (Swagger UI at /docs)
+    ├── CorsLive (HttpRouter.cors, 全局)
+    ├── RateLimiterLive (HttpRouter.middleware, 全局, 按 IP)
+    ├── ServicesLive
+    │   ├── FilmService.layer → FilmRepository.layer
+    │   ├── InventoryService.layer → InventoryRepository.layer
+    │   ├── RentalService.layer → RentalRepository.layer + InventoryRepository.layer
+    │   ├── PaymentService.layer → PaymentRepository.layer
+    │   ├── CustomerAuthService.layer
+    │   ├── StaffAuthService.layer
+    │   └── (全部) → DatabaseLive
+    └── ServerLive (BunHttpServer)
 
 DatabaseLive: PgClient 连接池配置
 ```
 
-### Effect-ts 模式
+### Effect-ts 模式 (Effect 4)
 
-**Service 定义**：使用 `Effect.Service` 模式定义服务
+v4 中 `@effect/platform` 和 `@effect/sql` 已并入 `effect`：HTTP 相关从 `effect/http`、`effect/http-api` 导入，SQL 从 `effect/sql` 导入。
+
+**Service 定义**：使用 `Context.Service` + `make`，并手动定义 `layer`（v4 不再自动生成 `.Default`，也没有 `dependencies` 选项）
 ```typescript
-export class FilmService extends Effect.Service<FilmService>()("FilmService", {
-  effect: Effect.gen(function* () {
+export class FilmService extends Context.Service<FilmService>()("FilmService", {
+  make: Effect.gen(function* () {
     const repo = yield* FilmRepository;
     return {
-      getFilmById: (filmId: number) => Effect.gen(function* () {
+      getFilmById: Effect.fn("FilmService.getFilmById")(function* (filmId: FilmId) {
         yield* Effect.logDebug(`Getting film by ID: ${filmId}`);
         return yield* repo.findById(filmId);
       }),
-      searchFilms: (params: FilmSearchParams) => repo.search(params),
       // ...
     };
   }),
-  dependencies: [FilmRepository.Default],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make).pipe(
+    Layer.provide(FilmRepository.layer)
+  );
+}
 ```
 
-**错误类型**：使用 `Schema.TaggedError` 定义 API 错误
+**错误类型**：使用 `Schema.TaggedError`，HTTP 状态码写在第三个参数
 ```typescript
-// API 错误 (带 HTTP 状态码和描述)
 export class FilmNotFoundError extends Schema.TaggedError<FilmNotFoundError>()(
   "FilmNotFoundError",
-  {
-    filmId: Schema.Number,
-    message: Schema.String,
-  },
-  HttpApiSchema.annotations({
-    status: 404,
-    description: "Film not found",
-  }),
-) {}
-
-// 认证错误
-export class InvalidCredentialsError extends Schema.TaggedError<InvalidCredentialsError>()(
-  "InvalidCredentialsError",
-  { message: Schema.String },
-  HttpApiSchema.annotations({ status: 401 }),
+  { message: Schema.String, filmId: Schema.Number },
+  { httpApiStatus: 404 }
 ) {}
 ```
 
-**API 定义**：使用 `HttpApiGroup` + `HttpApiEndpoint`
+**API 定义**：`HttpApiEndpoint` 用选项对象声明 `params` / `query` / `payload` / `success` / `error`
 ```typescript
-export class FilmApi extends HttpApiGroup.make("films")
-  .add(
-    HttpApiEndpoint.get("getFilmById", "/films/:id")
-      .setPath(Schema.Struct({ id: Schema.NumberFromString }))
-      .addSuccess(Film)
-      .addError(FilmNotFoundError)
-  )
-  .add(
-    HttpApiEndpoint.get("searchFilms", "/films")
-      .setUrlParams(FilmSearchParams)
-      .addSuccess(FilmListResponse)
-  ) {}
+export class FilmApi extends HttpApiGroup.make("films").add(
+  HttpApiEndpoint.get("getById", "/films/:filmId", {
+    // 路径参数用 FiniteFromString：v4 的 NumberFromString 会把 "abc" 解码成 NaN
+    params: { filmId: Schema.FiniteFromString },
+    success: FilmDetail,
+    // 每个端点必须声明 handler 可能返回的所有错误，未声明的错误会变成空 body 的 500
+    error: [FilmNotFoundError, DatabaseQueryError],
+  }).annotate(OpenApi.Summary, "Get film details"),
+  HttpApiEndpoint.get("list", "/films", {
+    query: { search: Schema.optional(Schema.String) /* ... */ },
+    success: PaginatedFilms,
+    error: DatabaseQueryError,
+  })
+) {}
 ```
 
-**Handler 实现**：使用 `HttpApiBuilder.group`
+**Schema 注意事项**：
+- 日期字段用 `Schema.DateFromString`（v4 的 `Schema.Date` 不再从字符串解码）
+- 带默认值的可选字段（v3 的 `optionalWith(X, { default })`）同时设置解码默认值和构造默认值：
+  ```typescript
+  staffId: StaffId.pipe(
+    Schema.withDecodingDefaultType(Effect.succeed(1 as StaffId)),
+    Schema.withConstructorDefault(Effect.succeed(1 as StaffId)),
+  ),
+  ```
+- 请求校验失败时返回 400，body 为空
+
+**Handler 实现**：使用 `HttpApiBuilder.group`，请求字段为 `params` / `query` / `payload`
 ```typescript
 export const FilmHandler = HttpApiBuilder.group(Api, "films", (handlers) =>
-  Effect.gen(function* () {
-    const filmService = yield* FilmService;
-    return handlers
-      .handle("getFilmById", ({ path }) =>
-        Effect.gen(function* () {
-          const film = yield* filmService.getFilmById(path.id);
-          if (!film) {
-            return yield* new FilmNotFoundError({
-              filmId: path.id,
-              message: `Film ${path.id} not found`,
-            });
-          }
-          return film;
-        })
-      )
-      .handle("searchFilms", ({ urlParams }) =>
-        filmService.searchFilms(urlParams)
-      );
-  })
+  handlers
+    .handle("getById", ({ params }) =>
+      Effect.gen(function* () {
+        const filmService = yield* FilmService;
+        const film = yield* filmService.getFilmById(params.filmId as FilmId);
+        if (!film) {
+          return yield* Effect.fail(
+            new FilmNotFoundError({ message: "Film not found", filmId: params.filmId })
+          );
+        }
+        return film;
+      })
+    )
+    .handle("list", ({ query }) => /* ... */)
 );
 ```
 
-**中间件**：JWT 认证中间件
+**认证**：`middleware/auth.ts` 提供普通的 Effect，在 handler 内调用
 ```typescript
-import { customerAuth, staffAuth } from "../middleware/auth.js";
+import { requireAuth, requireCustomer, requireStaff } from "../middleware/auth.js";
 
-// 在 Handler 中使用
-export const CustomerAuthHandler = HttpApiBuilder.group(Api, "customer", (handlers) =>
+.handle("create", ({ payload }) =>
   Effect.gen(function* () {
-    const authService = yield* CustomerAuthService;
-    return handlers
-      .handle("login", ({ payload }) => authService.login(payload))
-      .handle("register", ({ payload }) => authService.register(payload))
-      .handle("getProfile", ({ path }) =>
-        customerAuth(authService.getProfile(path.id))  // 需要认证
-      );
+    yield* requireStaff;              // 需要员工 token
+    // const user = yield* requireAuth; // 任意已登录用户
+    // ...
   })
-);
+)
 ```
 
 ### 测试模式
 
 使用 `bun:test` + `Layer.succeed` 模拟依赖：
 ```typescript
-import { describe, test, expect } from "bun:test";
+import { describe, it, expect } from "bun:test";
 import { Effect, Layer } from "effect";
-import { FilmService } from "../service/FilmService.js";
-import { FilmRepository } from "../repository/FilmRepository.js";
+import { PaymentService } from "../../src/service/PaymentService.js";
+import { PaymentRepository } from "../../src/repository/PaymentRepository.js";
 
-describe("FilmService", () => {
-  test("should get film by id", async () => {
-    const mockFilm = { filmId: 1, title: "Test Film", ... };
-
-    const MockRepo = Layer.succeed(FilmRepository, FilmRepository.of({
-      _tag: "FilmRepository",
-      findById: (id: number) => Effect.succeed(mockFilm),
-      search: () => Effect.succeed({ items: [mockFilm], total: 1 }),
-      // ...
-    }));
-
-    const program = Effect.gen(function* () {
-      const service = yield* FilmService;
-      return yield* service.getFilmById(1);
-    });
-
-    const result = await program.pipe(
-      Effect.provide(FilmService.Default),
-      Effect.provide(MockRepo),
-      Effect.runPromise
-    );
-
-    expect(result).toEqual(mockFilm);
-  });
+const MockPaymentRepo = Layer.succeed(PaymentRepository, {
+  createPayment: () => Effect.succeed(mockPaymentCreated),
+  getCustomerBalance: () => Effect.succeed(mockCustomerBalance),
+  getCustomerPayments: () => Effect.succeed([]),
+  findById: () => Effect.succeed(undefined),
 });
+
+// PaymentService.layer 已经提供了真实的 PaymentRepository.layer，
+// 所以测试中用 PaymentService.make 和 mock 仓储重新组装
+const TestPaymentService = Layer.effect(PaymentService, PaymentService.make).pipe(
+  Layer.provide(MockPaymentRepo)
+);
+
+const result = await Effect.runPromise(
+  Effect.gen(function* () {
+    const service = yield* PaymentService;
+    return yield* service.getCustomerBalance(1 as CustomerId);
+  }).pipe(Effect.provide(TestPaymentService))
+);
 ```
+
+集成测试使用真实数据库：`Effect.provide(FilmRepository.layer)` + `Effect.provide(TestDatabaseLayer)`。
 
 ### 数据库迁移
 
 SQL 迁移文件放在根目录 `migrations/` 目录，按文件名排序执行。运行 `bun migrate` 应用迁移。
+
+Effect 4 的 Postgres 驱动只支持扩展查询协议，一次只能执行一条语句，因此 `migrate.ts` 会先用 `splitSqlStatements` 把文件拆成单条语句（能识别引号、`$$` 函数体和注释），再在同一个事务里逐条执行。
 
 **迁移文件命名规范**：`{序号}_{描述}.sql`
 - `001_initial_schema.sql` - 基础表结构
@@ -331,7 +325,7 @@ SQL 迁移文件放在根目录 `migrations/` 目录，按文件名排序执行�
 
 ### Logging
 - `LOG_LEVEL`: 日志级别
-  - 可选值: `trace` | `debug` | `info` | `warning` | `error` | `fatal` | `none`
+  - 可选值: `trace` | `debug` | `info` | `warning` (或 `warn`) | `error` | `fatal` | `none`
   - 默认: `info`
 
 ### OpenTelemetry
@@ -339,7 +333,7 @@ SQL 迁移文件放在根目录 `migrations/` 目录，按文件名排序执行�
 
 ## API 端点
 
-参见 `main.ts:36-43` 中的端点列表或访问 http://localhost:8080/docs 查看 Swagger 文档。
+参见 `main.ts` 中 `printStartupInfo` 的端点列表或访问 http://localhost:8080/docs 查看 Swagger 文档。
 
 **核心端点**：
 - Health: `GET /health`, `GET /ready`
@@ -366,7 +360,7 @@ SQL 迁移文件放在根目录 `migrations/` 目录，按文件名排序执行�
    - 更新 `config/Services.ts` 注册新服务
    - 更新 `handler/index.ts` 和 `api/index.ts` 导出新模块
 
-2. **数据库查询**使用 `@effect/sql` 的 `SqlClient`：
+2. **数据库查询**使用 `effect/sql` 的 `SqlClient`：
    ```typescript
    const sql = yield* SqlClient.SqlClient;
    const result = yield* sql`SELECT * FROM films WHERE film_id = ${filmId}`;

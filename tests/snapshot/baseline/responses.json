@@ -720,8 +720,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Failed to fetch films",
-      "_tag": "DatabaseQueryError"
+      "_tag": "DatabaseQueryError",
+      "message": "Failed to fetch films"
     }
   },
   "films limit=0": {
@@ -737,7 +737,7 @@
       "total": 1000,
       "page": 1,
       "limit": 0,
-      "totalPages": null
+      "totalPages": "Infinity"
     }
   },
   "film 1": {
@@ -778,44 +778,32 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "FilmNotFoundError",
       "message": "Film not found",
-      "filmId": 99999,
-      "_tag": "FilmNotFoundError"
+      "filmId": 99999
     }
   },
   "film abc": {
     "request": "GET /films/abc",
     "status": 400,
     "headers": {
-      "content-type": "application/json",
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true"
     },
-    "body": {
-      "issues": [
-        {
-          "_tag": "Transformation",
-          "path": [
-            "filmId"
-          ],
-          "message": "Unable to decode \"abc\" into a number"
-        }
-      ],
-      "message": "{ readonly filmId: NumberFromString }\n└─ [\"filmId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
-      "_tag": "HttpApiDecodeError"
-    }
+    "body": null
   },
   "film 1.5": {
     "request": "GET /films/1.5",
-    "status": 500,
+    "status": 404,
     "headers": {
       "content-type": "application/json",
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Database error",
-      "_tag": "DatabaseQueryError"
+      "_tag": "FilmNotFoundError",
+      "message": "Film not found",
+      "filmId": 1.5
     }
   },
   "film -1": {
@@ -827,9 +815,9 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "FilmNotFoundError",
       "message": "Film not found",
-      "filmId": -1,
-      "_tag": "FilmNotFoundError"
+      "filmId": -1
     }
   },
   "film empty-ish 0": {
@@ -841,9 +829,9 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "FilmNotFoundError",
       "message": "Film not found",
-      "filmId": 0,
-      "_tag": "FilmNotFoundError"
+      "filmId": 0
     }
   },
   "film 1 actors": {
@@ -921,23 +909,10 @@
     "request": "GET /films/abc/actors",
     "status": 400,
     "headers": {
-      "content-type": "application/json",
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true"
     },
-    "body": {
-      "issues": [
-        {
-          "_tag": "Transformation",
-          "path": [
-            "filmId"
-          ],
-          "message": "Unable to decode \"abc\" into a number"
-        }
-      ],
-      "message": "{ readonly filmId: NumberFromString }\n└─ [\"filmId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
-      "_tag": "HttpApiDecodeError"
-    }
+    "body": null
   },
   "film 99999 actors": {
     "request": "GET /films/99999/actors",
@@ -1090,32 +1065,19 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "StoreNotFoundError",
       "message": "Store not found",
-      "storeId": 999,
-      "_tag": "StoreNotFoundError"
+      "storeId": 999
     }
   },
   "store abc": {
     "request": "GET /stores/abc",
     "status": 400,
     "headers": {
-      "content-type": "application/json",
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true"
     },
-    "body": {
-      "issues": [
-        {
-          "_tag": "Transformation",
-          "path": [
-            "storeId"
-          ],
-          "message": "Unable to decode \"abc\" into a number"
-        }
-      ],
-      "message": "{ readonly storeId: NumberFromString }\n└─ [\"storeId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
-      "_tag": "HttpApiDecodeError"
-    }
+    "body": null
   },
   "film 1 availability": {
     "request": "GET /films/1/availability",
@@ -1146,23 +1108,10 @@
     "request": "GET /films/abc/availability",
     "status": 400,
     "headers": {
-      "content-type": "application/json",
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true"
     },
-    "body": {
-      "issues": [
-        {
-          "_tag": "Transformation",
-          "path": [
-            "filmId"
-          ],
-          "message": "Unable to decode \"abc\" into a number"
-        }
-      ],
-      "message": "{ readonly filmId: NumberFromString }\n└─ [\"filmId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
-      "_tag": "HttpApiDecodeError"
-    }
+    "body": null
   },
   "store 1 film 1 availability": {
     "request": "GET /stores/1/films/1/availability",
@@ -1200,23 +1149,10 @@
     "request": "GET /stores/1/films/abc/availability",
     "status": 400,
     "headers": {
-      "content-type": "application/json",
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true"
     },
-    "body": {
-      "issues": [
-        {
-          "_tag": "Transformation",
-          "path": [
-            "filmId"
-          ],
-          "message": "Unable to decode \"abc\" into a number"
-        }
-      ],
-      "message": "{ readonly storeId: NumberFromString; readonly filmId: NumberFromString }\n└─ [\"filmId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
-      "_tag": "HttpApiDecodeError"
-    }
+    "body": null
   },
   "rental 76 no token": {
     "request": "GET /rentals/76",
@@ -1227,9 +1163,9 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "RentalNotFoundError",
       "message": "Rental not found",
-      "rentalId": 76,
-      "_tag": "RentalNotFoundError"
+      "rentalId": 76
     }
   },
   "rental 76 bad token": {
@@ -1241,9 +1177,9 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "RentalNotFoundError",
       "message": "Rental not found",
-      "rentalId": 76,
-      "_tag": "RentalNotFoundError"
+      "rentalId": 76
     }
   },
   "rental 76 customer": {
@@ -1293,32 +1229,19 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "RentalNotFoundError",
       "message": "Rental not found",
-      "rentalId": 99999999,
-      "_tag": "RentalNotFoundError"
+      "rentalId": 99999999
     }
   },
   "rental abc staff": {
     "request": "GET /rentals/abc",
     "status": 400,
     "headers": {
-      "content-type": "application/json",
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true"
     },
-    "body": {
-      "issues": [
-        {
-          "_tag": "Transformation",
-          "path": [
-            "rentalId"
-          ],
-          "message": "Unable to decode \"abc\" into a number"
-        }
-      ],
-      "message": "{ readonly rentalId: NumberFromString }\n└─ [\"rentalId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
-      "_tag": "HttpApiDecodeError"
-    }
+    "body": null
   },
   "customer 1 rentals no token": {
     "request": "GET /customers/1/rentals",
@@ -1329,8 +1252,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Authentication required",
-      "_tag": "RentalError"
+      "_tag": "RentalError",
+      "message": "Authentication required"
     }
   },
   "customer 1 rentals own": {
@@ -1553,8 +1476,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Access denied",
-      "_tag": "RentalError"
+      "_tag": "RentalError",
+      "message": "Access denied"
     }
   },
   "customer 1 rentals staff": {
@@ -1803,8 +1726,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Access denied",
-      "_tag": "RentalError"
+      "_tag": "RentalError",
+      "message": "Access denied"
     }
   },
   "customer 99999 info staff": {
@@ -1816,9 +1739,9 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "CustomerNotFoundError",
       "message": "Customer not found",
-      "customerId": 99999,
-      "_tag": "CustomerNotFoundError"
+      "customerId": 99999
     }
   },
   "payment 16677 no token": {
@@ -1830,8 +1753,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Authentication required",
-      "_tag": "PaymentError"
+      "_tag": "PaymentError",
+      "message": "Authentication required"
     }
   },
   "payment 16677 staff": {
@@ -1861,9 +1784,9 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "PaymentNotFoundError",
       "message": "Payment not found",
-      "paymentId": 99999999,
-      "_tag": "PaymentNotFoundError"
+      "paymentId": 99999999
     }
   },
   "customer 1 payments own": {
@@ -2066,8 +1989,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Access denied",
-      "_tag": "PaymentError"
+      "_tag": "PaymentError",
+      "message": "Access denied"
     }
   },
   "customer 1 balance own": {
@@ -2137,8 +2060,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Invalid email or password",
-      "_tag": "CustomerAuthError"
+      "_tag": "CustomerAuthError",
+      "message": "Invalid email or password"
     }
   },
   "customer login unknown email": {
@@ -2150,31 +2073,18 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Invalid email or password",
-      "_tag": "CustomerAuthError"
+      "_tag": "CustomerAuthError",
+      "message": "Invalid email or password"
     }
   },
   "customer login missing field": {
     "request": "POST /customer/login",
     "status": 400,
     "headers": {
-      "content-type": "application/json",
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true"
     },
-    "body": {
-      "issues": [
-        {
-          "_tag": "Missing",
-          "path": [
-            "password"
-          ],
-          "message": "is missing"
-        }
-      ],
-      "message": "(CustomerLoginInput (Encoded side) <-> CustomerLoginInput)\n└─ Encoded side transformation failure\n   └─ CustomerLoginInput (Encoded side)\n      └─ [\"password\"]\n         └─ is missing",
-      "_tag": "HttpApiDecodeError"
-    }
+    "body": null
   },
   "customer login malformed json": {
     "request": "POST /customer/login",
@@ -2211,8 +2121,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Access denied",
-      "_tag": "CustomerAuthError"
+      "_tag": "CustomerAuthError",
+      "message": "Access denied"
     }
   },
   "customer profile no token": {
@@ -2224,8 +2134,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Authentication required",
-      "_tag": "CustomerAuthError"
+      "_tag": "CustomerAuthError",
+      "message": "Authentication required"
     }
   },
   "customer profile staff token": {
@@ -2237,8 +2147,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Failed to get profile",
-      "_tag": "CustomerAuthError"
+      "_tag": "CustomerAuthError",
+      "message": "Failed to get profile"
     }
   },
   "customer password wrong current": {
@@ -2250,8 +2160,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Current password is incorrect",
-      "_tag": "CustomerAuthError"
+      "_tag": "CustomerAuthError",
+      "message": "Current password is incorrect"
     }
   },
   "staff login ok": {
@@ -2280,8 +2190,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Invalid username or password",
-      "_tag": "StaffAuthError"
+      "_tag": "StaffAuthError",
+      "message": "Invalid username or password"
     }
   },
   "staff login unknown": {
@@ -2293,8 +2203,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Invalid username or password",
-      "_tag": "StaffAuthError"
+      "_tag": "StaffAuthError",
+      "message": "Invalid username or password"
     }
   },
   "staff list no token": {
@@ -2306,8 +2216,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Authentication required",
-      "_tag": "StaffAuthError"
+      "_tag": "StaffAuthError",
+      "message": "Authentication required"
     }
   },
   "staff list customer token": {
@@ -2319,8 +2229,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Failed to list staff",
-      "_tag": "StaffAuthError"
+      "_tag": "StaffAuthError",
+      "message": "Failed to list staff"
     }
   },
   "staff list staff": {
@@ -2379,8 +2289,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Staff not found",
-      "_tag": "StaffAuthError"
+      "_tag": "StaffAuthError",
+      "message": "Staff not found"
     }
   },
   "staff password other staff": {
@@ -2392,8 +2302,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Failed to update password",
-      "_tag": "StaffAuthError"
+      "_tag": "StaffAuthError",
+      "message": "Failed to update password"
     }
   },
   "staff password wrong current": {
@@ -2405,8 +2315,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Current password is incorrect",
-      "_tag": "StaffAuthError"
+      "_tag": "StaffAuthError",
+      "message": "Current password is incorrect"
     }
   },
   "cors preflight allowed origin": {
@@ -2453,8 +2363,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Staff authentication required",
-      "_tag": "RentalError"
+      "_tag": "RentalError",
+      "message": "Staff authentication required"
     }
   },
   "create rental customer token": {
@@ -2466,31 +2376,18 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Staff authentication required",
-      "_tag": "RentalError"
+      "_tag": "RentalError",
+      "message": "Staff authentication required"
     }
   },
   "create rental missing field": {
     "request": "POST /rentals",
     "status": 400,
     "headers": {
-      "content-type": "application/json",
       "access-control-allow-origin": "http://localhost:3000",
       "access-control-allow-credentials": "true"
     },
-    "body": {
-      "issues": [
-        {
-          "_tag": "Missing",
-          "path": [
-            "customerId"
-          ],
-          "message": "is missing"
-        }
-      ],
-      "message": "(CreateRentalInput (Encoded side) <-> CreateRentalInput)\n└─ Encoded side transformation failure\n   └─ CreateRentalInput (Encoded side)\n      └─ Encoded side transformation failure\n         └─ Struct (Encoded side)\n            └─ [\"customerId\"]\n               └─ is missing",
-      "_tag": "HttpApiDecodeError"
-    }
+    "body": null
   },
   "create rental unknown customer": {
     "request": "POST /rentals",
@@ -2501,9 +2398,9 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "CustomerNotFoundError",
       "message": "Customer 99999 not found",
-      "customerId": 99999,
-      "_tag": "CustomerNotFoundError"
+      "customerId": 99999
     }
   },
   "create rental film without copies": {
@@ -2515,10 +2412,10 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "NoInventoryError",
       "message": "No available inventory for film 2 at store 1",
       "filmId": 2,
-      "storeId": 1,
-      "_tag": "NoInventoryError"
+      "storeId": 1
     }
   },
   "create rental ok": {
@@ -2562,8 +2459,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "<message>",
-      "_tag": "RentalError"
+      "_tag": "RentalError",
+      "message": "<message>"
     }
   },
   "return rental unknown": {
@@ -2575,9 +2472,9 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "RentalNotFoundError",
       "message": "Rental 99999999 not found",
-      "rentalId": 99999999,
-      "_tag": "RentalNotFoundError"
+      "rentalId": 99999999
     }
   },
   "create payment zero": {
@@ -2589,8 +2486,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Invalid payment amount: 0",
-      "_tag": "InvalidPaymentError"
+      "_tag": "InvalidPaymentError",
+      "message": "Invalid payment amount: 0"
     }
   },
   "create payment customer token": {
@@ -2602,8 +2499,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Staff authentication required",
-      "_tag": "PaymentError"
+      "_tag": "PaymentError",
+      "message": "Staff authentication required"
     }
   },
   "create payment ok": {
@@ -2615,8 +2512,8 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
-      "message": "Failed to execute statement",
-      "_tag": "PaymentError"
+      "_tag": "PaymentError",
+      "message": "PgConnection: Query failed"
     }
   },
   "register ok": {
@@ -2644,9 +2541,9 @@
       "access-control-allow-credentials": "true"
     },
     "body": {
+      "_tag": "CustomerEmailExistsError",
       "message": "Email already registered",
-      "email": "snapshot@example.com",
-      "_tag": "CustomerEmailExistsError"
+      "email": "snapshot@example.com"
     }
   }
 }
