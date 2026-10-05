@@ -1,0 +1,2917 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DVD Rental API",
+    "version": "1.0.0",
+    "description": "A DVD rental service built with Effect-ts, PostgreSQL, and JWT authentication"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "operationId": "health.healthCheck",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ok"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Health check endpoint"
+      }
+    },
+    "/ready": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "operationId": "health.readiness",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ready"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Readiness check endpoint"
+      }
+    },
+    "/films": {
+      "get": {
+        "tags": [
+          "films"
+        ],
+        "operationId": "films.list",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "rating",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "PaginatedFilms",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedFilms"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "DatabaseQueryError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatabaseQueryError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a paginated list of films. Supports filtering by category, rating, and search term.",
+        "summary": "List all films"
+      }
+    },
+    "/films/{filmId}": {
+      "get": {
+        "tags": [
+          "films"
+        ],
+        "operationId": "films.getById",
+        "parameters": [
+          {
+            "name": "filmId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "FilmDetail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilmDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "FilmNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilmNotFoundError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "DatabaseQueryError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatabaseQueryError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get detailed information about a specific film including language and category.",
+        "summary": "Get film details"
+      }
+    },
+    "/films/{filmId}/actors": {
+      "get": {
+        "tags": [
+          "films"
+        ],
+        "operationId": "films.getActors",
+        "parameters": [
+          {
+            "name": "filmId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActorWithName"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "FilmNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilmNotFoundError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "DatabaseQueryError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatabaseQueryError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get the list of actors appearing in a specific film.",
+        "summary": "Get film actors"
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "films"
+        ],
+        "operationId": "films.categories",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "DatabaseQueryError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatabaseQueryError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a list of all film categories.",
+        "summary": "List all categories"
+      }
+    },
+    "/stores": {
+      "get": {
+        "tags": [
+          "inventory"
+        ],
+        "operationId": "inventory.stores",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoreWithAddress"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InventoryError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a list of all rental stores with address information.",
+        "summary": "List all stores"
+      }
+    },
+    "/stores/{storeId}": {
+      "get": {
+        "tags": [
+          "inventory"
+        ],
+        "operationId": "inventory.storeById",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "StoreWithAddress",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreWithAddress"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "StoreNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreNotFoundError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InventoryError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get detailed information about a specific store.",
+        "summary": "Get store details"
+      }
+    },
+    "/films/{filmId}/availability": {
+      "get": {
+        "tags": [
+          "inventory"
+        ],
+        "operationId": "inventory.filmAvailability",
+        "parameters": [
+          {
+            "name": "filmId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FilmAvailability"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InventoryError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Check availability of a film across all stores.",
+        "summary": "Check film availability"
+      }
+    },
+    "/stores/{storeId}/films/{filmId}/availability": {
+      "get": {
+        "tags": [
+          "inventory"
+        ],
+        "operationId": "inventory.filmAvailabilityAtStore",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          },
+          {
+            "name": "filmId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "FilmAvailability",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilmAvailability"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "StoreNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreNotFoundError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InventoryError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Check availability of a specific film at a specific store.",
+        "summary": "Check film availability at store"
+      }
+    },
+    "/rentals": {
+      "post": {
+        "tags": [
+          "rentals"
+        ],
+        "operationId": "rentals.create",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "RentalCreated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalCreated"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CustomerNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerNotFoundError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "NoInventoryError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoInventoryError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "RentalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Rent a film to a customer. Checks inventory availability and customer status. Requires staff authentication.",
+        "summary": "Create a rental",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "filmId",
+                  "customerId",
+                  "storeId"
+                ],
+                "properties": {
+                  "filmId": {
+                    "type": "number"
+                  },
+                  "customerId": {
+                    "type": "number"
+                  },
+                  "storeId": {
+                    "type": "number"
+                  },
+                  "staffId": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/rentals/{rentalId}/return": {
+      "put": {
+        "tags": [
+          "rentals"
+        ],
+        "operationId": "rentals.return",
+        "parameters": [
+          {
+            "name": "rentalId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "RentalReturned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalReturned"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RentalNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalNotFoundError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "RentalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Mark a rental as returned. Calculates late fees if applicable. Requires staff authentication.",
+        "summary": "Return a rental"
+      }
+    },
+    "/rentals/{rentalId}": {
+      "get": {
+        "tags": [
+          "rentals"
+        ],
+        "operationId": "rentals.getById",
+        "parameters": [
+          {
+            "name": "rentalId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "RentalDetail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RentalNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalNotFoundError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "RentalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get detailed information about a specific rental. Requires authentication.",
+        "summary": "Get rental details"
+      }
+    },
+    "/customers/{customerId}/rentals": {
+      "get": {
+        "tags": [
+          "rentals"
+        ],
+        "operationId": "rentals.customerRentals",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RentalDetail"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CustomerNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerNotFoundError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "RentalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get rental history for a specific customer. Requires authentication.",
+        "summary": "Get customer rental history"
+      }
+    },
+    "/customers/{customerId}": {
+      "get": {
+        "tags": [
+          "rentals"
+        ],
+        "operationId": "rentals.customerInfo",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CustomerInfo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CustomerNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerNotFoundError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "RentalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get customer information by ID. Requires authentication.",
+        "summary": "Get customer info"
+      }
+    },
+    "/payments": {
+      "post": {
+        "tags": [
+          "payments"
+        ],
+        "operationId": "payments.create",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "PaymentCreated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentCreated"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/HttpApiDecodeError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/InvalidPaymentError"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "PaymentError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Record a payment for a rental.",
+        "summary": "Create a payment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "customerId",
+                  "rentalId",
+                  "amount"
+                ],
+                "properties": {
+                  "customerId": {
+                    "type": "number"
+                  },
+                  "rentalId": {
+                    "type": "number"
+                  },
+                  "amount": {
+                    "type": "number"
+                  },
+                  "staffId": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/payments/{paymentId}": {
+      "get": {
+        "tags": [
+          "payments"
+        ],
+        "operationId": "payments.getById",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "PaymentDetail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PaymentNotFoundError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentNotFoundError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get detailed information about a specific payment.",
+        "summary": "Get payment details"
+      }
+    },
+    "/customers/{customerId}/payments": {
+      "get": {
+        "tags": [
+          "payments"
+        ],
+        "operationId": "payments.customerPayments",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PaymentDetail"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "PaymentError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get payment history for a specific customer.",
+        "summary": "Get customer payment history"
+      }
+    },
+    "/customers/{customerId}/balance": {
+      "get": {
+        "tags": [
+          "payments"
+        ],
+        "operationId": "payments.customerBalance",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CustomerBalance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerBalance"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "PaymentError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get outstanding balance for a customer.",
+        "summary": "Get customer balance"
+      }
+    },
+    "/customer/login": {
+      "post": {
+        "tags": [
+          "customer-auth"
+        ],
+        "operationId": "customer-auth.login",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CustomerAuthResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "CustomerAuthError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAuthError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Authenticate a customer and receive a JWT token.",
+        "summary": "Customer login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerLoginInput"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/customer/register": {
+      "post": {
+        "tags": [
+          "customer-auth"
+        ],
+        "operationId": "customer-auth.register",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CustomerAuthResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "CustomerAuthError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAuthError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CustomerEmailExistsError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerEmailExistsError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Register a new customer account.",
+        "summary": "Customer registration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password",
+                  "firstName",
+                  "lastName"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "storeId": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/customer/profile/{customerId}": {
+      "get": {
+        "tags": [
+          "customer-auth"
+        ],
+        "operationId": "customer-auth.profile",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CustomerProfileResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerProfileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "CustomerAuthError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAuthError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get customer profile information.",
+        "summary": "Get customer profile"
+      }
+    },
+    "/customer/password/{customerId}": {
+      "put": {
+        "tags": [
+          "customer-auth"
+        ],
+        "operationId": "customer-auth.updatePassword",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "CustomerAuthError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAuthError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Update customer password.",
+        "summary": "Update password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordInput"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/staff/login": {
+      "post": {
+        "tags": [
+          "staff-auth"
+        ],
+        "operationId": "staff-auth.login",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "StaffAuthResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffAuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "StaffAuthError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffAuthError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Authenticate a staff member and receive a JWT token.",
+        "summary": "Staff login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaffLoginInput"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/staff/profile/{staffId}": {
+      "get": {
+        "tags": [
+          "staff-auth"
+        ],
+        "operationId": "staff-auth.profile",
+        "parameters": [
+          {
+            "name": "staffId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "StaffProfileResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffProfileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "StaffAuthError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffAuthError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get staff member profile information.",
+        "summary": "Get staff profile"
+      }
+    },
+    "/staff/password/{staffId}": {
+      "put": {
+        "tags": [
+          "staff-auth"
+        ],
+        "operationId": "staff-auth.updatePassword",
+        "parameters": [
+          {
+            "name": "staffId",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/NumberFromString"
+            },
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "StaffAuthError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffAuthError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Update staff member password.",
+        "summary": "Update staff password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaffUpdatePasswordInput"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/staff": {
+      "get": {
+        "tags": [
+          "staff-auth"
+        ],
+        "operationId": "staff-auth.list",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StaffProfileResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request did not match the expected schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpApiDecodeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "StaffAuthError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffAuthError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get list of all staff members.",
+        "summary": "List staff members"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HttpApiDecodeError": {
+        "type": "object",
+        "required": [
+          "issues",
+          "message",
+          "_tag"
+        ],
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "HttpApiDecodeError"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "The request did not match the expected schema"
+      },
+      "Issue": {
+        "type": "object",
+        "required": [
+          "_tag",
+          "path",
+          "message"
+        ],
+        "properties": {
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "Pointer",
+              "Unexpected",
+              "Missing",
+              "Composite",
+              "Refinement",
+              "Transformation",
+              "Type",
+              "Forbidden"
+            ],
+            "description": "The tag identifying the type of parse issue"
+          },
+          "path": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyKey"
+            },
+            "description": "The path to the property where the issue occurred"
+          },
+          "message": {
+            "type": "string",
+            "description": "A descriptive message explaining the issue"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents an error encountered while parsing a value to match the schema"
+      },
+      "PropertyKey": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "required": [
+              "_tag",
+              "key"
+            ],
+            "properties": {
+              "_tag": {
+                "type": "string",
+                "enum": [
+                  "symbol"
+                ]
+              },
+              "key": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "description": "an object to be decoded into a globally shared symbol"
+          }
+        ]
+      },
+      "PaginatedFilms": {
+        "type": "object",
+        "required": [
+          "data",
+          "total",
+          "page",
+          "limit",
+          "totalPages"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Film"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Film": {
+        "type": "object",
+        "required": [
+          "filmId",
+          "title",
+          "description",
+          "releaseYear",
+          "languageId",
+          "originalLanguageId",
+          "rentalDuration",
+          "rentalRate",
+          "length",
+          "replacementCost",
+          "rating",
+          "specialFeatures",
+          "lastUpdate"
+        ],
+        "properties": {
+          "filmId": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "releaseYear": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "languageId": {
+            "type": "number"
+          },
+          "originalLanguageId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rentalDuration": {
+            "type": "number"
+          },
+          "rentalRate": {
+            "type": "number"
+          },
+          "length": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "replacementCost": {
+            "type": "number"
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "G",
+                  "PG",
+                  "PG-13",
+                  "R",
+                  "NC-17"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "specialFeatures": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastUpdate": {
+            "$ref": "#/components/schemas/Date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Date": {
+        "type": "string",
+        "description": "a string to be decoded into a Date"
+      },
+      "DatabaseQueryError": {
+        "type": "object",
+        "required": [
+          "message",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "DatabaseQueryError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "NumberFromString": {
+        "type": "string",
+        "description": "a string to be decoded into a number"
+      },
+      "FilmDetail": {
+        "type": "object",
+        "required": [
+          "filmId",
+          "title",
+          "description",
+          "releaseYear",
+          "languageId",
+          "originalLanguageId",
+          "rentalDuration",
+          "rentalRate",
+          "length",
+          "replacementCost",
+          "rating",
+          "specialFeatures",
+          "lastUpdate",
+          "languageName",
+          "categoryName"
+        ],
+        "properties": {
+          "filmId": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "releaseYear": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "languageId": {
+            "type": "number"
+          },
+          "originalLanguageId": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rentalDuration": {
+            "type": "number"
+          },
+          "rentalRate": {
+            "type": "number"
+          },
+          "length": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "replacementCost": {
+            "type": "number"
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "G",
+                  "PG",
+                  "PG-13",
+                  "R",
+                  "NC-17"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "specialFeatures": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastUpdate": {
+            "$ref": "#/components/schemas/Date"
+          },
+          "languageName": {
+            "type": "string"
+          },
+          "categoryName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "FilmNotFoundError": {
+        "type": "object",
+        "required": [
+          "message",
+          "filmId",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "filmId": {
+            "type": "number"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "FilmNotFoundError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "ActorWithName": {
+        "type": "object",
+        "required": [
+          "actorId",
+          "firstName",
+          "lastName",
+          "fullName"
+        ],
+        "properties": {
+          "actorId": {
+            "type": "number"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Category": {
+        "type": "object",
+        "required": [
+          "categoryId",
+          "name",
+          "lastUpdate"
+        ],
+        "properties": {
+          "categoryId": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "lastUpdate": {
+            "$ref": "#/components/schemas/Date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StoreWithAddress": {
+        "type": "object",
+        "required": [
+          "storeId",
+          "address",
+          "city",
+          "country",
+          "managerName"
+        ],
+        "properties": {
+          "storeId": {
+            "type": "number"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "managerName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "InventoryError": {
+        "type": "object",
+        "required": [
+          "message",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "InventoryError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "StoreNotFoundError": {
+        "type": "object",
+        "required": [
+          "message",
+          "storeId",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "storeId": {
+            "type": "number"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "StoreNotFoundError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "FilmAvailability": {
+        "type": "object",
+        "required": [
+          "filmId",
+          "filmTitle",
+          "storeId",
+          "totalCopies",
+          "availableCopies"
+        ],
+        "properties": {
+          "filmId": {
+            "type": "number"
+          },
+          "filmTitle": {
+            "type": "string"
+          },
+          "storeId": {
+            "type": "number"
+          },
+          "totalCopies": {
+            "type": "number"
+          },
+          "availableCopies": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RentalCreated": {
+        "type": "object",
+        "required": [
+          "rentalId",
+          "rentalDate",
+          "inventoryId",
+          "filmTitle",
+          "customerId",
+          "dueDate"
+        ],
+        "properties": {
+          "rentalId": {
+            "type": "number"
+          },
+          "rentalDate": {
+            "$ref": "#/components/schemas/Date"
+          },
+          "inventoryId": {
+            "type": "number"
+          },
+          "filmTitle": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "number"
+          },
+          "dueDate": {
+            "$ref": "#/components/schemas/Date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerNotFoundError": {
+        "type": "object",
+        "required": [
+          "message",
+          "customerId",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "number"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "CustomerNotFoundError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "NoInventoryError": {
+        "type": "object",
+        "required": [
+          "message",
+          "filmId",
+          "storeId",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "filmId": {
+            "type": "number"
+          },
+          "storeId": {
+            "type": "number"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "NoInventoryError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "RentalError": {
+        "type": "object",
+        "required": [
+          "message",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "RentalError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "RentalReturned": {
+        "type": "object",
+        "required": [
+          "rentalId",
+          "returnDate",
+          "rentalDays",
+          "lateFee"
+        ],
+        "properties": {
+          "rentalId": {
+            "type": "number"
+          },
+          "returnDate": {
+            "$ref": "#/components/schemas/Date"
+          },
+          "rentalDays": {
+            "type": "number"
+          },
+          "lateFee": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RentalNotFoundError": {
+        "type": "object",
+        "required": [
+          "message",
+          "rentalId",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "rentalId": {
+            "type": "number"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "RentalNotFoundError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "RentalDetail": {
+        "type": "object",
+        "required": [
+          "rentalId",
+          "rentalDate",
+          "returnDate",
+          "filmTitle",
+          "customerName",
+          "customerEmail",
+          "storeName",
+          "isReturned"
+        ],
+        "properties": {
+          "rentalId": {
+            "type": "number"
+          },
+          "rentalDate": {
+            "$ref": "#/components/schemas/Date"
+          },
+          "returnDate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Date"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "filmTitle": {
+            "type": "string"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "customerEmail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "storeName": {
+            "type": "string"
+          },
+          "isReturned": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerInfo": {
+        "type": "object",
+        "required": [
+          "customerId",
+          "fullName",
+          "email",
+          "storeId",
+          "isActive"
+        ],
+        "properties": {
+          "customerId": {
+            "type": "number"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "storeId": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentCreated": {
+        "type": "object",
+        "required": [
+          "paymentId",
+          "customerId",
+          "rentalId",
+          "amount",
+          "paymentDate"
+        ],
+        "properties": {
+          "paymentId": {
+            "type": "number"
+          },
+          "customerId": {
+            "type": "number"
+          },
+          "rentalId": {
+            "type": "number"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "paymentDate": {
+            "$ref": "#/components/schemas/Date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "InvalidPaymentError": {
+        "type": "object",
+        "required": [
+          "message",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "InvalidPaymentError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentError": {
+        "type": "object",
+        "required": [
+          "message",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "PaymentError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentDetail": {
+        "type": "object",
+        "required": [
+          "paymentId",
+          "customerId",
+          "customerName",
+          "rentalId",
+          "filmTitle",
+          "amount",
+          "paymentDate"
+        ],
+        "properties": {
+          "paymentId": {
+            "type": "number"
+          },
+          "customerId": {
+            "type": "number"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "rentalId": {
+            "type": "number"
+          },
+          "filmTitle": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "paymentDate": {
+            "$ref": "#/components/schemas/Date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentNotFoundError": {
+        "type": "object",
+        "required": [
+          "message",
+          "paymentId",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "paymentId": {
+            "type": "number"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "PaymentNotFoundError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerBalance": {
+        "type": "object",
+        "required": [
+          "customerId",
+          "customerName",
+          "balance"
+        ],
+        "properties": {
+          "customerId": {
+            "type": "number"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerLoginInput": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerAuthResponse": {
+        "type": "object",
+        "required": [
+          "customerId",
+          "email",
+          "firstName",
+          "lastName",
+          "token"
+        ],
+        "properties": {
+          "customerId": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerAuthError": {
+        "type": "object",
+        "required": [
+          "message",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "CustomerAuthError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerEmailExistsError": {
+        "type": "object",
+        "required": [
+          "message",
+          "email",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "CustomerEmailExistsError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerProfileResponse": {
+        "type": "object",
+        "required": [
+          "customerId",
+          "email",
+          "firstName",
+          "lastName",
+          "storeId",
+          "isActive"
+        ],
+        "properties": {
+          "customerId": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "storeId": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePasswordInput": {
+        "type": "object",
+        "required": [
+          "currentPassword",
+          "newPassword"
+        ],
+        "properties": {
+          "currentPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StaffLoginInput": {
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StaffAuthResponse": {
+        "type": "object",
+        "required": [
+          "staffId",
+          "username",
+          "firstName",
+          "lastName",
+          "storeId",
+          "token"
+        ],
+        "properties": {
+          "staffId": {
+            "type": "number"
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "storeId": {
+            "type": "number"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StaffAuthError": {
+        "type": "object",
+        "required": [
+          "message",
+          "_tag"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "StaffAuthError"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "StaffProfileResponse": {
+        "type": "object",
+        "required": [
+          "staffId",
+          "username",
+          "email",
+          "firstName",
+          "lastName",
+          "storeId",
+          "isActive"
+        ],
+        "properties": {
+          "staffId": {
+            "type": "number"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "storeId": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StaffUpdatePasswordInput": {
+        "type": "object",
+        "required": [
+          "currentPassword",
+          "newPassword"
+        ],
+        "properties": {
+          "currentPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {}
+  },
+  "security": [],
+  "tags": [
+    {
+      "name": "health"
+    },
+    {
+      "name": "films"
+    },
+    {
+      "name": "inventory"
+    },
+    {
+      "name": "rentals"
+    },
+    {
+      "name": "payments"
+    },
+    {
+      "name": "customer-auth"
+    },
+    {
+      "name": "staff-auth"
+    }
+  ]
+}

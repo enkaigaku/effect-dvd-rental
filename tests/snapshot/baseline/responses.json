@@ -1,0 +1,2652 @@
+{
+  "health": {
+    "request": "GET /health",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "status": "ok"
+    }
+  },
+  "ready": {
+    "request": "GET /ready",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "status": "ready"
+    }
+  },
+  "unknown route": {
+    "request": "GET /does-not-exist",
+    "status": 404,
+    "headers": {
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": null
+  },
+  "films list": {
+    "request": "GET /films",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "data": [
+        {
+          "filmId": 1,
+          "title": "ACADEMY DINOSAUR",
+          "description": "A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 86,
+          "replacementCost": 20.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Deleted Scenes",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 2,
+          "title": "ACE GOLDFINGER",
+          "description": "A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient China",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 3,
+          "rentalRate": 4.99,
+          "length": 48,
+          "replacementCost": 12.99,
+          "rating": "G",
+          "specialFeatures": [
+            "Trailers",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 3,
+          "title": "ADAPTATION HOLES",
+          "description": "A Astounding Reflection of a Lumberjack And a Car who must Sink a Lumberjack in A Baloon Factory",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 7,
+          "rentalRate": 2.99,
+          "length": 50,
+          "replacementCost": 18.99,
+          "rating": "NC-17",
+          "specialFeatures": [
+            "Trailers",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 4,
+          "title": "AFFAIR PREJUDICE",
+          "description": "A Fanciful Documentary of a Frisbee And a Lumberjack who must Chase a Monkey in A Shark Tank",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 5,
+          "rentalRate": 2.99,
+          "length": 117,
+          "replacementCost": 26.99,
+          "rating": "G",
+          "specialFeatures": [
+            "Commentaries",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 5,
+          "title": "AFRICAN EGG",
+          "description": "A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 2.99,
+          "length": 130,
+          "replacementCost": 22.99,
+          "rating": "G",
+          "specialFeatures": [
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 6,
+          "title": "AGENT TRUMAN",
+          "description": "A Intrepid Panorama of a Robot And a Boy who must Escape a Sumo Wrestler in Ancient China",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 3,
+          "rentalRate": 2.99,
+          "length": 169,
+          "replacementCost": 17.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 7,
+          "title": "AIRPLANE SIERRA",
+          "description": "A Touching Saga of a Hunter And a Butler who must Discover a Butler in A Jet Boat",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 4.99,
+          "length": 62,
+          "replacementCost": 28.99,
+          "rating": "PG-13",
+          "specialFeatures": [
+            "Trailers",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 8,
+          "title": "AIRPORT POLLOCK",
+          "description": "A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 4.99,
+          "length": 54,
+          "replacementCost": 15.99,
+          "rating": "R",
+          "specialFeatures": [
+            "Trailers"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 9,
+          "title": "ALABAMA DEVIL",
+          "description": "A Thoughtful Panorama of a Database Administrator And a Mad Scientist who must Outgun a Mad Scientist in A Jet Boat",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 3,
+          "rentalRate": 2.99,
+          "length": 114,
+          "replacementCost": 21.99,
+          "rating": "PG-13",
+          "specialFeatures": [
+            "Trailers",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 10,
+          "title": "ALADDIN CALENDAR",
+          "description": "A Action-Packed Tale of a Man And a Lumberjack who must Reach a Feminist in Ancient China",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 4.99,
+          "length": 63,
+          "replacementCost": 24.99,
+          "rating": "NC-17",
+          "specialFeatures": [
+            "Trailers",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 11,
+          "title": "ALAMO VIDEOTAPE",
+          "description": "A Boring Epistle of a Butler And a Cat who must Fight a Pastry Chef in A MySQL Convention",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 126,
+          "replacementCost": 16.99,
+          "rating": "G",
+          "specialFeatures": [
+            "Commentaries",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 12,
+          "title": "ALASKA PHANTOM",
+          "description": "A Fanciful Saga of a Hunter And a Pastry Chef who must Vanquish a Boy in Australia",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 136,
+          "replacementCost": 22.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Commentaries",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 13,
+          "title": "ALI FOREVER",
+          "description": "A Action-Packed Drama of a Dentist And a Crocodile who must Battle a Feminist in The Canadian Rockies",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 4,
+          "rentalRate": 4.99,
+          "length": 150,
+          "replacementCost": 21.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Deleted Scenes",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 14,
+          "title": "ALICE FANTASIA",
+          "description": "A Emotional Drama of a A Shark And a Database Administrator who must Vanquish a Pioneer in Soviet Georgia",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 94,
+          "replacementCost": 23.99,
+          "rating": "NC-17",
+          "specialFeatures": [
+            "Trailers",
+            "Deleted Scenes",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 15,
+          "title": "ALIEN CENTER",
+          "description": "A Brilliant Drama of a Cat And a Mad Scientist who must Battle a Feminist in A MySQL Convention",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 5,
+          "rentalRate": 2.99,
+          "length": 46,
+          "replacementCost": 10.99,
+          "rating": "NC-17",
+          "specialFeatures": [
+            "Trailers",
+            "Commentaries",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 16,
+          "title": "ALLEY EVOLUTION",
+          "description": "A Fast-Paced Drama of a Robot And a Composer who must Battle a Astronaut in New Orleans",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 2.99,
+          "length": 180,
+          "replacementCost": 23.99,
+          "rating": "NC-17",
+          "specialFeatures": [
+            "Trailers",
+            "Commentaries"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 17,
+          "title": "ALONE TRIP",
+          "description": "A Fast-Paced Character Study of a Composer And a Dog who must Outgun a Boat in An Abandoned Fun House",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 3,
+          "rentalRate": 0.99,
+          "length": 82,
+          "replacementCost": 14.99,
+          "rating": "R",
+          "specialFeatures": [
+            "Trailers",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 18,
+          "title": "ALTER VICTORY",
+          "description": "A Thoughtful Drama of a Composer And a Feminist who must Meet a Secret Agent in The Canadian Rockies",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 57,
+          "replacementCost": 27.99,
+          "rating": "PG-13",
+          "specialFeatures": [
+            "Trailers",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 19,
+          "title": "AMADEUS HOLY",
+          "description": "A Emotional Display of a Pioneer And a Technical Writer who must Battle a Man in A Baloon",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 113,
+          "replacementCost": 20.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Commentaries",
+            "Deleted Scenes",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 20,
+          "title": "AMELIE HELLFIGHTERS",
+          "description": "A Boring Drama of a Woman And a Squirrel who must Conquer a Student in A Baloon",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 4,
+          "rentalRate": 4.99,
+          "length": 79,
+          "replacementCost": 23.99,
+          "rating": "R",
+          "specialFeatures": [
+            "Commentaries",
+            "Deleted Scenes",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        }
+      ],
+      "total": 1000,
+      "page": 1,
+      "limit": 20,
+      "totalPages": 50
+    }
+  },
+  "films page 2 limit 5": {
+    "request": "GET /films?page=2&limit=5",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "data": [
+        {
+          "filmId": 6,
+          "title": "AGENT TRUMAN",
+          "description": "A Intrepid Panorama of a Robot And a Boy who must Escape a Sumo Wrestler in Ancient China",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 3,
+          "rentalRate": 2.99,
+          "length": 169,
+          "replacementCost": 17.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 7,
+          "title": "AIRPLANE SIERRA",
+          "description": "A Touching Saga of a Hunter And a Butler who must Discover a Butler in A Jet Boat",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 4.99,
+          "length": 62,
+          "replacementCost": 28.99,
+          "rating": "PG-13",
+          "specialFeatures": [
+            "Trailers",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 8,
+          "title": "AIRPORT POLLOCK",
+          "description": "A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 4.99,
+          "length": 54,
+          "replacementCost": 15.99,
+          "rating": "R",
+          "specialFeatures": [
+            "Trailers"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 9,
+          "title": "ALABAMA DEVIL",
+          "description": "A Thoughtful Panorama of a Database Administrator And a Mad Scientist who must Outgun a Mad Scientist in A Jet Boat",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 3,
+          "rentalRate": 2.99,
+          "length": 114,
+          "replacementCost": 21.99,
+          "rating": "PG-13",
+          "specialFeatures": [
+            "Trailers",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 10,
+          "title": "ALADDIN CALENDAR",
+          "description": "A Action-Packed Tale of a Man And a Lumberjack who must Reach a Feminist in Ancient China",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 4.99,
+          "length": 63,
+          "replacementCost": 24.99,
+          "rating": "NC-17",
+          "specialFeatures": [
+            "Trailers",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        }
+      ],
+      "total": 1000,
+      "page": 2,
+      "limit": 5,
+      "totalPages": 200
+    }
+  },
+  "films search": {
+    "request": "GET /films?search=ACADEMY&limit=3",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "data": [
+        {
+          "filmId": 1,
+          "title": "ACADEMY DINOSAUR",
+          "description": "A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 86,
+          "replacementCost": 20.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Deleted Scenes",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 940,
+          "title": "VICTORY ACADEMY",
+          "description": "A Insightful Epistle of a Mad Scientist And a Explorer who must Challenge a Cat in The Sahara Desert",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 64,
+          "replacementCost": 19.99,
+          "rating": "PG-13",
+          "specialFeatures": [
+            "Trailers",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        }
+      ],
+      "total": 1000,
+      "page": 1,
+      "limit": 3,
+      "totalPages": 334
+    }
+  },
+  "films by category": {
+    "request": "GET /films?categoryId=1&limit=3",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "data": [
+        {
+          "filmId": 19,
+          "title": "AMADEUS HOLY",
+          "description": "A Emotional Display of a Pioneer And a Technical Writer who must Battle a Man in A Baloon",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 113,
+          "replacementCost": 20.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Commentaries",
+            "Deleted Scenes",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 21,
+          "title": "AMERICAN CIRCUS",
+          "description": "A Insightful Drama of a Girl And a Astronaut who must Face a Database Administrator in A Shark Tank",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 3,
+          "rentalRate": 4.99,
+          "length": 129,
+          "replacementCost": 17.99,
+          "rating": "R",
+          "specialFeatures": [
+            "Commentaries",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 29,
+          "title": "ANTITRUST TOMATOES",
+          "description": "A Fateful Yarn of a Womanizer And a Feminist who must Succumb a Database Administrator in Ancient India",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 5,
+          "rentalRate": 2.99,
+          "length": 168,
+          "replacementCost": 11.99,
+          "rating": "NC-17",
+          "specialFeatures": [
+            "Trailers",
+            "Commentaries",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        }
+      ],
+      "total": 1000,
+      "page": 1,
+      "limit": 3,
+      "totalPages": 334
+    }
+  },
+  "films by rating": {
+    "request": "GET /films?rating=PG&limit=3",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "data": [
+        {
+          "filmId": 1,
+          "title": "ACADEMY DINOSAUR",
+          "description": "A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 86,
+          "replacementCost": 20.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Deleted Scenes",
+            "Behind the Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 6,
+          "title": "AGENT TRUMAN",
+          "description": "A Intrepid Panorama of a Robot And a Boy who must Escape a Sumo Wrestler in Ancient China",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 3,
+          "rentalRate": 2.99,
+          "length": 169,
+          "replacementCost": 17.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        },
+        {
+          "filmId": 12,
+          "title": "ALASKA PHANTOM",
+          "description": "A Fanciful Saga of a Hunter And a Pastry Chef who must Vanquish a Boy in Australia",
+          "releaseYear": 2006,
+          "languageId": 1,
+          "originalLanguageId": null,
+          "rentalDuration": 6,
+          "rentalRate": 0.99,
+          "length": 136,
+          "replacementCost": 22.99,
+          "rating": "PG",
+          "specialFeatures": [
+            "Commentaries",
+            "Deleted Scenes"
+          ],
+          "lastUpdate": "2022-09-10T16:46:03.905Z"
+        }
+      ],
+      "total": 1000,
+      "page": 1,
+      "limit": 3,
+      "totalPages": 334
+    }
+  },
+  "films page=abc": {
+    "request": "GET /films?page=abc",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Failed to fetch films",
+      "_tag": "DatabaseQueryError"
+    }
+  },
+  "films limit=0": {
+    "request": "GET /films?limit=0",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "data": [],
+      "total": 1000,
+      "page": 1,
+      "limit": 0,
+      "totalPages": null
+    }
+  },
+  "film 1": {
+    "request": "GET /films/1",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "filmId": 1,
+      "title": "ACADEMY DINOSAUR",
+      "description": "A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies",
+      "releaseYear": 2006,
+      "languageId": 1,
+      "originalLanguageId": null,
+      "rentalDuration": 6,
+      "rentalRate": 0.99,
+      "length": 86,
+      "replacementCost": 20.99,
+      "rating": "PG",
+      "specialFeatures": [
+        "Deleted Scenes",
+        "Behind the Scenes"
+      ],
+      "lastUpdate": "2022-09-10T16:46:03.905Z",
+      "languageName": "English",
+      "categoryName": "Documentary"
+    }
+  },
+  "film 99999": {
+    "request": "GET /films/99999",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Film not found",
+      "filmId": 99999,
+      "_tag": "FilmNotFoundError"
+    }
+  },
+  "film abc": {
+    "request": "GET /films/abc",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "issues": [
+        {
+          "_tag": "Transformation",
+          "path": [
+            "filmId"
+          ],
+          "message": "Unable to decode \"abc\" into a number"
+        }
+      ],
+      "message": "{ readonly filmId: NumberFromString }\n└─ [\"filmId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
+      "_tag": "HttpApiDecodeError"
+    }
+  },
+  "film 1.5": {
+    "request": "GET /films/1.5",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Database error",
+      "_tag": "DatabaseQueryError"
+    }
+  },
+  "film -1": {
+    "request": "GET /films/-1",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Film not found",
+      "filmId": -1,
+      "_tag": "FilmNotFoundError"
+    }
+  },
+  "film empty-ish 0": {
+    "request": "GET /films/0",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Film not found",
+      "filmId": 0,
+      "_tag": "FilmNotFoundError"
+    }
+  },
+  "film 1 actors": {
+    "request": "GET /films/1/actors",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": [
+      {
+        "actorId": 40,
+        "firstName": "JOHNNY",
+        "lastName": "CAGE",
+        "fullName": "JOHNNY CAGE"
+      },
+      {
+        "actorId": 188,
+        "firstName": "ROCK",
+        "lastName": "DUKAKIS",
+        "fullName": "ROCK DUKAKIS"
+      },
+      {
+        "actorId": 10,
+        "firstName": "CHRISTIAN",
+        "lastName": "GABLE",
+        "fullName": "CHRISTIAN GABLE"
+      },
+      {
+        "actorId": 1,
+        "firstName": "PENELOPE",
+        "lastName": "GUINESS",
+        "fullName": "PENELOPE GUINESS"
+      },
+      {
+        "actorId": 198,
+        "firstName": "MARY",
+        "lastName": "KEITEL",
+        "fullName": "MARY KEITEL"
+      },
+      {
+        "actorId": 162,
+        "firstName": "OPRAH",
+        "lastName": "KILMER",
+        "fullName": "OPRAH KILMER"
+      },
+      {
+        "actorId": 108,
+        "firstName": "WARREN",
+        "lastName": "NOLTE",
+        "fullName": "WARREN NOLTE"
+      },
+      {
+        "actorId": 30,
+        "firstName": "SANDRA",
+        "lastName": "PECK",
+        "fullName": "SANDRA PECK"
+      },
+      {
+        "actorId": 53,
+        "firstName": "MENA",
+        "lastName": "TEMPLE",
+        "fullName": "MENA TEMPLE"
+      },
+      {
+        "actorId": 20,
+        "firstName": "LUCILLE",
+        "lastName": "TRACY",
+        "fullName": "LUCILLE TRACY"
+      }
+    ]
+  },
+  "film abc actors": {
+    "request": "GET /films/abc/actors",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "issues": [
+        {
+          "_tag": "Transformation",
+          "path": [
+            "filmId"
+          ],
+          "message": "Unable to decode \"abc\" into a number"
+        }
+      ],
+      "message": "{ readonly filmId: NumberFromString }\n└─ [\"filmId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
+      "_tag": "HttpApiDecodeError"
+    }
+  },
+  "film 99999 actors": {
+    "request": "GET /films/99999/actors",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": []
+  },
+  "categories": {
+    "request": "GET /categories",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": [
+      {
+        "categoryId": 1,
+        "name": "Action",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 2,
+        "name": "Animation",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 3,
+        "name": "Children",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 4,
+        "name": "Classics",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 5,
+        "name": "Comedy",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 6,
+        "name": "Documentary",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 7,
+        "name": "Drama",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 8,
+        "name": "Family",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 9,
+        "name": "Foreign",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 10,
+        "name": "Games",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 11,
+        "name": "Horror",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 12,
+        "name": "Music",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 13,
+        "name": "New",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 14,
+        "name": "Sci-Fi",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 15,
+        "name": "Sports",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      },
+      {
+        "categoryId": 16,
+        "name": "Travel",
+        "lastUpdate": "2022-02-15T09:46:27.000Z"
+      }
+    ]
+  },
+  "stores": {
+    "request": "GET /stores",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": [
+      {
+        "storeId": 1,
+        "address": "47 MySakila Drive",
+        "city": "Lethbridge",
+        "country": "Canada",
+        "managerName": "Mike Hillyer"
+      },
+      {
+        "storeId": 2,
+        "address": "28 MySQL Boulevard",
+        "city": "Woodridge",
+        "country": "Australia",
+        "managerName": "Jon Stephens"
+      }
+    ]
+  },
+  "store 1": {
+    "request": "GET /stores/1",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "storeId": 1,
+      "address": "47 MySakila Drive",
+      "city": "Lethbridge",
+      "country": "Canada",
+      "managerName": "Mike Hillyer"
+    }
+  },
+  "store 999": {
+    "request": "GET /stores/999",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Store not found",
+      "storeId": 999,
+      "_tag": "StoreNotFoundError"
+    }
+  },
+  "store abc": {
+    "request": "GET /stores/abc",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "issues": [
+        {
+          "_tag": "Transformation",
+          "path": [
+            "storeId"
+          ],
+          "message": "Unable to decode \"abc\" into a number"
+        }
+      ],
+      "message": "{ readonly storeId: NumberFromString }\n└─ [\"storeId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
+      "_tag": "HttpApiDecodeError"
+    }
+  },
+  "film 1 availability": {
+    "request": "GET /films/1/availability",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": [
+      {
+        "filmId": 1,
+        "filmTitle": "ACADEMY DINOSAUR",
+        "storeId": 1,
+        "totalCopies": 4,
+        "availableCopies": 4
+      },
+      {
+        "filmId": 1,
+        "filmTitle": "ACADEMY DINOSAUR",
+        "storeId": 2,
+        "totalCopies": 4,
+        "availableCopies": 3
+      }
+    ]
+  },
+  "film abc availability": {
+    "request": "GET /films/abc/availability",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "issues": [
+        {
+          "_tag": "Transformation",
+          "path": [
+            "filmId"
+          ],
+          "message": "Unable to decode \"abc\" into a number"
+        }
+      ],
+      "message": "{ readonly filmId: NumberFromString }\n└─ [\"filmId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
+      "_tag": "HttpApiDecodeError"
+    }
+  },
+  "store 1 film 1 availability": {
+    "request": "GET /stores/1/films/1/availability",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "filmId": 1,
+      "filmTitle": "ACADEMY DINOSAUR",
+      "storeId": 1,
+      "totalCopies": 4,
+      "availableCopies": 4
+    }
+  },
+  "store 1 film 99999 availability": {
+    "request": "GET /stores/1/films/99999/availability",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "filmId": 99999,
+      "filmTitle": "Unknown",
+      "storeId": 1,
+      "totalCopies": 0,
+      "availableCopies": 0
+    }
+  },
+  "store 1 film abc availability": {
+    "request": "GET /stores/1/films/abc/availability",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "issues": [
+        {
+          "_tag": "Transformation",
+          "path": [
+            "filmId"
+          ],
+          "message": "Unable to decode \"abc\" into a number"
+        }
+      ],
+      "message": "{ readonly storeId: NumberFromString; readonly filmId: NumberFromString }\n└─ [\"filmId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
+      "_tag": "HttpApiDecodeError"
+    }
+  },
+  "rental 76 no token": {
+    "request": "GET /rentals/76",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Rental not found",
+      "rentalId": 76,
+      "_tag": "RentalNotFoundError"
+    }
+  },
+  "rental 76 bad token": {
+    "request": "GET /rentals/76",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Rental not found",
+      "rentalId": 76,
+      "_tag": "RentalNotFoundError"
+    }
+  },
+  "rental 76 customer": {
+    "request": "GET /rentals/76",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "rentalId": 76,
+      "rentalDate": "2022-05-25T10:30:37.000Z",
+      "returnDate": "2022-06-03T11:00:37.000Z",
+      "filmTitle": "PATIENT SISTER",
+      "customerName": "MARY SMITH",
+      "customerEmail": "MARY.SMITH@sakilacustomer.org",
+      "storeName": "28 MySQL Boulevard, Woodridge",
+      "isReturned": true
+    }
+  },
+  "rental 76 staff": {
+    "request": "GET /rentals/76",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "rentalId": 76,
+      "rentalDate": "2022-05-25T10:30:37.000Z",
+      "returnDate": "2022-06-03T11:00:37.000Z",
+      "filmTitle": "PATIENT SISTER",
+      "customerName": "MARY SMITH",
+      "customerEmail": "MARY.SMITH@sakilacustomer.org",
+      "storeName": "28 MySQL Boulevard, Woodridge",
+      "isReturned": true
+    }
+  },
+  "rental 99999999 staff": {
+    "request": "GET /rentals/99999999",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Rental not found",
+      "rentalId": 99999999,
+      "_tag": "RentalNotFoundError"
+    }
+  },
+  "rental abc staff": {
+    "request": "GET /rentals/abc",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "issues": [
+        {
+          "_tag": "Transformation",
+          "path": [
+            "rentalId"
+          ],
+          "message": "Unable to decode \"abc\" into a number"
+        }
+      ],
+      "message": "{ readonly rentalId: NumberFromString }\n└─ [\"rentalId\"]\n   └─ NumberFromString\n      └─ Transformation process failure\n         └─ Unable to decode \"abc\" into a number",
+      "_tag": "HttpApiDecodeError"
+    }
+  },
+  "customer 1 rentals no token": {
+    "request": "GET /customers/1/rentals",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Authentication required",
+      "_tag": "RentalError"
+    }
+  },
+  "customer 1 rentals own": {
+    "request": "GET /customers/1/rentals",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": [
+      {
+        "rentalId": 15315,
+        "rentalDate": "2022-08-22T19:03:46.000Z",
+        "returnDate": "2022-08-30T00:51:46.000Z",
+        "filmTitle": "BIKINI BORROWERS",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 15298,
+        "rentalDate": "2022-08-22T18:41:37.000Z",
+        "returnDate": "2022-08-28T21:49:37.000Z",
+        "filmTitle": "FIREBALL PHILADELPHIA",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 14825,
+        "rentalDate": "2022-08-22T00:27:57.000Z",
+        "returnDate": "2022-08-27T06:01:57.000Z",
+        "filmTitle": "FIREBALL PHILADELPHIA",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 14762,
+        "rentalDate": "2022-08-21T22:33:57.000Z",
+        "returnDate": "2022-08-23T00:30:57.000Z",
+        "filmTitle": "UNFORGIVEN ZOOLANDER",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 13176,
+        "rentalDate": "2022-08-19T12:56:54.000Z",
+        "returnDate": "2022-08-23T07:50:54.000Z",
+        "filmTitle": "JUMANJI BLADE",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 13068,
+        "rentalDate": "2022-08-19T08:55:16.000Z",
+        "returnDate": "2022-08-20T13:44:16.000Z",
+        "filmTitle": "PATIENT SISTER",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 12250,
+        "rentalDate": "2022-08-18T02:57:29.000Z",
+        "returnDate": "2022-08-22T22:05:29.000Z",
+        "filmTitle": "DALMATIONS SWEDEN",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 11824,
+        "rentalDate": "2022-08-17T11:37:54.000Z",
+        "returnDate": "2022-08-19T09:11:54.000Z",
+        "filmTitle": "MINDS TRUMAN",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 11367,
+        "rentalDate": "2022-08-02T17:01:38.000Z",
+        "returnDate": "2022-08-04T12:19:38.000Z",
+        "filmTitle": "FINDING ANACONDA",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 11299,
+        "rentalDate": "2022-08-02T14:36:52.000Z",
+        "returnDate": "2022-08-10T15:40:52.000Z",
+        "filmTitle": "RACER EGG",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 10437,
+        "rentalDate": "2022-08-01T07:51:04.000Z",
+        "returnDate": "2022-08-10T11:12:04.000Z",
+        "filmTitle": "ADAPTATION HOLES",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 9571,
+        "rentalDate": "2022-07-31T01:42:18.000Z",
+        "returnDate": "2022-08-02T22:26:18.000Z",
+        "filmTitle": "JEEPERS WEDDING",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 8326,
+        "rentalDate": "2022-07-29T02:58:49.000Z",
+        "returnDate": "2022-08-01T04:16:49.000Z",
+        "filmTitle": "AMISTAD MIDSUMMER",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 8116,
+        "rentalDate": "2022-07-28T18:20:07.000Z",
+        "returnDate": "2022-07-29T21:54:07.000Z",
+        "filmTitle": "WOMEN DORADO",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 8074,
+        "rentalDate": "2022-07-28T16:33:39.000Z",
+        "returnDate": "2022-07-29T19:17:39.000Z",
+        "filmTitle": "FROST HEAD",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 8033,
+        "rentalDate": "2022-07-28T15:18:23.000Z",
+        "returnDate": "2022-07-30T16:56:23.000Z",
+        "filmTitle": "USUAL UNTOUCHABLES",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 7841,
+        "rentalDate": "2022-07-28T08:04:45.000Z",
+        "returnDate": "2022-07-30T11:37:45.000Z",
+        "filmTitle": "DOORS PRESIDENT",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 7273,
+        "rentalDate": "2022-07-27T10:31:22.000Z",
+        "returnDate": "2022-07-31T05:50:22.000Z",
+        "filmTitle": "LUCK OPUS",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 6163,
+        "rentalDate": "2022-07-11T09:13:46.000Z",
+        "returnDate": "2022-07-19T12:15:46.000Z",
+        "filmTitle": "EXPECATIONS NATURAL",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 5326,
+        "rentalDate": "2022-07-09T15:38:01.000Z",
+        "returnDate": "2022-07-13T17:02:01.000Z",
+        "filmTitle": "CONFIDENTIAL INTERVIEW",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      }
+    ]
+  },
+  "customer 1 rentals other customer": {
+    "request": "GET /customers/1/rentals",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Access denied",
+      "_tag": "RentalError"
+    }
+  },
+  "customer 1 rentals staff": {
+    "request": "GET /customers/1/rentals",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": [
+      {
+        "rentalId": 15315,
+        "rentalDate": "2022-08-22T19:03:46.000Z",
+        "returnDate": "2022-08-30T00:51:46.000Z",
+        "filmTitle": "BIKINI BORROWERS",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 15298,
+        "rentalDate": "2022-08-22T18:41:37.000Z",
+        "returnDate": "2022-08-28T21:49:37.000Z",
+        "filmTitle": "FIREBALL PHILADELPHIA",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 14825,
+        "rentalDate": "2022-08-22T00:27:57.000Z",
+        "returnDate": "2022-08-27T06:01:57.000Z",
+        "filmTitle": "FIREBALL PHILADELPHIA",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 14762,
+        "rentalDate": "2022-08-21T22:33:57.000Z",
+        "returnDate": "2022-08-23T00:30:57.000Z",
+        "filmTitle": "UNFORGIVEN ZOOLANDER",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 13176,
+        "rentalDate": "2022-08-19T12:56:54.000Z",
+        "returnDate": "2022-08-23T07:50:54.000Z",
+        "filmTitle": "JUMANJI BLADE",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 13068,
+        "rentalDate": "2022-08-19T08:55:16.000Z",
+        "returnDate": "2022-08-20T13:44:16.000Z",
+        "filmTitle": "PATIENT SISTER",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 12250,
+        "rentalDate": "2022-08-18T02:57:29.000Z",
+        "returnDate": "2022-08-22T22:05:29.000Z",
+        "filmTitle": "DALMATIONS SWEDEN",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 11824,
+        "rentalDate": "2022-08-17T11:37:54.000Z",
+        "returnDate": "2022-08-19T09:11:54.000Z",
+        "filmTitle": "MINDS TRUMAN",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 11367,
+        "rentalDate": "2022-08-02T17:01:38.000Z",
+        "returnDate": "2022-08-04T12:19:38.000Z",
+        "filmTitle": "FINDING ANACONDA",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 11299,
+        "rentalDate": "2022-08-02T14:36:52.000Z",
+        "returnDate": "2022-08-10T15:40:52.000Z",
+        "filmTitle": "RACER EGG",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 10437,
+        "rentalDate": "2022-08-01T07:51:04.000Z",
+        "returnDate": "2022-08-10T11:12:04.000Z",
+        "filmTitle": "ADAPTATION HOLES",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 9571,
+        "rentalDate": "2022-07-31T01:42:18.000Z",
+        "returnDate": "2022-08-02T22:26:18.000Z",
+        "filmTitle": "JEEPERS WEDDING",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 8326,
+        "rentalDate": "2022-07-29T02:58:49.000Z",
+        "returnDate": "2022-08-01T04:16:49.000Z",
+        "filmTitle": "AMISTAD MIDSUMMER",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 8116,
+        "rentalDate": "2022-07-28T18:20:07.000Z",
+        "returnDate": "2022-07-29T21:54:07.000Z",
+        "filmTitle": "WOMEN DORADO",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 8074,
+        "rentalDate": "2022-07-28T16:33:39.000Z",
+        "returnDate": "2022-07-29T19:17:39.000Z",
+        "filmTitle": "FROST HEAD",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 8033,
+        "rentalDate": "2022-07-28T15:18:23.000Z",
+        "returnDate": "2022-07-30T16:56:23.000Z",
+        "filmTitle": "USUAL UNTOUCHABLES",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 7841,
+        "rentalDate": "2022-07-28T08:04:45.000Z",
+        "returnDate": "2022-07-30T11:37:45.000Z",
+        "filmTitle": "DOORS PRESIDENT",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "28 MySQL Boulevard, Woodridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 7273,
+        "rentalDate": "2022-07-27T10:31:22.000Z",
+        "returnDate": "2022-07-31T05:50:22.000Z",
+        "filmTitle": "LUCK OPUS",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 6163,
+        "rentalDate": "2022-07-11T09:13:46.000Z",
+        "returnDate": "2022-07-19T12:15:46.000Z",
+        "filmTitle": "EXPECATIONS NATURAL",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      },
+      {
+        "rentalId": 5326,
+        "rentalDate": "2022-07-09T15:38:01.000Z",
+        "returnDate": "2022-07-13T17:02:01.000Z",
+        "filmTitle": "CONFIDENTIAL INTERVIEW",
+        "customerName": "MARY SMITH",
+        "customerEmail": "MARY.SMITH@sakilacustomer.org",
+        "storeName": "47 MySakila Drive, Lethbridge",
+        "isReturned": true
+      }
+    ]
+  },
+  "customer 99999 rentals staff": {
+    "request": "GET /customers/99999/rentals",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": []
+  },
+  "customer 1 info staff": {
+    "request": "GET /customers/1",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "customerId": 1,
+      "fullName": "MARY SMITH",
+      "email": "MARY.SMITH@sakilacustomer.org",
+      "storeId": 1,
+      "isActive": true
+    }
+  },
+  "customer 1 info other customer": {
+    "request": "GET /customers/1",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Access denied",
+      "_tag": "RentalError"
+    }
+  },
+  "customer 99999 info staff": {
+    "request": "GET /customers/99999",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Customer not found",
+      "customerId": 99999,
+      "_tag": "CustomerNotFoundError"
+    }
+  },
+  "payment 16677 no token": {
+    "request": "GET /payments/16677",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Authentication required",
+      "_tag": "PaymentError"
+    }
+  },
+  "payment 16677 staff": {
+    "request": "GET /payments/16677",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "paymentId": 16677,
+      "customerId": 1,
+      "customerName": "MARY SMITH",
+      "rentalId": 76,
+      "filmTitle": "PATIENT SISTER",
+      "amount": 2.99,
+      "paymentDate": "2022-06-29T18:09:50.346Z"
+    }
+  },
+  "payment 99999999 staff": {
+    "request": "GET /payments/99999999",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Payment not found",
+      "paymentId": 99999999,
+      "_tag": "PaymentNotFoundError"
+    }
+  },
+  "customer 1 payments own": {
+    "request": "GET /customers/1/payments",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": [
+      {
+        "paymentId": 18496,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 1422,
+        "filmTitle": "DETECTIVE VISION",
+        "amount": 0.99,
+        "paymentDate": "2022-07-23T09:13:13.975Z"
+      },
+      {
+        "paymentId": 18498,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 1725,
+        "filmTitle": "CLOSER BANG",
+        "amount": 4.99,
+        "paymentDate": "2022-07-23T07:44:21.017Z"
+      },
+      {
+        "paymentId": 22684,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 12250,
+        "filmTitle": "DALMATIONS SWEDEN",
+        "amount": 0.99,
+        "paymentDate": "2022-07-12T03:31:30.294Z"
+      },
+      {
+        "paymentId": 22687,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 14762,
+        "filmTitle": "UNFORGIVEN ZOOLANDER",
+        "amount": 0.99,
+        "paymentDate": "2022-07-04T12:24:19.139Z"
+      },
+      {
+        "paymentId": 22686,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 13176,
+        "filmTitle": "JUMANJI BLADE",
+        "amount": 2.99,
+        "paymentDate": "2022-07-04T11:50:57.202Z"
+      },
+      {
+        "paymentId": 22689,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 15298,
+        "filmTitle": "FIREBALL PHILADELPHIA",
+        "amount": 2.99,
+        "paymentDate": "2022-07-04T03:02:31.644Z"
+      },
+      {
+        "paymentId": 28995,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 5244,
+        "filmTitle": "SNATCH SLIPPER",
+        "amount": 4.99,
+        "paymentDate": "2022-07-01T20:48:15.842Z"
+      },
+      {
+        "paymentId": 16677,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 76,
+        "filmTitle": "PATIENT SISTER",
+        "amount": 2.99,
+        "paymentDate": "2022-06-29T18:09:50.346Z"
+      },
+      {
+        "paymentId": 29002,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 8116,
+        "filmTitle": "WOMEN DORADO",
+        "amount": 0.99,
+        "paymentDate": "2022-06-28T12:06:54.324Z"
+      },
+      {
+        "paymentId": 16678,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 573,
+        "filmTitle": "TALENTED HOMICIDE",
+        "amount": 0.99,
+        "paymentDate": "2022-06-22T11:02:29.703Z"
+      },
+      {
+        "paymentId": 28996,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 5326,
+        "filmTitle": "CONFIDENTIAL INTERVIEW",
+        "amount": 4.99,
+        "paymentDate": "2022-06-17T12:55:51.363Z"
+      },
+      {
+        "paymentId": 29004,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 9571,
+        "filmTitle": "JEEPERS WEDDING",
+        "amount": 2.99,
+        "paymentDate": "2022-06-06T11:03:59.309Z"
+      },
+      {
+        "paymentId": 18499,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 2308,
+        "filmTitle": "ATTACKS HATE",
+        "amount": 4.99,
+        "paymentDate": "2022-05-23T11:58:26.753Z"
+      },
+      {
+        "paymentId": 18500,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 2363,
+        "filmTitle": "SAVANNAH TOWN",
+        "amount": 0.99,
+        "paymentDate": "2022-05-20T11:29:21.184Z"
+      },
+      {
+        "paymentId": 28997,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 6163,
+        "filmTitle": "EXPECATIONS NATURAL",
+        "amount": 7.99,
+        "paymentDate": "2022-05-14T20:11:57.301Z"
+      },
+      {
+        "paymentId": 22685,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 13068,
+        "filmTitle": "PATIENT SISTER",
+        "amount": 0.99,
+        "paymentDate": "2022-05-01T12:31:18.356Z"
+      },
+      {
+        "paymentId": 18497,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 1476,
+        "filmTitle": "FERRIS MOTHER",
+        "amount": 9.99,
+        "paymentDate": "2022-04-29T14:39:38.636Z"
+      },
+      {
+        "paymentId": 22682,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 11367,
+        "filmTitle": "FINDING ANACONDA",
+        "amount": 0.99,
+        "paymentDate": "2022-04-26T03:48:06.924Z"
+      },
+      {
+        "paymentId": 22681,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 11299,
+        "filmTitle": "RACER EGG",
+        "amount": 3.99,
+        "paymentDate": "2022-04-23T00:17:55.607Z"
+      },
+      {
+        "paymentId": 18495,
+        "customerId": 1,
+        "customerName": "MARY SMITH",
+        "rentalId": 1185,
+        "filmTitle": "MUSKETEERS WAIT",
+        "amount": 5.99,
+        "paymentDate": "2022-04-19T20:13:01.277Z"
+      }
+    ]
+  },
+  "customer 1 payments other customer": {
+    "request": "GET /customers/1/payments",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Access denied",
+      "_tag": "PaymentError"
+    }
+  },
+  "customer 1 balance own": {
+    "request": "GET /customers/1/balance",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "customerId": 1,
+      "customerName": "MARY SMITH",
+      "balance": -25
+    }
+  },
+  "customer 1 balance staff": {
+    "request": "GET /customers/1/balance",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "customerId": 1,
+      "customerName": "MARY SMITH",
+      "balance": -25
+    }
+  },
+  "customer 99999 balance staff": {
+    "request": "GET /customers/99999/balance",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "customerId": 99999,
+      "customerName": "Unknown",
+      "balance": 0
+    }
+  },
+  "customer login ok": {
+    "request": "POST /customer/login",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "customerId": 1,
+      "email": "MARY.SMITH@sakilacustomer.org",
+      "firstName": "MARY",
+      "lastName": "SMITH",
+      "token": "<token>"
+    }
+  },
+  "customer login wrong password": {
+    "request": "POST /customer/login",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Invalid email or password",
+      "_tag": "CustomerAuthError"
+    }
+  },
+  "customer login unknown email": {
+    "request": "POST /customer/login",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Invalid email or password",
+      "_tag": "CustomerAuthError"
+    }
+  },
+  "customer login missing field": {
+    "request": "POST /customer/login",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "issues": [
+        {
+          "_tag": "Missing",
+          "path": [
+            "password"
+          ],
+          "message": "is missing"
+        }
+      ],
+      "message": "(CustomerLoginInput (Encoded side) <-> CustomerLoginInput)\n└─ Encoded side transformation failure\n   └─ CustomerLoginInput (Encoded side)\n      └─ [\"password\"]\n         └─ is missing",
+      "_tag": "HttpApiDecodeError"
+    }
+  },
+  "customer login malformed json": {
+    "request": "POST /customer/login",
+    "status": 400,
+    "headers": {
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": null
+  },
+  "customer profile own": {
+    "request": "GET /customer/profile/1",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "customerId": 1,
+      "email": "MARY.SMITH@sakilacustomer.org",
+      "firstName": "MARY",
+      "lastName": "SMITH",
+      "storeId": 1,
+      "isActive": true
+    }
+  },
+  "customer profile other": {
+    "request": "GET /customer/profile/1",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Access denied",
+      "_tag": "CustomerAuthError"
+    }
+  },
+  "customer profile no token": {
+    "request": "GET /customer/profile/1",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Authentication required",
+      "_tag": "CustomerAuthError"
+    }
+  },
+  "customer profile staff token": {
+    "request": "GET /customer/profile/1",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Failed to get profile",
+      "_tag": "CustomerAuthError"
+    }
+  },
+  "customer password wrong current": {
+    "request": "PUT /customer/password/1",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Current password is incorrect",
+      "_tag": "CustomerAuthError"
+    }
+  },
+  "staff login ok": {
+    "request": "POST /staff/login",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "staffId": 1,
+      "username": "Mike",
+      "firstName": "Mike",
+      "lastName": "Hillyer",
+      "storeId": 1,
+      "token": "<token>"
+    }
+  },
+  "staff login wrong password": {
+    "request": "POST /staff/login",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Invalid username or password",
+      "_tag": "StaffAuthError"
+    }
+  },
+  "staff login unknown": {
+    "request": "POST /staff/login",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Invalid username or password",
+      "_tag": "StaffAuthError"
+    }
+  },
+  "staff list no token": {
+    "request": "GET /staff",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Authentication required",
+      "_tag": "StaffAuthError"
+    }
+  },
+  "staff list customer token": {
+    "request": "GET /staff",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Failed to list staff",
+      "_tag": "StaffAuthError"
+    }
+  },
+  "staff list staff": {
+    "request": "GET /staff",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": [
+      {
+        "staffId": 1,
+        "username": "Mike",
+        "email": "Mike.Hillyer@sakilastaff.com",
+        "firstName": "Mike",
+        "lastName": "Hillyer",
+        "storeId": 1,
+        "isActive": true
+      },
+      {
+        "staffId": 2,
+        "username": "Jon",
+        "email": "Jon.Stephens@sakilastaff.com",
+        "firstName": "Jon",
+        "lastName": "Stephens",
+        "storeId": 2,
+        "isActive": true
+      }
+    ]
+  },
+  "staff profile 2": {
+    "request": "GET /staff/profile/2",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "staffId": 2,
+      "username": "Jon",
+      "email": "Jon.Stephens@sakilastaff.com",
+      "firstName": "Jon",
+      "lastName": "Stephens",
+      "storeId": 2,
+      "isActive": true
+    }
+  },
+  "staff profile 999": {
+    "request": "GET /staff/profile/999",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Staff not found",
+      "_tag": "StaffAuthError"
+    }
+  },
+  "staff password other staff": {
+    "request": "PUT /staff/password/1",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Failed to update password",
+      "_tag": "StaffAuthError"
+    }
+  },
+  "staff password wrong current": {
+    "request": "PUT /staff/password/1",
+    "status": 401,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Current password is incorrect",
+      "_tag": "StaffAuthError"
+    }
+  },
+  "cors preflight allowed origin": {
+    "request": "OPTIONS /films",
+    "status": 204,
+    "headers": {
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "access-control-allow-headers": "Content-Type,Authorization",
+      "access-control-allow-credentials": "true"
+    },
+    "body": null
+  },
+  "cors simple allowed origin": {
+    "request": "GET /health",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "status": "ok"
+    }
+  },
+  "cors simple other origin": {
+    "request": "GET /health",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "status": "ok"
+    }
+  },
+  "create rental no token": {
+    "request": "POST /rentals",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Staff authentication required",
+      "_tag": "RentalError"
+    }
+  },
+  "create rental customer token": {
+    "request": "POST /rentals",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Staff authentication required",
+      "_tag": "RentalError"
+    }
+  },
+  "create rental missing field": {
+    "request": "POST /rentals",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "issues": [
+        {
+          "_tag": "Missing",
+          "path": [
+            "customerId"
+          ],
+          "message": "is missing"
+        }
+      ],
+      "message": "(CreateRentalInput (Encoded side) <-> CreateRentalInput)\n└─ Encoded side transformation failure\n   └─ CreateRentalInput (Encoded side)\n      └─ Encoded side transformation failure\n         └─ Struct (Encoded side)\n            └─ [\"customerId\"]\n               └─ is missing",
+      "_tag": "HttpApiDecodeError"
+    }
+  },
+  "create rental unknown customer": {
+    "request": "POST /rentals",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Customer 99999 not found",
+      "customerId": 99999,
+      "_tag": "CustomerNotFoundError"
+    }
+  },
+  "create rental film without copies": {
+    "request": "POST /rentals",
+    "status": 409,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "No available inventory for film 2 at store 1",
+      "filmId": 2,
+      "storeId": 1,
+      "_tag": "NoInventoryError"
+    }
+  },
+  "create rental ok": {
+    "request": "POST /rentals",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "rentalId": "<rentalId>",
+      "rentalDate": "<rentalDate>",
+      "inventoryId": "<inventoryId>",
+      "filmTitle": "ACADEMY DINOSAUR",
+      "customerId": 1,
+      "dueDate": "<dueDate>"
+    }
+  },
+  "return rental ok": {
+    "request": "PUT /rentals/16050/return",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "rentalId": "<rentalId>",
+      "returnDate": "<returnDate>",
+      "rentalDays": 1,
+      "lateFee": 0
+    }
+  },
+  "return rental again": {
+    "request": "PUT /rentals/16050/return",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "<message>",
+      "_tag": "RentalError"
+    }
+  },
+  "return rental unknown": {
+    "request": "PUT /rentals/99999999/return",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Rental 99999999 not found",
+      "rentalId": 99999999,
+      "_tag": "RentalNotFoundError"
+    }
+  },
+  "create payment zero": {
+    "request": "POST /payments",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Invalid payment amount: 0",
+      "_tag": "InvalidPaymentError"
+    }
+  },
+  "create payment customer token": {
+    "request": "POST /payments",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Staff authentication required",
+      "_tag": "PaymentError"
+    }
+  },
+  "create payment ok": {
+    "request": "POST /payments",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Failed to execute statement",
+      "_tag": "PaymentError"
+    }
+  },
+  "register ok": {
+    "request": "POST /customer/register",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "customerId": "<customerId>",
+      "email": "snapshot@example.com",
+      "firstName": "Snap",
+      "lastName": "Shot",
+      "token": "<token>"
+    }
+  },
+  "register duplicate": {
+    "request": "POST /customer/register",
+    "status": 409,
+    "headers": {
+      "content-type": "application/json",
+      "access-control-allow-origin": "http://localhost:3000",
+      "access-control-allow-credentials": "true"
+    },
+    "body": {
+      "message": "Email already registered",
+      "email": "snapshot@example.com",
+      "_tag": "CustomerEmailExistsError"
+    }
+  }
+}
