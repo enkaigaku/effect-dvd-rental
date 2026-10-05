@@ -32,7 +32,6 @@ const createTestLayer = (overrides: {
   getCustomerBalance?: () => Effect.Effect<CustomerBalance | undefined>;
 } = {}) => {
   const MockPaymentRepo = Layer.succeed(PaymentRepository, {
-    _tag: "PaymentRepository" as const,
     createPayment: overrides.createPayment ?? (() => Effect.succeed(mockPaymentCreated)),
     getCustomerBalance: overrides.getCustomerBalance ?? (() => Effect.succeed(mockCustomerBalance)),
     getCustomerPayments: () => Effect.succeed([]),
@@ -45,7 +44,6 @@ const createTestLayer = (overrides: {
       const repo = yield* PaymentRepository;
 
       return {
-        _tag: "PaymentService" as const,
         createPayment: (input: CreatePaymentInput) =>
           Effect.gen(function* () {
             if (input.amount <= 0) {

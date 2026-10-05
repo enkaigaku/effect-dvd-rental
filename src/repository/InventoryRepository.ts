@@ -1,5 +1,5 @@
-import { Effect } from "effect";
-import { SqlClient } from "@effect/sql";
+import { Context, Effect, Layer } from "effect";
+import { SqlClient } from "effect/sql";
 import { FilmAvailability } from "../schema/Inventory.js";
 import { StoreWithAddress } from "../schema/Store.js";
 import { FilmId, StoreId, InventoryId } from "../schema/Ids.js";
@@ -8,8 +8,8 @@ import { FilmId, StoreId, InventoryId } from "../schema/Ids.js";
 // Inventory Repository
 // ============================================================
 
-export class InventoryRepository extends Effect.Service<InventoryRepository>()("InventoryRepository", {
-  effect: Effect.gen(function* () {
+export class InventoryRepository extends Context.Service<InventoryRepository>()("InventoryRepository", {
+  make: Effect.gen(function* () {
     const sql = yield* SqlClient.SqlClient;
 
     return {
@@ -144,5 +144,6 @@ export class InventoryRepository extends Effect.Service<InventoryRepository>()("
         }),
     };
   }),
-  dependencies: [],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

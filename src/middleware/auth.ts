@@ -1,6 +1,6 @@
 import { Effect, Context, Redacted } from "effect";
 import * as jose from "jose";
-import { HttpServerRequest } from "@effect/platform";
+import { HttpServerRequest } from "effect/http";
 import { JwtConfig } from "../config/AppConfig.js";
 
 // ============================================================
@@ -15,7 +15,7 @@ export interface AuthUser {
   readonly storeId?: number;
 }
 
-export class CurrentUser extends Context.Tag("CurrentUser")<CurrentUser, AuthUser>() {}
+export class CurrentUser extends Context.Service<CurrentUser, AuthUser>()("CurrentUser") {}
 
 // ============================================================
 // JWT Verification (uses Effect Config)

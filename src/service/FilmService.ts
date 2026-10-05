@@ -1,4 +1,4 @@
-import { Effect } from "effect";
+import { Context, Effect, Layer } from "effect";
 import { FilmRepository } from "../repository/FilmRepository.js";
 import { FilmSearchParams }from "../schema/Film.js";
 import { FilmId } from "../schema/Ids.js";
@@ -7,9 +7,8 @@ import { FilmId } from "../schema/Ids.js";
 // Film Service
 // ============================================================
 
-export class FilmService extends Effect.Service<FilmService>()("FilmService", {
-  accessors: true,
-  effect: Effect.gen(function* () {
+export class FilmService extends Context.Service<FilmService>()("FilmService", {
+  make: Effect.gen(function* () {
     const repo = yield* FilmRepository;
 
     return {
@@ -42,5 +41,6 @@ export class FilmService extends Effect.Service<FilmService>()("FilmService", {
       }),
     };
   }),
-  dependencies: [FilmRepository.Default],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make).pipe(Layer.provide(FilmRepository.layer));
+}

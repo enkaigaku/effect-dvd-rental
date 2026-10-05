@@ -1,5 +1,5 @@
-import { Effect } from "effect";
-import { SqlClient } from "@effect/sql";
+import { Context, Effect, Layer } from "effect";
+import { SqlClient } from "effect/sql";
 import { Film, FilmSearchParams, PaginatedFilms } from "../schema/Film.js";
 import { ActorWithName } from "../schema/Actor.js";
 import { Category } from "../schema/Category.js";
@@ -9,8 +9,8 @@ import { FilmId } from "../schema/Ids.js";
 // Film Repository
 // ============================================================
 
-export class FilmRepository extends Effect.Service<FilmRepository>()("FilmRepository", {
-  effect: Effect.gen(function* () {
+export class FilmRepository extends Context.Service<FilmRepository>()("FilmRepository", {
+  make: Effect.gen(function* () {
     const sql = yield* SqlClient.SqlClient;
 
     return {
@@ -244,5 +244,6 @@ export class FilmRepository extends Effect.Service<FilmRepository>()("FilmReposi
         }),
     };
   }),
-  dependencies: [],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

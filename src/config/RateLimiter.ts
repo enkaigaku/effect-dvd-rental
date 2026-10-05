@@ -1,10 +1,5 @@
-import { Effect, Ref, Clock, Schedule, Duration, Layer } from "effect";
-import {
-  HttpApiBuilder,
-  HttpMiddleware,
-  HttpServerRequest,
-  HttpServerResponse,
-} from "@effect/platform";
+import { Effect, Ref, Clock, Schedule, Duration, Option, Types } from "effect";
+import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http";
 import { RateLimiterConfig } from "./AppConfig.js";
 // ============================================================
 // Rate Limiter Configuration (uses Effect Config)
@@ -41,14 +36,14 @@ export const makeRateLimiterMiddleware = Effect.gen(function* () {
     });
   }).pipe(
     Effect.repeat(Schedule.spaced(Duration.millis(windowMs))),
-    Effect.forkDaemon,
+    // Runs for as long as the middleware layer is alive
+    Effect.forkScoped,
   );
 
-  return HttpMiddleware.make((app) =>
+  return (app: Effect.Effect<HttpServerResponse.HttpServerResponse, Types.unhandled>) =>
     Effect.gen(function* () {
       const request = yield* HttpServerRequest.HttpServerRequest;
-      // @ts-expect-error - source type definition might be incomplete
-      const ip = request.source.remoteAddress ?? "unknown";
+      const ip = Option.getOrElse(request.remoteAddress, () => "unknown");
       const now = yield* Clock.currentTimeMillis;
 
       const isAllowed = yield* Ref.modify(state, (map) => {
@@ -69,7 +64,8 @@ export const makeRateLimiterMiddleware = Effect.gen(function* () {
       });
 
       if (!isAllowed) {
-        return yield* HttpServerResponse.json(
+        // A constant body cannot fail to encode, so use the non-Effect variant
+        return HttpServerResponse.jsonUnsafe(
           { error: "Too Many Requests" },
           {
             status: 429,
@@ -79,19 +75,13 @@ export const makeRateLimiterMiddleware = Effect.gen(function* () {
       }
 
       return yield* app;
-    }),
-  );
+    });
 });
 
 // ============================================================
 // Rate Limiter Layer
 // ============================================================
 
-export const RateLimiterLive = Layer.unwrapEffect(
-  Effect.gen(function* () {
-    const middleware = yield* makeRateLimiterMiddleware;
-    const mw = yield* HttpApiBuilder.Middleware;
-    yield* mw.add(middleware);
-    return Layer.empty;
-  }),
-).pipe(Layer.provide(HttpApiBuilder.Middleware.layer));
+export const RateLimiterLive = HttpRouter.middleware(makeRateLimiterMiddleware, {
+  global: true,
+});

@@ -9,7 +9,7 @@ export class Actor extends Schema.Class<Actor>("Actor")({
   actorId: ActorId,
   firstName: Schema.String,
   lastName: Schema.String,
-  lastUpdate: Schema.Date,
+  lastUpdate: Schema.DateFromString,
 }) {}
 
 // Actor with full name computed

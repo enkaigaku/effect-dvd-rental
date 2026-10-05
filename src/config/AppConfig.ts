@@ -1,4 +1,4 @@
-import { Config, Effect, Redacted } from "effect";
+import { Config, Context, Effect, Layer, Redacted } from "effect";
 
 // ============================================================
 // Application Configuration using Effect Config
@@ -14,7 +14,7 @@ import { Config, Effect, Redacted } from "effect";
 // ------------------------------------------------------------
 
 export const ServerConfig = Config.all({
-  port: Config.integer("PORT").pipe(Config.withDefault(8080)),
+  port: Config.Int("PORT").pipe(Config.withDefault(8080)),
 });
 
 // ------------------------------------------------------------
@@ -23,7 +23,7 @@ export const ServerConfig = Config.all({
 
 export const JwtConfig = Config.all({
   /** JWT secret - should be set in production */
-  secret: Config.redacted("JWT_SECRET").pipe(
+  secret: Config.Redacted("JWT_SECRET").pipe(
     Config.withDefault(Redacted.make("default-jwt-secret-change-in-production"))
   ),
 });
@@ -33,7 +33,7 @@ export const JwtConfig = Config.all({
 // ------------------------------------------------------------
 
 export const LogConfig = Config.all({
-  level: Config.string("LOG_LEVEL").pipe(
+  level: Config.String("LOG_LEVEL").pipe(
     Config.withDefault("info")
   ),
 });
@@ -43,7 +43,7 @@ export const LogConfig = Config.all({
 // ------------------------------------------------------------
 
 export const TelemetryConfig = Config.all({
-  endpoint: Config.string("OTEL_EXPORTER_OTLP_ENDPOINT").pipe(
+  endpoint: Config.String("OTEL_EXPORTER_OTLP_ENDPOINT").pipe(
     Config.withDefault("http://localhost:4318")
   ),
 });
@@ -53,10 +53,10 @@ export const TelemetryConfig = Config.all({
 // ------------------------------------------------------------
 
 export const RateLimiterConfig = Config.all({
-  windowMs: Config.integer("RATE_LIMIT_WINDOW_MS").pipe(
+  windowMs: Config.Int("RATE_LIMIT_WINDOW_MS").pipe(
     Config.withDefault(60000) // 1 minute
   ),
-  maxRequests: Config.integer("RATE_LIMIT_MAX_REQUESTS").pipe(
+  maxRequests: Config.Int("RATE_LIMIT_MAX_REQUESTS").pipe(
     Config.withDefault(100) // 100 requests per minute
   ),
 });
@@ -73,7 +73,7 @@ export const AppConfig = Config.all({
   rateLimiter: RateLimiterConfig,
 });
 
-export type AppConfig = Config.Config.Success<typeof AppConfig>;
+export type AppConfig = Config.Success<typeof AppConfig>;
 
 // ------------------------------------------------------------
 // Helper to get JWT secret as TextEncoder bytes (for jose)
@@ -86,9 +86,11 @@ export const getJwtSecretBytes = Effect.gen(function* () {
 });
 
 // Create a Layer that provides JWT secret bytes
-export class JwtSecretService extends Effect.Service<JwtSecretService>()("JwtSecretService", {
-  effect: Effect.gen(function* () {
+export class JwtSecretService extends Context.Service<JwtSecretService>()("JwtSecretService", {
+  make: Effect.gen(function* () {
     const secretBytes = yield* getJwtSecretBytes;
     return { secretBytes };
   }),
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

@@ -1,4 +1,4 @@
-import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "@effect/platform"
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/http-api"
 import { Schema } from "effect"
 
 // ============================================================
@@ -13,14 +13,11 @@ const ReadyResponse = Schema.Struct({
   status: Schema.Literal("ready"),
 })
 
-export class HealthApi extends HttpApiGroup.make("health")
-  .add(
-    HttpApiEndpoint.get("healthCheck", "/health")
-      .addSuccess(HealthResponse)
-      .annotate(OpenApi.Summary, "Health check endpoint")
-  )
-  .add(
-    HttpApiEndpoint.get("readiness", "/ready")
-      .addSuccess(ReadyResponse)
-      .annotate(OpenApi.Summary, "Readiness check endpoint")
-  ) {}
+export class HealthApi extends HttpApiGroup.make("health").add(
+  HttpApiEndpoint.get("healthCheck", "/health", {
+    success: HealthResponse,
+  }).annotate(OpenApi.Summary, "Health check endpoint"),
+  HttpApiEndpoint.get("readiness", "/ready", {
+    success: ReadyResponse,
+  }).annotate(OpenApi.Summary, "Readiness check endpoint")
+) {}

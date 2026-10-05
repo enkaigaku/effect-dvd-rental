@@ -1,4 +1,4 @@
-import { Effect, Data } from "effect";
+import { Context, Effect, Layer, Data } from "effect";
 import { PaymentRepository } from "../repository/PaymentRepository.js";
 import { CreatePaymentInput } from "../schema/Payment.js";
 import { RentalId, CustomerId, PaymentId, StaffId } from "../schema/Ids.js";
@@ -19,9 +19,8 @@ export class InvalidPaymentAmountError extends Data.TaggedError("InvalidPaymentA
 // Payment Service
 // ============================================================
 
-export class PaymentService extends Effect.Service<PaymentService>()("PaymentService", {
-  accessors: true,
-  effect: Effect.gen(function* () {
+export class PaymentService extends Context.Service<PaymentService>()("PaymentService", {
+  make: Effect.gen(function* () {
     const repo = yield* PaymentRepository;
 
     return {
@@ -63,5 +62,6 @@ export class PaymentService extends Effect.Service<PaymentService>()("PaymentSer
       }),
     };
   }),
-  dependencies: [PaymentRepository.Default],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make).pipe(Layer.provide(PaymentRepository.layer));
+}

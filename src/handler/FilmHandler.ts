@@ -1,4 +1,4 @@
-import { HttpApiBuilder } from "@effect/platform";
+import { HttpApiBuilder } from "effect/http-api";
 import { Effect } from "effect";
 import { Api, FilmNotFoundError, DatabaseQueryError } from "../api/index.js";
 import { FilmService } from "../service/FilmService.js";
@@ -11,17 +11,17 @@ import { CategoryId, FilmId } from "../schema/Ids.js";
 
 export const FilmHandler = HttpApiBuilder.group(Api, "films", (handlers) =>
   handlers
-    .handle("list", ({ urlParams }) =>
+    .handle("list", ({ query }) =>
       Effect.gen(function* () {
         const filmService = yield* FilmService;
 
         // Parse URL params (strings) to proper types
         const params = new FilmSearchParams({
-          search: urlParams.search,
-          categoryId: urlParams.categoryId ? Number(urlParams.categoryId) as CategoryId : undefined,
-          rating: urlParams.rating as any,
-          page: urlParams.page ? Number(urlParams.page) : 1,
-          limit: urlParams.limit ? Number(urlParams.limit) : 20,
+          search: query.search,
+          categoryId: query.categoryId ? Number(query.categoryId) as CategoryId : undefined,
+          rating: query.rating as any,
+          page: query.page ? Number(query.page) : 1,
+          limit: query.limit ? Number(query.limit) : 20,
         });
 
         return yield* filmService.searchFilms(params);
@@ -29,14 +29,14 @@ export const FilmHandler = HttpApiBuilder.group(Api, "films", (handlers) =>
         Effect.mapError(() => new DatabaseQueryError({ message: "Failed to fetch films" }))
       )
     )
-    .handle("getById", ({ path }) =>
+    .handle("getById", ({ params }) =>
       Effect.gen(function* () {
         const filmService = yield* FilmService;
-        const film = yield* filmService.getFilmById(path.filmId as FilmId);
+        const film = yield* filmService.getFilmById(params.filmId as FilmId);
 
         if (!film) {
           return yield* Effect.fail(
-            new FilmNotFoundError({ message: "Film not found", filmId: path.filmId })
+            new FilmNotFoundError({ message: "Film not found", filmId: params.filmId })
           );
         }
 
@@ -63,10 +63,10 @@ export const FilmHandler = HttpApiBuilder.group(Api, "films", (handlers) =>
         )
       )
     )
-    .handle("getActors", ({ path }) =>
+    .handle("getActors", ({ params }) =>
       Effect.gen(function* () {
         const filmService = yield* FilmService;
-        return yield* filmService.getFilmActors(path.filmId as FilmId);
+        return yield* filmService.getFilmActors(params.filmId as FilmId);
       }).pipe(
         Effect.mapError(() => new DatabaseQueryError({ message: "Failed to fetch actors" }))
       )

@@ -16,7 +16,7 @@ describe("InventoryRepository (Integration)", () => {
           const repo = yield* InventoryRepository;
           return yield* repo.getFilmAvailability(1 as FilmId, 1 as StoreId);
         }).pipe(
-          Effect.provide(InventoryRepository.Default),
+          Effect.provide(InventoryRepository.layer),
           Effect.provide(TestDatabaseLayer)
         )
       );
@@ -35,7 +35,7 @@ describe("InventoryRepository (Integration)", () => {
           const repo = yield* InventoryRepository;
           return yield* repo.getFilmAvailabilityAllStores(1 as FilmId);
         }).pipe(
-          Effect.provide(InventoryRepository.Default),
+          Effect.provide(InventoryRepository.layer),
           Effect.provide(TestDatabaseLayer)
         )
       );
@@ -55,7 +55,7 @@ describe("InventoryRepository (Integration)", () => {
           const repo = yield* InventoryRepository;
           return yield* repo.getStores();
         }).pipe(
-          Effect.provide(InventoryRepository.Default),
+          Effect.provide(InventoryRepository.layer),
           Effect.provide(TestDatabaseLayer)
         )
       );
@@ -73,7 +73,7 @@ describe("InventoryRepository (Integration)", () => {
           const repo = yield* InventoryRepository;
           return yield* repo.findAvailableInventory(1 as FilmId, 1 as StoreId);
         }).pipe(
-          Effect.provide(InventoryRepository.Default),
+          Effect.provide(InventoryRepository.layer),
           Effect.provide(TestDatabaseLayer)
         )
       );

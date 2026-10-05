@@ -1,5 +1,5 @@
-import { Effect } from "effect";
-import { SqlClient } from "@effect/sql";
+import { Context, Effect, Layer } from "effect";
+import { SqlClient } from "effect/sql";
 import { PaymentDetail, PaymentCreated, CustomerBalance } from "../schema/Payment.js";
 import { PaymentId, CustomerId, RentalId, StaffId } from "../schema/Ids.js";
 
@@ -7,8 +7,8 @@ import { PaymentId, CustomerId, RentalId, StaffId } from "../schema/Ids.js";
 // Payment Repository
 // ============================================================
 
-export class PaymentRepository extends Effect.Service<PaymentRepository>()("PaymentRepository", {
-  effect: Effect.gen(function* () {
+export class PaymentRepository extends Context.Service<PaymentRepository>()("PaymentRepository", {
+  make: Effect.gen(function* () {
     const sql = yield* SqlClient.SqlClient;
 
     return {
@@ -145,5 +145,6 @@ export class PaymentRepository extends Effect.Service<PaymentRepository>()("Paym
         }),
     };
   }),
-  dependencies: [],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

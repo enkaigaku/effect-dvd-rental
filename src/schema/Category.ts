@@ -8,5 +8,5 @@ import { CategoryId } from "./Ids.js";
 export class Category extends Schema.Class<Category>("Category")({
   categoryId: CategoryId,
   name: Schema.String,
-  lastUpdate: Schema.Date,
+  lastUpdate: Schema.DateFromString,
 }) {}

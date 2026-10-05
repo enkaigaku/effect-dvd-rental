@@ -17,7 +17,7 @@ describe("FilmRepository (Integration)", () => {
           const repo = yield* FilmRepository;
           return yield* repo.findById(1 as FilmId);
         }).pipe(
-          Effect.provide(FilmRepository.Default),
+          Effect.provide(FilmRepository.layer),
           Effect.provide(TestDatabaseLayer)
         )
       );
@@ -33,7 +33,7 @@ describe("FilmRepository (Integration)", () => {
           const repo = yield* FilmRepository;
           return yield* repo.findById(99999 as FilmId);
         }).pipe(
-          Effect.provide(FilmRepository.Default),
+          Effect.provide(FilmRepository.layer),
           Effect.provide(TestDatabaseLayer)
         )
       );
@@ -51,7 +51,7 @@ describe("FilmRepository (Integration)", () => {
           const repo = yield* FilmRepository;
           return yield* repo.search(params);
         }).pipe(
-          Effect.provide(FilmRepository.Default),
+          Effect.provide(FilmRepository.layer),
           Effect.provide(TestDatabaseLayer)
         )
       );
@@ -68,7 +68,7 @@ describe("FilmRepository (Integration)", () => {
           const repo = yield* FilmRepository;
           return yield* repo.search(params);
         }).pipe(
-          Effect.provide(FilmRepository.Default),
+          Effect.provide(FilmRepository.layer),
           Effect.provide(TestDatabaseLayer)
         )
       );
@@ -87,7 +87,7 @@ describe("FilmRepository (Integration)", () => {
           const repo = yield* FilmRepository;
           return yield* repo.getCategories();
         }).pipe(
-          Effect.provide(FilmRepository.Default),
+          Effect.provide(FilmRepository.layer),
           Effect.provide(TestDatabaseLayer)
         )
       );

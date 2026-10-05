@@ -1,6 +1,6 @@
 import { Effect, Layer } from "effect";
 import { BunRuntime } from "@effect/platform-bun";
-import { HttpApiBuilder } from "@effect/platform";
+import { HttpRouter } from "effect/http";
 import { ApiLive, DocsLive } from "./handler/index.js";
 import { ServerLive } from "./config/Server.js";
 import { CorsLive, allowedOrigins } from "./config/Cors.js";
@@ -14,15 +14,13 @@ import { ServerConfig, LogConfig, RateLimiterConfig } from "./config/AppConfig.j
 // Bootstrap
 // ============================================================
 
-const HttpLive = HttpApiBuilder.serve().pipe(
-  Layer.provide(CorsLive),
-  Layer.provide(RateLimiterLive),
-  Layer.provide(DocsLive),
-  Layer.provide(ApiLive),
+const HttpLive = HttpRouter.serve(
+  Layer.mergeAll(ApiLive, DocsLive, CorsLive, RateLimiterLive),
+  // Keep the v3 output: no per-request access log, no "Listening on" line
+  { disableLogger: true, disableListenLog: true },
+).pipe(
   Layer.provide(ServicesLive),
   Layer.provide(ServerLive),
-  Layer.provide(TracingLive),
-  Layer.provide(LoggerLive),
 );
 
 // Print startup info (reads from Effect Config)
@@ -49,13 +47,16 @@ const printStartupInfo = Effect.gen(function* () {
   yield* Effect.logInfo("   Staff:      POST /staff/login, GET /staff, /staff/profile/:id");
 });
 
-// Startup layer that prints info and then launches the HTTP server
+// Startup layer that prints info and then launches the HTTP server.
+// Logger and tracing are provided outermost so the startup banner, the server
+// and every request use them.
 const StartupLive = Layer.effectDiscard(printStartupInfo).pipe(
-  Layer.provideMerge(HttpLive)
+  Layer.provideMerge(HttpLive),
+  Layer.provide(TracingLive),
+  Layer.provide(LoggerLive),
 );
 
-// Run with LoggerLive configuration, disable BunRuntime's default pretty logger
 const app = Layer.launch(StartupLive);
 
-BunRuntime.runMain(app, { disablePrettyLogger: true });
+BunRuntime.runMain(app);
 

@@ -1,4 +1,4 @@
-import { Effect, Data } from "effect";
+import { Context, Effect, Layer, Data } from "effect";
 import { RentalRepository } from "../repository/RentalRepository.js";
 import { InventoryRepository } from "../repository/InventoryRepository.js";
 import { CreateRentalInput } from "../schema/Rental.js";
@@ -33,9 +33,8 @@ export class RentalAlreadyReturnedError extends Data.TaggedError("RentalAlreadyR
 // Rental Service
 // ============================================================
 
-export class RentalService extends Effect.Service<RentalService>()("RentalService", {
-  accessors: true,
-  effect: Effect.gen(function* () {
+export class RentalService extends Context.Service<RentalService>()("RentalService", {
+  make: Effect.gen(function* () {
     const rentalRepo = yield* RentalRepository;
     const inventoryRepo = yield* InventoryRepository;
 
@@ -119,5 +118,6 @@ export class RentalService extends Effect.Service<RentalService>()("RentalServic
       }),
     };
   }),
-  dependencies: [RentalRepository.Default, InventoryRepository.Default],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make).pipe(Layer.provide([RentalRepository.layer, InventoryRepository.layer]));
+}

@@ -1,7 +1,7 @@
-import { Effect, Data, Redacted } from "effect";
+import { Context, Effect, Layer, Data, Redacted } from "effect";
 import * as bcrypt from "bcrypt";
 import * as jose from "jose";
-import { SqlClient } from "@effect/sql";
+import { SqlClient } from "effect/sql";
 import { CustomerId, StoreId } from "../schema/Ids.js";
 import { JwtConfig } from "../config/AppConfig.js";
 
@@ -47,9 +47,8 @@ export interface CustomerProfile {
 // Customer Auth Service (uses Effect Config for JWT)
 // ============================================================
 
-export class CustomerAuthService extends Effect.Service<CustomerAuthService>()("CustomerAuthService", {
-  accessors: true,
-  effect: Effect.gen(function* () {
+export class CustomerAuthService extends Context.Service<CustomerAuthService>()("CustomerAuthService", {
+  make: Effect.gen(function* () {
     const sql = yield* SqlClient.SqlClient;
     const jwtConfigData = yield* JwtConfig;
     const jwtSecretValue = Redacted.value(jwtConfigData.secret);
@@ -223,5 +222,6 @@ export class CustomerAuthService extends Effect.Service<CustomerAuthService>()("
       }),
     };
   }),
-  dependencies: [],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

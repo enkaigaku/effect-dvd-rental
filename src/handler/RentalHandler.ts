@@ -1,4 +1,4 @@
-import { HttpApiBuilder } from "@effect/platform";
+import { HttpApiBuilder } from "effect/http-api";
 import { Effect } from "effect";
 import { Api, RentalNotFoundError as ApiRentalNotFoundError, CustomerNotFoundError as ApiCustomerNotFoundError, NoInventoryError, RentalError } from "../api/index.js";
 import { RentalService } from "../service/RentalService.js";
@@ -57,22 +57,22 @@ export const RentalHandler = HttpApiBuilder.group(Api, "rentals", (handlers) =>
       )
     )
     // Protected: Staff only - return rental
-    .handle("return", ({ path }) =>
+    .handle("return", ({ params }) =>
       Effect.gen(function* () {
         yield* requireStaff;
         
         const rentalService = yield* RentalService;
-        return yield* rentalService.returnRental(path.rentalId as RentalId);
+        return yield* rentalService.returnRental(params.rentalId as RentalId);
       }).pipe(
         Effect.mapError((err: any) => {
           if (err instanceof Error && err.message.includes("Authorization")) {
             return new RentalError({ message: "Staff authentication required" });
           }
           if (err._tag === "RentalNotFoundError") {
-            return new ApiRentalNotFoundError({ message: `Rental ${path.rentalId} not found`, rentalId: path.rentalId });
+            return new ApiRentalNotFoundError({ message: `Rental ${params.rentalId} not found`, rentalId: params.rentalId });
           }
           if (err._tag === "RentalAlreadyReturnedError") {
-            return new RentalError({ message: `Rental ${path.rentalId} already returned` });
+            return new RentalError({ message: `Rental ${params.rentalId} already returned` });
           }
           const msg = err instanceof Error ? err.message : String(err);
           return new RentalError({ message: msg || "Failed to return rental" });
@@ -80,64 +80,64 @@ export const RentalHandler = HttpApiBuilder.group(Api, "rentals", (handlers) =>
       )
     )
     // Protected: requires authentication
-    .handle("getById", ({ path }) =>
+    .handle("getById", ({ params }) =>
       Effect.gen(function* () {
         yield* requireAuth;
         
         const rentalService = yield* RentalService;
-        const rental = yield* rentalService.getRentalById(path.rentalId as RentalId);
+        const rental = yield* rentalService.getRentalById(params.rentalId as RentalId);
 
         if (!rental) {
           return yield* Effect.fail(
-            new ApiRentalNotFoundError({ message: "Rental not found", rentalId: path.rentalId })
+            new ApiRentalNotFoundError({ message: "Rental not found", rentalId: params.rentalId })
           );
         }
 
         return rental;
       }).pipe(
         Effect.mapError(() =>
-          new ApiRentalNotFoundError({ message: "Rental not found", rentalId: path.rentalId })
+          new ApiRentalNotFoundError({ message: "Rental not found", rentalId: params.rentalId })
         )
       )
     )
     // Protected: Customer can view own rentals, Staff can view any
-    .handle("customerRentals", ({ path }) =>
+    .handle("customerRentals", ({ params }) =>
       Effect.gen(function* () {
         const user = yield* requireAuth;
         
         // Customer can only view their own rentals
-        if (user.type === "customer" && user.id !== path.customerId) {
+        if (user.type === "customer" && user.id !== params.customerId) {
           return yield* Effect.fail(new RentalError({ message: "Access denied" }));
         }
         
         const rentalService = yield* RentalService;
-        return yield* rentalService.getCustomerRentals(path.customerId as CustomerId);
+        return yield* rentalService.getCustomerRentals(params.customerId as CustomerId);
       }).pipe(
         Effect.mapError((err: any) => {
           if (err instanceof Error && err.message.includes("Authorization")) {
             return new RentalError({ message: "Authentication required" });
           }
           if (err._tag === "RentalError") return err;
-          return new ApiCustomerNotFoundError({ message: "Customer not found", customerId: path.customerId });
+          return new ApiCustomerNotFoundError({ message: "Customer not found", customerId: params.customerId });
         })
       )
     )
     // Protected: Requires authentication
-    .handle("customerInfo", ({ path }) =>
+    .handle("customerInfo", ({ params }) =>
       Effect.gen(function* () {
         const user = yield* requireAuth;
         
         // Customer can only view their own info
-        if (user.type === "customer" && user.id !== path.customerId) {
+        if (user.type === "customer" && user.id !== params.customerId) {
           return yield* Effect.fail(new RentalError({ message: "Access denied" }));
         }
         
         const rentalService = yield* RentalService;
-        const customer = yield* rentalService.getCustomer(path.customerId as CustomerId);
+        const customer = yield* rentalService.getCustomer(params.customerId as CustomerId);
 
         if (!customer) {
           return yield* Effect.fail(
-            new ApiCustomerNotFoundError({ message: "Customer not found", customerId: path.customerId })
+            new ApiCustomerNotFoundError({ message: "Customer not found", customerId: params.customerId })
           );
         }
 
@@ -148,7 +148,7 @@ export const RentalHandler = HttpApiBuilder.group(Api, "rentals", (handlers) =>
             return new RentalError({ message: "Authentication required" });
           }
           if (err._tag === "RentalError") return err;
-          return new ApiCustomerNotFoundError({ message: "Customer not found", customerId: path.customerId });
+          return new ApiCustomerNotFoundError({ message: "Customer not found", customerId: params.customerId });
         })
       )
     )

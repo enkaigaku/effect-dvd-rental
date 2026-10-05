@@ -1,4 +1,4 @@
-import { Effect } from "effect";
+import { Context, Effect, Layer } from "effect";
 import { InventoryRepository } from "../repository/InventoryRepository.js";
 import { FilmId, StoreId } from "../schema/Ids.js";
 
@@ -6,9 +6,8 @@ import { FilmId, StoreId } from "../schema/Ids.js";
 // Inventory Service
 // ============================================================
 
-export class InventoryService extends Effect.Service<InventoryService>()("InventoryService", {
-  accessors: true,
-  effect: Effect.gen(function* () {
+export class InventoryService extends Context.Service<InventoryService>()("InventoryService", {
+  make: Effect.gen(function* () {
     const repo = yield* InventoryRepository;
 
     return {
@@ -43,5 +42,6 @@ export class InventoryService extends Effect.Service<InventoryService>()("Invent
       }),
     };
   }),
-  dependencies: [InventoryRepository.Default],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make).pipe(Layer.provide(InventoryRepository.layer));
+}

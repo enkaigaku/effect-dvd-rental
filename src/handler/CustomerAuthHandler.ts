@@ -1,4 +1,4 @@
-import { HttpApiBuilder } from "@effect/platform";
+import { HttpApiBuilder } from "effect/http-api";
 import { Effect } from "effect";
 import { Api, CustomerAuthError, CustomerEmailExistsError } from "../api/index.js";
 import { CustomerAuthService } from "../service/CustomerAuthService.js";
@@ -68,17 +68,17 @@ export const CustomerAuthHandler = HttpApiBuilder.group(Api, "customer-auth", (h
       )
     )
     // Protected: requires customer authentication
-    .handle("profile", ({ path }) =>
+    .handle("profile", ({ params }) =>
       Effect.gen(function* () {
         const authUser = yield* requireCustomer;
         
         // Only allow accessing own profile
-        if (authUser.id !== path.customerId) {
+        if (authUser.id !== params.customerId) {
           return yield* Effect.fail(new CustomerAuthError({ message: "Access denied" }));
         }
 
         const authService = yield* CustomerAuthService;
-        const profile = yield* authService.getProfile(path.customerId as CustomerId);
+        const profile = yield* authService.getProfile(params.customerId as CustomerId);
 
         if (!profile) {
           return yield* Effect.fail(new CustomerAuthError({ message: "Customer not found" }));
@@ -103,18 +103,18 @@ export const CustomerAuthHandler = HttpApiBuilder.group(Api, "customer-auth", (h
       )
     )
     // Protected: requires customer authentication
-    .handle("updatePassword", ({ path, payload }) =>
+    .handle("updatePassword", ({ params, payload }) =>
       Effect.gen(function* () {
         const authUser = yield* requireCustomer;
         
         // Only allow updating own password
-        if (authUser.id !== path.customerId) {
+        if (authUser.id !== params.customerId) {
           return yield* Effect.fail(new CustomerAuthError({ message: "Access denied" }));
         }
 
         const authService = yield* CustomerAuthService;
         yield* authService.updatePassword(
-          path.customerId as CustomerId,
+          params.customerId as CustomerId,
           payload.currentPassword,
           payload.newPassword
         );

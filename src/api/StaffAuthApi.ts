@@ -1,4 +1,4 @@
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "@effect/platform";
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/http-api";
 import { Schema } from "effect";
 
 // ============================================================
@@ -41,43 +41,40 @@ export class StaffUpdatePasswordInput extends Schema.Class<StaffUpdatePasswordIn
 export class StaffAuthError extends Schema.TaggedError<StaffAuthError>()(
   "StaffAuthError",
   { message: Schema.String },
-  HttpApiSchema.annotations({ status: 401 })
+  { httpApiStatus: 401 }
 ) {}
 
 // ============================================================
 // Staff Auth API Definition
 // ============================================================
 
-export class StaffAuthApi extends HttpApiGroup.make("staff-auth")
-  .add(
-    HttpApiEndpoint.post("login", "/staff/login")
-      .addSuccess(StaffAuthResponse)
-      .addError(StaffAuthError)
-      .setPayload(StaffLoginInput)
-      .annotate(OpenApi.Summary, "Staff login")
-      .annotate(OpenApi.Description, "Authenticate a staff member and receive a JWT token.")
-  )
-  .add(
-    HttpApiEndpoint.get("profile", "/staff/profile/:staffId")
-      .addSuccess(StaffProfileResponse)
-      .addError(StaffAuthError)
-      .setPath(Schema.Struct({ staffId: Schema.NumberFromString }))
-      .annotate(OpenApi.Summary, "Get staff profile")
-      .annotate(OpenApi.Description, "Get staff member profile information.")
-  )
-  .add(
-    HttpApiEndpoint.put("updatePassword", "/staff/password/:staffId")
-      .addSuccess(Schema.Struct({ success: Schema.Boolean }))
-      .addError(StaffAuthError)
-      .setPath(Schema.Struct({ staffId: Schema.NumberFromString }))
-      .setPayload(StaffUpdatePasswordInput)
-      .annotate(OpenApi.Summary, "Update staff password")
-      .annotate(OpenApi.Description, "Update staff member password.")
-  )
-  .add(
-    HttpApiEndpoint.get("list", "/staff")
-      .addSuccess(Schema.Array(StaffProfileResponse))
-      .addError(StaffAuthError)
-      .annotate(OpenApi.Summary, "List staff members")
-      .annotate(OpenApi.Description, "Get list of all staff members.")
-  ) {}
+export class StaffAuthApi extends HttpApiGroup.make("staff-auth").add(
+  HttpApiEndpoint.post("login", "/staff/login", {
+    payload: StaffLoginInput,
+    success: StaffAuthResponse,
+    error: StaffAuthError,
+  })
+    .annotate(OpenApi.Summary, "Staff login")
+    .annotate(OpenApi.Description, "Authenticate a staff member and receive a JWT token."),
+  HttpApiEndpoint.get("profile", "/staff/profile/:staffId", {
+    params: { staffId: Schema.FiniteFromString },
+    success: StaffProfileResponse,
+    error: StaffAuthError,
+  })
+    .annotate(OpenApi.Summary, "Get staff profile")
+    .annotate(OpenApi.Description, "Get staff member profile information."),
+  HttpApiEndpoint.put("updatePassword", "/staff/password/:staffId", {
+    params: { staffId: Schema.FiniteFromString },
+    payload: StaffUpdatePasswordInput,
+    success: Schema.Struct({ success: Schema.Boolean }),
+    error: StaffAuthError,
+  })
+    .annotate(OpenApi.Summary, "Update staff password")
+    .annotate(OpenApi.Description, "Update staff member password."),
+  HttpApiEndpoint.get("list", "/staff", {
+    success: Schema.Array(StaffProfileResponse),
+    error: StaffAuthError,
+  })
+    .annotate(OpenApi.Summary, "List staff members")
+    .annotate(OpenApi.Description, "Get list of all staff members.")
+) {}

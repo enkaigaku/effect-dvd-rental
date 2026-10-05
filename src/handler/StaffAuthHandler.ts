@@ -1,4 +1,4 @@
-import { HttpApiBuilder } from "@effect/platform";
+import { HttpApiBuilder } from "effect/http-api";
 import { Effect } from "effect";
 import { Api, StaffAuthError } from "../api/index.js";
 import { StaffAuthService } from "../service/StaffAuthService.js";
@@ -41,13 +41,13 @@ export const StaffAuthHandler = HttpApiBuilder.group(Api, "staff-auth", (handler
       )
     )
     // Protected: requires staff authentication
-    .handle("profile", ({ path }) =>
+    .handle("profile", ({ params }) =>
       Effect.gen(function* () {
         yield* requireStaff;
         
         // Only allow accessing own profile (or any profile for staff)
         const authService = yield* StaffAuthService;
-        const profile = yield* authService.getProfile(path.staffId as StaffId);
+        const profile = yield* authService.getProfile(params.staffId as StaffId);
 
         if (!profile) {
           return yield* Effect.fail(new StaffAuthError({ message: "Staff not found" }));
@@ -73,18 +73,18 @@ export const StaffAuthHandler = HttpApiBuilder.group(Api, "staff-auth", (handler
       )
     )
     // Protected: requires staff authentication
-    .handle("updatePassword", ({ path, payload }) =>
+    .handle("updatePassword", ({ params, payload }) =>
       Effect.gen(function* () {
         const authUser = yield* requireStaff;
         
         // Only allow updating own password
-        if (authUser.id !== path.staffId) {
+        if (authUser.id !== params.staffId) {
           return yield* Effect.fail(new StaffAuthError({ message: "Access denied" }));
         }
 
         const authService = yield* StaffAuthService;
         yield* authService.updatePassword(
-          path.staffId as StaffId,
+          params.staffId as StaffId,
           payload.currentPassword,
           payload.newPassword
         );

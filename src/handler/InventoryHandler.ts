@@ -1,4 +1,4 @@
-import { HttpApiBuilder } from "@effect/platform";
+import { HttpApiBuilder } from "effect/http-api";
 import { Effect } from "effect";
 import { Api, StoreNotFoundError, InventoryError } from "../api/index.js";
 import { InventoryService } from "../service/InventoryService.js";
@@ -19,14 +19,14 @@ export const InventoryHandler = HttpApiBuilder.group(Api, "inventory", (handlers
         Effect.mapError(() => new InventoryError({ message: "Failed to fetch stores" }))
       )
     )
-    .handle("storeById", ({ path }) =>
+    .handle("storeById", ({ params }) =>
       Effect.gen(function* () {
         const inventoryService = yield* InventoryService;
-        const store = yield* inventoryService.getStoreById(path.storeId as StoreId);
+        const store = yield* inventoryService.getStoreById(params.storeId as StoreId);
 
         if (!store) {
           return yield* Effect.fail(
-            new StoreNotFoundError({ message: "Store not found", storeId: path.storeId })
+            new StoreNotFoundError({ message: "Store not found", storeId: params.storeId })
           );
         }
 
@@ -37,25 +37,25 @@ export const InventoryHandler = HttpApiBuilder.group(Api, "inventory", (handlers
         )
       )
     )
-    .handle("filmAvailability", ({ path }) =>
+    .handle("filmAvailability", ({ params }) =>
       Effect.gen(function* () {
         const inventoryService = yield* InventoryService;
-        return yield* inventoryService.checkAvailabilityAllStores(path.filmId as FilmId);
+        return yield* inventoryService.checkAvailabilityAllStores(params.filmId as FilmId);
       }).pipe(
         Effect.mapError(() => new InventoryError({ message: "Failed to check availability" }))
       )
     )
-    .handle("filmAvailabilityAtStore", ({ path }) =>
+    .handle("filmAvailabilityAtStore", ({ params }) =>
       Effect.gen(function* () {
         const inventoryService = yield* InventoryService;
-        const availability = yield* inventoryService.checkAvailability(path.filmId as FilmId, path.storeId as StoreId);
+        const availability = yield* inventoryService.checkAvailability(params.filmId as FilmId, params.storeId as StoreId);
 
         if (!availability) {
           // Return empty availability if film doesn't exist at store
           return new FilmAvailability({
-            filmId: path.filmId as FilmId,
+            filmId: params.filmId as FilmId,
             filmTitle: "Unknown",
-            storeId: path.storeId as StoreId,
+            storeId: params.storeId as StoreId,
             totalCopies: 0,
             availableCopies: 0,
           });

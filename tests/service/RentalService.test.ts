@@ -46,7 +46,6 @@ const createTestLayer = (overrides: {
   findAvailableInventory?: () => Effect.Effect<InventoryId | undefined>;
 } = {}) => {
   const MockRentalRepo = Layer.succeed(RentalRepository, {
-    _tag: "RentalRepository" as const,
     getCustomer: overrides.getCustomer ?? (() => Effect.succeed(mockCustomerActive)),
     createRental: overrides.createRental ?? (() => Effect.succeed(mockRentalCreated)),
     returnRental: () => Effect.succeed({} as any),
@@ -55,7 +54,6 @@ const createTestLayer = (overrides: {
   });
 
   const MockInventoryRepo = Layer.succeed(InventoryRepository, {
-    _tag: "InventoryRepository" as const,
     getFilmAvailability: () => Effect.succeed(undefined),
     getFilmAvailabilityAllStores: () => Effect.succeed([]),
     findAvailableInventory: overrides.findAvailableInventory ?? (() => Effect.succeed(100 as InventoryId)),
@@ -71,7 +69,6 @@ const createTestLayer = (overrides: {
       const inventoryRepo = yield* InventoryRepository;
 
       return {
-        _tag: "RentalService" as const,
         createRental: (input: CreateRentalInput) =>
           Effect.gen(function* () {
             const customer = yield* rentalRepo.getCustomer(input.customerId);

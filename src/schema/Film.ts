@@ -1,4 +1,4 @@
-import { Schema } from "effect";
+import { Effect, Schema } from "effect";
 import { FilmId, CategoryId } from "./Ids.js";
 
 // ============================================================
@@ -6,7 +6,7 @@ import { FilmId, CategoryId } from "./Ids.js";
 // ============================================================
 
 // MPAA Rating enum
-export const MpaaRating = Schema.Literal("G", "PG", "PG-13", "R", "NC-17");
+export const MpaaRating = Schema.Literals(["G", "PG", "PG-13", "R", "NC-17"]);
 export type MpaaRating = typeof MpaaRating.Type;
 
 // Film entity
@@ -23,7 +23,7 @@ export class Film extends Schema.Class<Film>("Film")({
   replacementCost: Schema.Number,
   rating: Schema.NullOr(MpaaRating),
   specialFeatures: Schema.NullOr(Schema.Array(Schema.String)),
-  lastUpdate: Schema.Date,
+  lastUpdate: Schema.DateFromString,
 }) {}
 
 // Film with category info
@@ -44,8 +44,14 @@ export class FilmSearchParams extends Schema.Class<FilmSearchParams>("FilmSearch
   search: Schema.optional(Schema.String),
   categoryId: Schema.optional(CategoryId),
   rating: Schema.optional(MpaaRating),
-  page: Schema.optionalWith(Schema.Number, { default: () => 1 }),
-  limit: Schema.optionalWith(Schema.Number, { default: () => 20 }),
+  page: Schema.Number.pipe(
+    Schema.withDecodingDefaultType(Effect.succeed(1)),
+    Schema.withConstructorDefault(Effect.succeed(1)),
+  ),
+  limit: Schema.Number.pipe(
+    Schema.withDecodingDefaultType(Effect.succeed(20)),
+    Schema.withConstructorDefault(Effect.succeed(20)),
+  ),
 }) {}
 
 // Paginated films response

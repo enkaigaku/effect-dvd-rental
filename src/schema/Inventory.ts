@@ -9,7 +9,7 @@ export class Inventory extends Schema.Class<Inventory>("Inventory")({
   inventoryId: InventoryId,
   filmId: FilmId,
   storeId: StoreId,
-  lastUpdate: Schema.Date,
+  lastUpdate: Schema.DateFromString,
 }) {}
 
 // Inventory with film title for display

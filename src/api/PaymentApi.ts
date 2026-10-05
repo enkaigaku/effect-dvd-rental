@@ -1,4 +1,4 @@
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "@effect/platform";
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/http-api";
 import { Schema } from "effect";
 import { PaymentDetail, CreatePaymentInput, PaymentCreated, CustomerBalance } from "../schema/Payment.js";
 
@@ -9,56 +9,53 @@ import { PaymentDetail, CreatePaymentInput, PaymentCreated, CustomerBalance } fr
 export class PaymentNotFoundError extends Schema.TaggedError<PaymentNotFoundError>()(
   "PaymentNotFoundError",
   { message: Schema.String, paymentId: Schema.Number },
-  HttpApiSchema.annotations({ status: 404 })
+  { httpApiStatus: 404 }
 ) {}
 
 export class InvalidPaymentError extends Schema.TaggedError<InvalidPaymentError>()(
   "InvalidPaymentError",
   { message: Schema.String },
-  HttpApiSchema.annotations({ status: 400 })
+  { httpApiStatus: 400 }
 ) {}
 
 export class PaymentError extends Schema.TaggedError<PaymentError>()(
   "PaymentError",
   { message: Schema.String },
-  HttpApiSchema.annotations({ status: 500 })
+  { httpApiStatus: 500 }
 ) {}
 
 // ============================================================
 // Payment API Definition
 // ============================================================
 
-export class PaymentApi extends HttpApiGroup.make("payments")
-  .add(
-    HttpApiEndpoint.post("create", "/payments")
-      .addSuccess(PaymentCreated)
-      .addError(InvalidPaymentError)
-      .addError(PaymentError)
-      .setPayload(CreatePaymentInput)
-      .annotate(OpenApi.Summary, "Create a payment")
-      .annotate(OpenApi.Description, "Record a payment for a rental.")
-  )
-  .add(
-    HttpApiEndpoint.get("getById", "/payments/:paymentId")
-      .addSuccess(PaymentDetail)
-      .addError(PaymentNotFoundError)
-      .setPath(Schema.Struct({ paymentId: Schema.NumberFromString }))
-      .annotate(OpenApi.Summary, "Get payment details")
-      .annotate(OpenApi.Description, "Get detailed information about a specific payment.")
-  )
-  .add(
-    HttpApiEndpoint.get("customerPayments", "/customers/:customerId/payments")
-      .addSuccess(Schema.Array(PaymentDetail))
-      .addError(PaymentError)
-      .setPath(Schema.Struct({ customerId: Schema.NumberFromString }))
-      .annotate(OpenApi.Summary, "Get customer payment history")
-      .annotate(OpenApi.Description, "Get payment history for a specific customer.")
-  )
-  .add(
-    HttpApiEndpoint.get("customerBalance", "/customers/:customerId/balance")
-      .addSuccess(CustomerBalance)
-      .addError(PaymentError)
-      .setPath(Schema.Struct({ customerId: Schema.NumberFromString }))
-      .annotate(OpenApi.Summary, "Get customer balance")
-      .annotate(OpenApi.Description, "Get outstanding balance for a customer.")
-  ) {}
+export class PaymentApi extends HttpApiGroup.make("payments").add(
+  HttpApiEndpoint.post("create", "/payments", {
+    payload: CreatePaymentInput,
+    success: PaymentCreated,
+    error: [InvalidPaymentError, PaymentError],
+  })
+    .annotate(OpenApi.Summary, "Create a payment")
+    .annotate(OpenApi.Description, "Record a payment for a rental."),
+  HttpApiEndpoint.get("getById", "/payments/:paymentId", {
+    params: { paymentId: Schema.FiniteFromString },
+    success: PaymentDetail,
+    // PaymentError: the handler maps auth failures to it
+    error: [PaymentNotFoundError, PaymentError],
+  })
+    .annotate(OpenApi.Summary, "Get payment details")
+    .annotate(OpenApi.Description, "Get detailed information about a specific payment."),
+  HttpApiEndpoint.get("customerPayments", "/customers/:customerId/payments", {
+    params: { customerId: Schema.FiniteFromString },
+    success: Schema.Array(PaymentDetail),
+    error: PaymentError,
+  })
+    .annotate(OpenApi.Summary, "Get customer payment history")
+    .annotate(OpenApi.Description, "Get payment history for a specific customer."),
+  HttpApiEndpoint.get("customerBalance", "/customers/:customerId/balance", {
+    params: { customerId: Schema.FiniteFromString },
+    success: CustomerBalance,
+    error: PaymentError,
+  })
+    .annotate(OpenApi.Summary, "Get customer balance")
+    .annotate(OpenApi.Description, "Get outstanding balance for a customer.")
+) {}

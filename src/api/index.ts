@@ -1,4 +1,4 @@
-import { HttpApi, OpenApi } from "@effect/platform"
+import { HttpApi, OpenApi } from "effect/http-api"
 import { HealthApi } from "./HealthApi.js"
 import { FilmApi } from "./FilmApi.js"
 import { InventoryApi } from "./InventoryApi.js"

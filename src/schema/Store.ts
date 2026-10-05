@@ -9,7 +9,7 @@ export class Store extends Schema.Class<Store>("Store")({
   storeId: StoreId,
   managerStaffId: StaffId,
   addressId: AddressId,
-  lastUpdate: Schema.Date,
+  lastUpdate: Schema.DateFromString,
 }) {}
 
 // Store with address info for display

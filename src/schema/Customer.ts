@@ -13,8 +13,8 @@ export class Customer extends Schema.Class<Customer>("Customer")({
   email: Schema.NullOr(Schema.String),
   addressId: AddressId,
   activebool: Schema.Boolean,
-  createDate: Schema.Date,
-  lastUpdate: Schema.NullOr(Schema.Date),
+  createDate: Schema.DateFromString,
+  lastUpdate: Schema.NullOr(Schema.DateFromString),
   active: Schema.NullOr(Schema.Number),
 }) {}
 

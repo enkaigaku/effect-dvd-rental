@@ -1,4 +1,4 @@
-import { HttpApiBuilder } from "@effect/platform";
+import { HttpApiBuilder } from "effect/http-api";
 import { Effect } from "effect";
 import { Api, PaymentNotFoundError, InvalidPaymentError, PaymentError } from "../api/index.js";
 import { PaymentService } from "../service/PaymentService.js";
@@ -41,16 +41,16 @@ export const PaymentHandler = HttpApiBuilder.group(Api, "payments", (handlers) =
       )
     )
     // Protected: requires authentication
-    .handle("getById", ({ path }) =>
+    .handle("getById", ({ params }) =>
       Effect.gen(function* () {
         yield* requireAuth;
         
         const paymentService = yield* PaymentService;
-        const payment = yield* paymentService.getPaymentById(path.paymentId as PaymentId);
+        const payment = yield* paymentService.getPaymentById(params.paymentId as PaymentId);
 
         if (!payment) {
           return yield* Effect.fail(
-            new PaymentNotFoundError({ message: "Payment not found", paymentId: path.paymentId })
+            new PaymentNotFoundError({ message: "Payment not found", paymentId: params.paymentId })
           );
         }
 
@@ -61,22 +61,22 @@ export const PaymentHandler = HttpApiBuilder.group(Api, "payments", (handlers) =
             return new PaymentError({ message: "Authentication required" });
           }
           if (err._tag === "PaymentNotFoundError") return err;
-          return new PaymentNotFoundError({ message: "Payment not found", paymentId: path.paymentId });
+          return new PaymentNotFoundError({ message: "Payment not found", paymentId: params.paymentId });
         })
       )
     )
     // Protected: Customer can view own payments, Staff can view any
-    .handle("customerPayments", ({ path }) =>
+    .handle("customerPayments", ({ params }) =>
       Effect.gen(function* () {
         const user = yield* requireAuth;
         
         // Customer can only view their own payments
-        if (user.type === "customer" && user.id !== path.customerId) {
+        if (user.type === "customer" && user.id !== params.customerId) {
           return yield* Effect.fail(new PaymentError({ message: "Access denied" }));
         }
         
         const paymentService = yield* PaymentService;
-        return yield* paymentService.getCustomerPayments(path.customerId as CustomerId);
+        return yield* paymentService.getCustomerPayments(params.customerId as CustomerId);
       }).pipe(
         Effect.mapError((err: any) => {
           if (err instanceof Error && err.message.includes("Authorization")) {
@@ -89,21 +89,21 @@ export const PaymentHandler = HttpApiBuilder.group(Api, "payments", (handlers) =
       )
     )
     // Protected: Customer can view own balance, Staff can view any
-    .handle("customerBalance", ({ path }) =>
+    .handle("customerBalance", ({ params }) =>
       Effect.gen(function* () {
         const user = yield* requireAuth;
         
         // Customer can only view their own balance
-        if (user.type === "customer" && user.id !== path.customerId) {
+        if (user.type === "customer" && user.id !== params.customerId) {
           return yield* Effect.fail(new PaymentError({ message: "Access denied" }));
         }
         
         const paymentService = yield* PaymentService;
-        const balance = yield* paymentService.getCustomerBalance(path.customerId as CustomerId);
+        const balance = yield* paymentService.getCustomerBalance(params.customerId as CustomerId);
 
         if (!balance) {
           return new CustomerBalance({
-            customerId: path.customerId as CustomerId,
+            customerId: params.customerId as CustomerId,
             customerName: "Unknown",
             balance: 0,
           });

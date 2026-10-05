@@ -1,4 +1,4 @@
-import { HttpApiBuilder, HttpApiSwagger } from "@effect/platform"
+import { HttpApiBuilder, HttpApiSwagger } from "effect/http-api"
 import { Layer } from "effect"
 import { Api } from "../api/index.js"
 import { HealthHandler } from "./health.js"
@@ -13,18 +13,20 @@ import { StaffAuthHandler } from "./StaffAuthHandler.js"
 // API Implementation Layer
 // ============================================================
 
-export const ApiLive = HttpApiBuilder.api(Api).pipe(
-  Layer.provide(HealthHandler),
-  Layer.provide(FilmHandler),
-  Layer.provide(InventoryHandler),
-  Layer.provide(RentalHandler),
-  Layer.provide(PaymentHandler),
-  Layer.provide(CustomerAuthHandler),
-  Layer.provide(StaffAuthHandler),
+export const ApiLive = HttpApiBuilder.layer(Api).pipe(
+  Layer.provide([
+    HealthHandler,
+    FilmHandler,
+    InventoryHandler,
+    RentalHandler,
+    PaymentHandler,
+    CustomerAuthHandler,
+    StaffAuthHandler,
+  ]),
 )
 
 // ============================================================
 // OpenAPI Swagger UI
 // ============================================================
 
-export const DocsLive = HttpApiSwagger.layer({ path: "/docs" })
+export const DocsLive = HttpApiSwagger.layer(Api, { path: "/docs" })

@@ -1,8 +1,8 @@
-import { Effect } from "effect";
-import { SqlClient } from "@effect/sql";
-import { BunContext, BunFileSystem, BunRuntime } from "@effect/platform-bun";
-import { FileSystem, Path } from "@effect/platform";
+import { Effect, FileSystem, Path } from "effect";
+import { SqlClient } from "effect/sql";
+import { BunRuntime, BunServices } from "@effect/platform-bun";
 import { DatabaseLive } from "../config/Database.js";
+import { splitSqlStatements } from "./splitSqlStatements.js";
 
 // ============================================================
 // Migration Service
@@ -42,8 +42,12 @@ const runMigrationsEffect = Effect.gen(function* () {
 
       yield* sql.withTransaction(
         Effect.gen(function* () {
-          // Execute migration SQL
-          yield* sql.unsafe(content);
+          // Execute migration SQL one statement at a time (the Postgres
+          // driver does not accept multi-statement queries); unprepared, so
+          // one-off statements do not fill the prepared statement cache
+          for (const statement of splitSqlStatements(content)) {
+            yield* sql.unsafe(statement).unprepared;
+          }
 
           // Reset search_path in case migration changed it
           yield* sql`SET search_path TO public`;
@@ -62,8 +66,7 @@ const runMigrationsEffect = Effect.gen(function* () {
 
 export const runMigrations = runMigrationsEffect.pipe(
   Effect.provide(DatabaseLive),
-  Effect.provide(BunFileSystem.layer),
-  Effect.provide(BunContext.layer),
+  Effect.provide(BunServices.layer),
 );
 
 // Run if executed directly

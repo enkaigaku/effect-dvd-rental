@@ -1,5 +1,5 @@
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "@effect/platform";
-import { Schema } from "effect";
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/http-api";
+import { Effect, Schema } from "effect";
 
 // ============================================================
 // Customer Auth Schemas
@@ -15,7 +15,10 @@ export class CustomerRegisterInput extends Schema.Class<CustomerRegisterInput>("
   password: Schema.String,
   firstName: Schema.String,
   lastName: Schema.String,
-  storeId: Schema.optionalWith(Schema.Number, { default: () => 1 }),
+  storeId: Schema.Number.pipe(
+    Schema.withDecodingDefaultType(Effect.succeed(1)),
+    Schema.withConstructorDefault(Effect.succeed(1)),
+  ),
 }) {}
 
 export class CustomerAuthResponse extends Schema.Class<CustomerAuthResponse>("CustomerAuthResponse")({
@@ -47,51 +50,47 @@ export class UpdatePasswordInput extends Schema.Class<UpdatePasswordInput>("Upda
 export class CustomerAuthError extends Schema.TaggedError<CustomerAuthError>()(
   "CustomerAuthError",
   { message: Schema.String },
-  HttpApiSchema.annotations({ status: 401 })
+  { httpApiStatus: 401 }
 ) {}
 
 export class CustomerEmailExistsError extends Schema.TaggedError<CustomerEmailExistsError>()(
   "CustomerEmailExistsError",
   { message: Schema.String, email: Schema.String },
-  HttpApiSchema.annotations({ status: 409 })
+  { httpApiStatus: 409 }
 ) {}
 
 // ============================================================
 // Customer Auth API Definition
 // ============================================================
 
-export class CustomerAuthApi extends HttpApiGroup.make("customer-auth")
-  .add(
-    HttpApiEndpoint.post("login", "/customer/login")
-      .addSuccess(CustomerAuthResponse)
-      .addError(CustomerAuthError)
-      .setPayload(CustomerLoginInput)
-      .annotate(OpenApi.Summary, "Customer login")
-      .annotate(OpenApi.Description, "Authenticate a customer and receive a JWT token.")
-  )
-  .add(
-    HttpApiEndpoint.post("register", "/customer/register")
-      .addSuccess(CustomerAuthResponse)
-      .addError(CustomerEmailExistsError)
-      .addError(CustomerAuthError)
-      .setPayload(CustomerRegisterInput)
-      .annotate(OpenApi.Summary, "Customer registration")
-      .annotate(OpenApi.Description, "Register a new customer account.")
-  )
-  .add(
-    HttpApiEndpoint.get("profile", "/customer/profile/:customerId")
-      .addSuccess(CustomerProfileResponse)
-      .addError(CustomerAuthError)
-      .setPath(Schema.Struct({ customerId: Schema.NumberFromString }))
-      .annotate(OpenApi.Summary, "Get customer profile")
-      .annotate(OpenApi.Description, "Get customer profile information.")
-  )
-  .add(
-    HttpApiEndpoint.put("updatePassword", "/customer/password/:customerId")
-      .addSuccess(Schema.Struct({ success: Schema.Boolean }))
-      .addError(CustomerAuthError)
-      .setPath(Schema.Struct({ customerId: Schema.NumberFromString }))
-      .setPayload(UpdatePasswordInput)
-      .annotate(OpenApi.Summary, "Update password")
-      .annotate(OpenApi.Description, "Update customer password.")
-  ) {}
+export class CustomerAuthApi extends HttpApiGroup.make("customer-auth").add(
+  HttpApiEndpoint.post("login", "/customer/login", {
+    payload: CustomerLoginInput,
+    success: CustomerAuthResponse,
+    error: CustomerAuthError,
+  })
+    .annotate(OpenApi.Summary, "Customer login")
+    .annotate(OpenApi.Description, "Authenticate a customer and receive a JWT token."),
+  HttpApiEndpoint.post("register", "/customer/register", {
+    payload: CustomerRegisterInput,
+    success: CustomerAuthResponse,
+    error: [CustomerEmailExistsError, CustomerAuthError],
+  })
+    .annotate(OpenApi.Summary, "Customer registration")
+    .annotate(OpenApi.Description, "Register a new customer account."),
+  HttpApiEndpoint.get("profile", "/customer/profile/:customerId", {
+    params: { customerId: Schema.FiniteFromString },
+    success: CustomerProfileResponse,
+    error: CustomerAuthError,
+  })
+    .annotate(OpenApi.Summary, "Get customer profile")
+    .annotate(OpenApi.Description, "Get customer profile information."),
+  HttpApiEndpoint.put("updatePassword", "/customer/password/:customerId", {
+    params: { customerId: Schema.FiniteFromString },
+    payload: UpdatePasswordInput,
+    success: Schema.Struct({ success: Schema.Boolean }),
+    error: CustomerAuthError,
+  })
+    .annotate(OpenApi.Summary, "Update password")
+    .annotate(OpenApi.Description, "Update customer password.")
+) {}

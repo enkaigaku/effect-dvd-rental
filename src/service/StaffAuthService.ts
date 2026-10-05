@@ -1,7 +1,7 @@
-import { Effect, Data, Redacted } from "effect";
+import { Context, Effect, Layer, Data, Redacted } from "effect";
 import * as bcrypt from "bcrypt";
 import * as jose from "jose";
-import { SqlClient } from "@effect/sql";
+import { SqlClient } from "effect/sql";
 import { StaffId, StoreId } from "../schema/Ids.js";
 import { JwtConfig } from "../config/AppConfig.js";
 
@@ -48,9 +48,8 @@ export interface StaffProfile {
 // Staff Auth Service (uses Effect Config for JWT)
 // ============================================================
 
-export class StaffAuthService extends Effect.Service<StaffAuthService>()("StaffAuthService", {
-  accessors: true,
-  effect: Effect.gen(function* () {
+export class StaffAuthService extends Context.Service<StaffAuthService>()("StaffAuthService", {
+  make: Effect.gen(function* () {
     const sql = yield* SqlClient.SqlClient;
     const jwtConfigData = yield* JwtConfig;
     const jwtSecretValue = Redacted.value(jwtConfigData.secret);
@@ -196,5 +195,6 @@ export class StaffAuthService extends Effect.Service<StaffAuthService>()("StaffA
       }),
     };
   }),
-  dependencies: [],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}
