@@ -8,7 +8,7 @@ import { PgClient } from "@effect/sql-pg"
 const DatabaseConfig = {
   host: Config.string("DB_HOST").pipe(Config.withDefault("localhost")),
   port: Config.number("DB_PORT").pipe(Config.withDefault(5432)),
-  database: Config.string("DB_NAME").pipe(Config.withDefault("effect_crud")),
+  database: Config.string("DB_NAME").pipe(Config.withDefault("effect_dvd_rental")),
   username: Config.string("DB_USER").pipe(Config.withDefault("postgres")),
   password: Config.redacted("DB_PASSWORD").pipe(
     Config.withDefault(Redacted.make("postgres"))

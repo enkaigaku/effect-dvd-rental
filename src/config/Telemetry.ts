@@ -14,7 +14,7 @@ export const TracingLive = Layer.unwrapEffect(
     
     return NodeSdk.layer(() => ({
       resource: {
-        serviceName: "effect-crud-app",
+        serviceName: "effect-dvd-rental",
         serviceVersion: "1.0.0",
       },
       spanProcessor: new BatchSpanProcessor(

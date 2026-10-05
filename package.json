@@ -1,5 +1,5 @@
 {
-  "name": "effect-crud-app",
+  "name": "effect-dvd-rental",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -10,8 +10,8 @@
     "clean": "rm -rf dist",
     "test": "bun test",
     "test:watch": "bun test --watch",
-    "docker:build": "docker build -t effect-crud-app .",
-    "docker:run": "docker run -p 8080:8080 --env-file .env effect-crud-app",
+    "docker:build": "docker build -t effect-dvd-rental .",
+    "docker:run": "docker run -p 8080:8080 --env-file .env effect-dvd-rental",
     "db:up": "docker-compose up -d",
     "db:down": "docker-compose down",
     "migrate": "bun src/scripts/migrate.ts"

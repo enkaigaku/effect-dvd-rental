@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "effect-crud-app",
+      "name": "effect-dvd-rental",
       "dependencies": {
         "@effect/opentelemetry": "^0.60.0",
         "@effect/platform": "^0.94.1",

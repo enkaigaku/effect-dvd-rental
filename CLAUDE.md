@@ -319,7 +319,7 @@ SQL 迁移文件放在根目录 `migrations/` 目录，按文件名排序执行�
 ### Database
 - `DB_HOST`: 数据库主机 (默认: localhost)
 - `DB_PORT`: 数据库端口 (默认: 5432)
-- `DB_NAME`: 数据库名称 (默认: effect_crud)
+- `DB_NAME`: 数据库名称 (默认: effect_dvd_rental)
 - `DB_USER`: 数据库用户名
 - `DB_PASSWORD`: 数据库密码
 - `DB_POOL_MIN`: 连接池最小连接数 (默认: 1)
