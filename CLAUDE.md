@@ -30,7 +30,7 @@ bun check
 bun test
 
 # 运行单个测试文件
-bun test src/service/FilmService.test.ts
+bun test tests/service/RentalService.test.ts
 
 # 运行测试并查看覆盖率
 bun test --coverage
@@ -94,7 +94,7 @@ src/
 │   └── PaymentRepository.ts
 ├── schema/           # 数据模型 (Schema.Class)
 │   ├── Common.ts
-│   ├── Auth.ts
+│   ├── Ids.ts        # Branded ID 类型 (FilmId, CustomerId, ...)
 │   ├── Film.ts
 │   ├── Category.ts
 │   ├── Actor.ts
@@ -104,8 +104,9 @@ src/
 │   ├── Customer.ts
 │   └── Payment.ts
 ├── middleware/       # 中间件
-│   └── auth.ts       # JWT 验证 (customerAuth, staffAuth)
+│   └── auth.ts       # JWT 验证 (requireAuth, requireCustomer, requireStaff)
 ├── config/           # 配置层 (各种 Live Layer)
+│   ├── AppConfig.ts  # Effect Config 定义 (Server/Log/RateLimiter 等)
 │   ├── Database.ts   # DatabaseLive (PgClient)
 │   ├── Server.ts     # ServerLive (BunHttpServer)
 │   ├── Logger.ts     # LoggerLive
@@ -115,6 +116,12 @@ src/
 │   └── Services.ts   # ServicesLive (组合所有服务)
 └── scripts/          # 脚本
     └── migrate.ts    # 数据库迁移脚本
+
+tests/                # 测试 (根目录，不与源码放在一起)
+├── api/              # 对 localhost:8080 的黑盒 API 测试 (需运行服务器和数据库)
+├── repository/       # Repository 测试 (需数据库)
+├── service/          # Service 单元测试 (mock Repository，无需数据库)
+└── utils/            # 测试工具 (api.ts, auth.ts, testDb.ts)
 
 migrations/           # SQL 迁移文件 (根目录)
 ├── 001_initial_schema.sql
@@ -242,32 +249,45 @@ export const FilmHandler = HttpApiBuilder.group(Api, "films", (handlers) =>
 );
 ```
 
-**中间件**：JWT 认证中间件
-```typescript
-import { customerAuth, staffAuth } from "../middleware/auth.js";
+**中间件**：JWT 认证辅助函数 (`src/middleware/auth.ts`)
 
-// 在 Handler 中使用
-export const CustomerAuthHandler = HttpApiBuilder.group(Api, "customer", (handlers) =>
+- `requireAuth`：校验 Bearer token，返回 `AuthUser`
+- `requireCustomer` / `requireStaff`：在 `requireAuth` 基础上校验角色
+- `withAuth(effect)`：为需要 `CurrentUser` 的 effect 提供已认证用户
+
+在 Handler 中 `yield*` 调用：
+```typescript
+import { requireCustomer, requireStaff } from "../middleware/auth.js";
+
+// Staff only
+.handle("create", ({ payload }) =>
   Effect.gen(function* () {
-    const authService = yield* CustomerAuthService;
-    return handlers
-      .handle("login", ({ payload }) => authService.login(payload))
-      .handle("register", ({ payload }) => authService.register(payload))
-      .handle("getProfile", ({ path }) =>
-        customerAuth(authService.getProfile(path.id))  // 需要认证
-      );
+    yield* requireStaff;
+    const rentalService = yield* RentalService;
+    // ...
   })
-);
+)
+
+// Customer only，且只能访问自己的数据
+.handle("profile", ({ path }) =>
+  Effect.gen(function* () {
+    const authUser = yield* requireCustomer;
+    if (authUser.id !== path.customerId) {
+      return yield* Effect.fail(new CustomerAuthError({ message: "Access denied" }));
+    }
+    // ...
+  })
+)
 ```
 
 ### 测试模式
 
-使用 `bun:test` + `Layer.succeed` 模拟依赖：
+测试文件放在根目录 `tests/` 下。Service 测试使用 `bun:test` + `Layer.succeed` 模拟依赖 (参见 `tests/service/RentalService.test.ts`)：
 ```typescript
 import { describe, test, expect } from "bun:test";
 import { Effect, Layer } from "effect";
-import { FilmService } from "../service/FilmService.js";
-import { FilmRepository } from "../repository/FilmRepository.js";
+import { FilmService } from "../../src/service/FilmService.js";
+import { FilmRepository } from "../../src/repository/FilmRepository.js";
 
 describe("FilmService", () => {
   test("should get film by id", async () => {
@@ -339,7 +359,7 @@ SQL 迁移文件放在根目录 `migrations/` 目录，按文件名排序执行�
 
 ## API 端点
 
-参见 `main.ts:36-43` 中的端点列表或访问 http://localhost:8080/docs 查看 Swagger 文档。
+参见 `src/main.ts:41-49` 中的端点列表或访问 http://localhost:8080/docs 查看 Swagger 文档。
 
 **核心端点**：
 - Health: `GET /health`, `GET /ready`
