@@ -5,6 +5,7 @@ import { HealthHandler } from "./health.js"
 import { FilmHandler } from "./FilmHandler.js"
 import { InventoryHandler } from "./InventoryHandler.js"
 import { RentalHandler } from "./RentalHandler.js"
+import { CheckoutHandler } from "./CheckoutHandler.js"
 import { PaymentHandler } from "./PaymentHandler.js"
 import { CustomerAuthHandler } from "./CustomerAuthHandler.js"
 import { StaffAuthHandler } from "./StaffAuthHandler.js"
@@ -19,6 +20,7 @@ export const ApiLive = HttpApiBuilder.layer(Api).pipe(
     FilmHandler,
     InventoryHandler,
     RentalHandler,
+    CheckoutHandler,
     PaymentHandler,
     CustomerAuthHandler,
     StaffAuthHandler,

@@ -42,6 +42,7 @@ const printStartupInfo = Effect.gen(function* () {
   yield* Effect.logInfo("   Categories: GET  /categories");
   yield* Effect.logInfo("   Stores:     GET  /stores, /stores/:id, /stores/:storeId/films/:filmId/availability");
   yield* Effect.logInfo("   Rentals:    POST /rentals, PUT /rentals/:id/return, GET /customers/:id/rentals");
+  yield* Effect.logInfo("   Checkout:   POST /checkout/quote, POST /checkout");
   yield* Effect.logInfo("   Payments:   POST /payments, GET /payments/:id, /customers/:id/payments, /customers/:id/balance");
   yield* Effect.logInfo("   Customer:   POST /customer/login, /customer/register, GET /customer/profile/:id");
   yield* Effect.logInfo("   Staff:      POST /staff/login, GET /staff, /staff/profile/:id");

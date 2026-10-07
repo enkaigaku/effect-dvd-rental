@@ -11,6 +11,9 @@ A complete DVD rental backend service built with **Effect-ts**, **PostgreSQL (Pa
 - **Rate Limiting** - Configurable request throttling per IP
 - **CORS** - Cross-origin resource sharing support
 - **OpenTelemetry** - Distributed tracing with Jaeger
+- **Rental Rules** - Customers with overdue rentals, too many discs out or a balance over the limit cannot rent
+- **Checkout** - Rent several films and pay in one transaction, with promotions (3 for 2)
+- **Late Fees** - Charged to the customer's balance when a rental comes back late
 - **Database Migrations** - Version-controlled schema changes
 
 ## Tech Stack
@@ -32,6 +35,7 @@ A complete DVD rental backend service built with **Effect-ts**, **PostgreSQL (Pa
 src/
 ├── api/           # API endpoint definitions
 ├── config/        # Server, CORS, RateLimiter, Database, Telemetry
+├── domain/        # Pure business rules (pricing, rental eligibility)
 ├── handler/       # Route handlers
 ├── middleware/    # JWT auth middleware
 ├── repository/    # Data access layer
@@ -41,6 +45,7 @@ src/
 
 tests/
 ├── api/           # API endpoint tests
+├── domain/        # Business rule unit tests
 ├── repository/    # Integration tests
 ├── service/       # Unit tests
 └── utils/         # Test utilities
@@ -116,8 +121,10 @@ bun run dev
 | GET | `/staff` | List all staff |
 | GET | `/staff/profile/:id` | Get staff profile |
 | PUT | `/staff/password/:id` | Update own password |
-| POST | `/rentals` | Create rental |
-| PUT | `/rentals/:id/return` | Return rental |
+| POST | `/rentals` | Create rental (no payment) |
+| PUT | `/rentals/:id/return` | Return rental; charges a late fee if overdue |
+| POST | `/checkout/quote` | Price a basket of films and check it can be rented |
+| POST | `/checkout` | Rent and pay for 1-10 films at the staff member's store, all or nothing |
 | POST | `/payments` | Create payment |
 
 ## Authentication

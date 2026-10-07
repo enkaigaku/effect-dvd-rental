@@ -9,7 +9,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **核心功能**：
 - Film 查询（分页、搜索、演员信息）
 - Category 和 Store 管理
-- Rental 租赁流程（创建、归还）
+- Rental 租赁流程（创建、归还、逾期费）
+- Checkout 多片结账（租借资格校验、促销定价、一次事务内完成租借与付款）
 - Payment 支付管理
 - Customer/Staff 认证与权限控制
 - 健康检查 (Health Check)
@@ -73,6 +74,7 @@ src/
 │   ├── FilmApi.ts
 │   ├── InventoryApi.ts
 │   ├── RentalApi.ts
+│   ├── CheckoutApi.ts
 │   ├── PaymentApi.ts
 │   ├── CustomerAuthApi.ts
 │   ├── StaffAuthApi.ts
@@ -82,10 +84,14 @@ src/
 │   ├── FilmHandler.ts
 │   ├── InventoryHandler.ts
 │   ├── RentalHandler.ts
+│   ├── CheckoutHandler.ts
 │   ├── PaymentHandler.ts
 │   ├── CustomerAuthHandler.ts
 │   ├── StaffAuthHandler.ts
 │   └── index.ts
+├── domain/           # 纯业务规则 (无 IO，便于单元测试)
+│   ├── Pricing.ts    # 结账定价 (以分计算) 与促销规则、逾期费
+│   └── RentalPolicy.ts # 租借资格规则 + RentalPolicy 配置服务
 ├── service/          # 业务逻辑层 (Context.Service)
 │   ├── FilmService.ts
 │   ├── InventoryService.ts
@@ -107,6 +113,7 @@ src/
 │   ├── Inventory.ts
 │   ├── Store.ts
 │   ├── Rental.ts
+│   ├── Checkout.ts
 │   ├── Customer.ts
 │   └── Payment.ts
 ├── middleware/       # 中间件
@@ -128,7 +135,8 @@ migrations/           # SQL 迁移文件 (根目录)
 ├── 002_pagila_schema.sql
 ├── 003_pagila_data.sql
 ├── 005_customer_auth.sql
-└── 006_staff_auth.sql
+├── 006_staff_auth.sql
+└── 007_rental_operations.sql
 ```
 
 ### Layer 依赖图
@@ -152,6 +160,7 @@ app (main.ts)
     │   ├── FilmService.layer → FilmRepository.layer
     │   ├── InventoryService.layer → InventoryRepository.layer
     │   ├── RentalService.layer → RentalRepository.layer + InventoryRepository.layer
+    │   │                         + PaymentRepository.layer + RentalPolicy.layer
     │   ├── PaymentService.layer → PaymentRepository.layer
     │   ├── CustomerAuthService.layer
     │   ├── StaffAuthService.layer
@@ -300,8 +309,18 @@ Effect 4 的 Postgres 驱动只支持扩展查询协议，一次只能执行一�
 - `003_pagila_data.sql` - 初始数据
 - `005_customer_auth.sql` - 顾客认证相关表
 - `006_staff_auth.sql` - 员工认证相关表
+- `007_rental_operations.sql` - payment 默认分区、"一张碟同一时间只能被租一次" 的部分唯一索引、`customer_charge` 账目表 (逾期费/折扣)、`customer_outstanding_balance()` 余额函数
 
 迁移脚本会自动创建 `migrations` 表来追踪已执行的迁移。
+
+### 租借业务规则
+
+- **资格校验** (`domain/RentalPolicy.ts`)：账户停用、存在逾期未还、余额超限、在租数量超限都会拒绝租借；一次返回全部违反的规则 (422 `CustomerNotEligibleError`)
+- **并发安全**：`POST /rentals` 和 `POST /checkout` 在一个事务里先 `FOR UPDATE` 锁住顾客行 (同一顾客的结账串行化)，再用 `FOR UPDATE SKIP LOCKED` 挑选库存副本；`rental_open_inventory_uniq` 索引兜底防止重复出租
+  - 注意：锁顾客要单独一条语句。READ COMMITTED 下等锁的语句里的子查询仍用等锁前的快照，会漏看对方刚提交的租借
+- **事务**：Service 通过 `RentalRepository.transaction` 包裹多个仓储调用 (单元测试里 mock 成恒等函数)
+- **金额**：定价和逾期费以整数「分」计算 (`toCents` / `fromCents`)
+- **余额** = 租金 + `customer_charge` (逾期费为正、折扣为负) − 付款；结账付清后余额不变
 
 ## 环境变量
 
@@ -323,6 +342,10 @@ Effect 4 的 Postgres 驱动只支持扩展查询协议，一次只能执行一�
 - `JWT_SECRET`: JWT 签名密钥 (**生产环境必须修改！**)
 - `JWT_EXPIRES_IN`: Token 过期时间 (如: 1h, 30m, 7d)
 
+### Rental Rules
+- `RENTAL_MAX_OPEN_RENTALS`: 顾客同时在租的最大数量，包含本次租借 (默认: 5)
+- `RENTAL_MAX_BALANCE`: 允许继续租借的最高未付余额 (默认: 10)
+
 ### Logging
 - `LOG_LEVEL`: 日志级别
   - 可选值: `trace` | `debug` | `info` | `warning` (或 `warn`) | `error` | `fatal` | `none`
@@ -341,6 +364,7 @@ Effect 4 的 Postgres 驱动只支持扩展查询协议，一次只能执行一�
 - Categories: `GET /categories`
 - Stores: `GET /stores`, `GET /stores/:id`, `GET /stores/:storeId/films/:filmId/availability`
 - Rentals: `POST /rentals`, `PUT /rentals/:id/return`, `GET /customers/:id/rentals`
+- Checkout: `POST /checkout/quote`, `POST /checkout` (员工，只能在自己门店结账)
 - Payments: `POST /payments`, `GET /payments/:id`, `GET /customers/:id/payments`, `GET /customers/:id/balance`
 - Customer Auth: `POST /customer/login`, `POST /customer/register`, `GET /customer/profile/:id`
 - Staff Auth: `POST /staff/login`, `GET /staff`, `GET /staff/profile/:id`

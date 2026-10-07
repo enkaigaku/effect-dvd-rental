@@ -33,6 +33,7 @@ const createTestLayer = (overrides: {
 } = {}) => {
   const MockPaymentRepo = Layer.succeed(PaymentRepository, {
     createPayment: overrides.createPayment ?? (() => Effect.succeed(mockPaymentCreated)),
+    addCharge: () => Effect.void,
     getCustomerBalance: overrides.getCustomerBalance ?? (() => Effect.succeed(mockCustomerBalance)),
     getCustomerPayments: () => Effect.succeed([]),
     findById: () => Effect.succeed(undefined),

@@ -2,6 +2,7 @@ import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/http-api";
 import { Schema } from "effect";
 import { RentalDetail, CreateRentalInput, RentalCreated, RentalReturned } from "../schema/Rental.js";
 import { CustomerInfo } from "../schema/Customer.js";
+import { RentalIneligibility } from "../schema/Checkout.js";
 
 // ============================================================
 // Rental API Error Schemas
@@ -25,6 +26,13 @@ export class NoInventoryError extends Schema.TaggedError<NoInventoryError>()(
   { httpApiStatus: 409 }
 ) {}
 
+// The customer exists but may not rent right now; `reasons` lists every rule broken
+export class CustomerNotEligibleError extends Schema.TaggedError<CustomerNotEligibleError>()(
+  "CustomerNotEligibleError",
+  { message: Schema.String, customerId: Schema.Number, reasons: Schema.Array(RentalIneligibility) },
+  { httpApiStatus: 422 }
+) {}
+
 export class RentalError extends Schema.TaggedError<RentalError>()(
   "RentalError",
   { message: Schema.String },
@@ -39,17 +47,17 @@ export class RentalApi extends HttpApiGroup.make("rentals").add(
   HttpApiEndpoint.post("create", "/rentals", {
     payload: CreateRentalInput,
     success: RentalCreated,
-    error: [CustomerNotFoundError, NoInventoryError, RentalError],
+    error: [CustomerNotFoundError, CustomerNotEligibleError, NoInventoryError, RentalError],
   })
     .annotate(OpenApi.Summary, "Create a rental")
-    .annotate(OpenApi.Description, "Rent a film to a customer. Checks inventory availability and customer status. Requires staff authentication."),
+    .annotate(OpenApi.Description, "Rent a film to a customer without taking payment. Checks rental eligibility (active account, no overdue rentals, balance and open-rental limits) and inventory availability. Requires staff authentication."),
   HttpApiEndpoint.put("return", "/rentals/:rentalId/return", {
     params: { rentalId: Schema.FiniteFromString },
     success: RentalReturned,
     error: [RentalNotFoundError, RentalError],
   })
     .annotate(OpenApi.Summary, "Return a rental")
-    .annotate(OpenApi.Description, "Mark a rental as returned. Calculates late fees if applicable. Requires staff authentication."),
+    .annotate(OpenApi.Description, "Mark a rental as returned. A late fee (one rental rate per day overdue) is charged to the customer's balance. Requires staff authentication."),
   HttpApiEndpoint.get("getById", "/rentals/:rentalId", {
     params: { rentalId: Schema.FiniteFromString },
     success: RentalDetail,
