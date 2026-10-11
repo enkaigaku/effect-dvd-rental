@@ -150,6 +150,7 @@ app (main.ts)
     │   ├── FilmHandler
     │   ├── InventoryHandler
     │   ├── RentalHandler
+    │   ├── CheckoutHandler
     │   ├── PaymentHandler
     │   ├── CustomerAuthHandler
     │   └── StaffAuthHandler
