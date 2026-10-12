@@ -34,6 +34,19 @@ export class PaymentRepository extends Context.Service<PaymentRepository>()("Pay
           });
         }),
 
+      // Record a non-rental charge (late_fee > 0) or credit (discount < 0)
+      addCharge: (
+        customerId: CustomerId,
+        rentalId: RentalId,
+        kind: "late_fee" | "discount",
+        amount: number,
+        description: string,
+      ) =>
+        sql`
+          INSERT INTO customer_charge (customer_id, rental_id, kind, amount, description)
+          VALUES (${customerId}, ${rentalId}, ${kind}, ${amount}, ${description})
+        `.pipe(Effect.asVoid),
+
       // Get customer balance (total unpaid)
       getCustomerBalance: (customerId: CustomerId) =>
         Effect.gen(function* () {
@@ -48,24 +61,9 @@ export class PaymentRepository extends Context.Service<PaymentRepository>()("Pay
 
           const customerName = customerRows[0]["name"] as string;
 
-          // Calculate balance: sum of rental fees - sum of payments
+          // Rental fees + late fees/discounts - payments (see 007_rental_operations.sql)
           const balanceRows = yield* sql`
-            WITH rental_fees AS (
-              SELECT 
-                COALESCE(SUM(f.rental_rate), 0) as total_fees
-              FROM rental r
-              JOIN inventory i ON r.inventory_id = i.inventory_id
-              JOIN film f ON i.film_id = f.film_id
-              WHERE r.customer_id = ${customerId}
-            ),
-            payments AS (
-              SELECT COALESCE(SUM(amount), 0) as total_payments
-              FROM payment
-              WHERE customer_id = ${customerId}
-            )
-            SELECT 
-              (rental_fees.total_fees - payments.total_payments) as balance
-            FROM rental_fees, payments
+            SELECT customer_outstanding_balance(${customerId}) AS balance
           `;
 
           const balance = Number(balanceRows[0]?.["balance"] ?? 0);

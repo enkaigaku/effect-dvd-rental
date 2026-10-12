@@ -86,6 +86,26 @@ export class InventoryRepository extends Context.Service<InventoryRepository>()(
           return rows[0]?.["inventory_id"] as InventoryId | undefined;
         }),
 
+      // Pick an available copy and lock it for the rest of the transaction.
+      // SKIP LOCKED lets concurrent checkouts of the same film each take a
+      // different copy instead of queueing on (or double-renting) the same one.
+      // Must run inside a transaction, otherwise the lock is released at once.
+      reserveAvailableInventory: (filmId: FilmId, storeId: StoreId) =>
+        Effect.gen(function* () {
+          const rows = yield* sql`
+            SELECT inventory_id
+            FROM inventory
+            WHERE film_id = ${filmId}
+              AND store_id = ${storeId}
+              AND inventory_in_stock(inventory_id)
+            ORDER BY inventory_id
+            LIMIT 1
+            FOR UPDATE SKIP LOCKED
+          `;
+
+          return rows[0]?.["inventory_id"] as InventoryId | undefined;
+        }),
+
       // Get all stores with address info
       getStores: () =>
         Effect.gen(function* () {

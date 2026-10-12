@@ -1,6 +1,6 @@
 import { HttpApiBuilder } from "effect/http-api";
 import { Effect } from "effect";
-import { Api, RentalNotFoundError as ApiRentalNotFoundError, CustomerNotFoundError as ApiCustomerNotFoundError, NoInventoryError, RentalError } from "../api/index.js";
+import { Api, RentalNotFoundError as ApiRentalNotFoundError, CustomerNotFoundError as ApiCustomerNotFoundError, CustomerNotEligibleError as ApiCustomerNotEligibleError, NoInventoryError, RentalError } from "../api/index.js";
 import { RentalService } from "../service/RentalService.js";
 import { CreateRentalInput } from "../schema/Rental.js";
 import { requireStaff, requireAuth } from "../middleware/auth.js";
@@ -38,10 +38,11 @@ export const RentalHandler = HttpApiBuilder.group(Api, "rentals", (handlers) =>
               customerId: payload.customerId 
             });
           }
-          if (err._tag === "CustomerInactiveError") {
-            return new ApiCustomerNotFoundError({ 
-              message: `Customer ${payload.customerId} is inactive`, 
-              customerId: payload.customerId 
+          if (err._tag === "CustomerNotEligibleError") {
+            return new ApiCustomerNotEligibleError({
+              message: `Customer ${payload.customerId} is not eligible to rent`,
+              customerId: payload.customerId,
+              reasons: err.reasons,
             });
           }
           if (err._tag === "NoInventoryAvailableError") {
