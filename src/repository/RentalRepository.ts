@@ -8,6 +8,8 @@ import { lateFeeCents, toCents, fromCents } from "../domain/Pricing.js";
 
 // The copy picked for this rental was rented out by a concurrent transaction
 // (rental_open_inventory_uniq). Callers treat it like "no copy available".
+const OPEN_RENTAL_PER_COPY = "rental_open_inventory_uniq";
+
 export class InventoryAlreadyRentedError extends Data.TaggedError("InventoryAlreadyRentedError")<{
   readonly inventoryId: InventoryId;
 }> {}
@@ -62,7 +64,9 @@ export class RentalRepository extends Context.Service<RentalRepository>()("Renta
           `.pipe(
             Effect.catchIf(
               (e): e is SqlError.SqlError =>
-                SqlError.isSqlError(e) && e.reason._tag === "UniqueViolation",
+                SqlError.isSqlError(e) &&
+                e.reason._tag === "UniqueViolation" &&
+                e.reason.constraint === OPEN_RENTAL_PER_COPY,
               () => Effect.fail(new InventoryAlreadyRentedError({ inventoryId })),
             ),
           );
