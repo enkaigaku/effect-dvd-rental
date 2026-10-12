@@ -6,7 +6,17 @@
 -- Pagila only ships monthly payment partitions for 2022-01..2022-07, so any
 -- payment dated later has no partition and the INSERT fails. Catch-all
 -- partition so new payments can be stored.
-CREATE TABLE IF NOT EXISTS payment_p_default PARTITION OF payment DEFAULT;
+-- Pagila declares the payment foreign keys and indexes on each partition, not
+-- on `payment`, so the new partition needs its own or it would accept
+-- payments for customers, staff or rentals that do not exist.
+CREATE TABLE IF NOT EXISTS payment_p_default PARTITION OF payment (
+  CONSTRAINT payment_p_default_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES customer (customer_id),
+  CONSTRAINT payment_p_default_staff_id_fkey FOREIGN KEY (staff_id) REFERENCES staff (staff_id),
+  CONSTRAINT payment_p_default_rental_id_fkey FOREIGN KEY (rental_id) REFERENCES rental (rental_id)
+) DEFAULT;
+
+CREATE INDEX IF NOT EXISTS payment_p_default_customer_id_idx ON payment_p_default (customer_id);
+CREATE INDEX IF NOT EXISTS payment_p_default_staff_id_idx ON payment_p_default (staff_id);
 
 -- A physical copy can only be out with one customer at a time. Concurrent
 -- rentals of the same copy fail with a unique violation instead of silently
